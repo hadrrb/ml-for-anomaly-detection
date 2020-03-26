@@ -1,43 +1,53 @@
 from sklearn.ensemble import RandomForestClassifier
-from sklearn import preprocessing
+from sklearn import metrics, preprocessing
 import pandas as pd
 import numpy as np
 from sklearn.svm import SVC
 from sklearn.linear_model import Perceptron
+from matplotlib import pyplot as plt
 
 #training
-X = pd.read_csv("Data/data1.csv") #read file
+X = []
+for i in range(1,16):
+    X.insert(len(X), pd.read_csv("Data/data%d.csv"%i)) #read file
+
+X = pd.concat(X)
+
+X = X.replace(np.inf, np.finfo(np.float32).max) #replacing 'inf' with its equivalent in float32 datatype
+
+nbr = X.shape[0]
+ele = np.arange(nbr)
+rng = np.random.default_rng()
+randpos = rng.choice(ele, size = int(nbr*0.3), replace = False)
+
+Xtrain = X.iloc[randpos]
+Xpred = X.iloc[ele[[k not in randpos for k in ele]]]
 
 #preparing the label converter
 le = preprocessing.LabelEncoder()
 le.fit(["NoEvents", "Attack", "Natural"])
 
 #assigning the training data and the labels into variables
-y = le.transform(X['marker'])
-X = X.drop(columns='marker')
+ytrain = le.transform(Xtrain['marker'])
+Xtrain = Xtrain.drop(columns='marker') 
 
-X = X.replace(np.inf, np.finfo(np.float32).max) #replacing 'inf' with its equivalent in float32 datatype
+y_test = le.transform(Xpred['marker'])
+X_test = Xpred.drop(columns='marker') 
+
 
 clf = []
 clf.insert(len(clf), RandomForestClassifier()) #Random Forest classifier initialization
 clf.insert(len(clf), SVC())
 clf.insert(len(clf), Perceptron())
-
+SVC().__str__
 for k in clf:
-    k.fit(X, y) #teaching the dataset
+    k.fit(Xtrain, ytrain) #teaching the dataset
+    predicted = k.predict(X_test) #predicting the labels
+    print("Classification report for classifier %s:\n%s\n"
+      % (clf, metrics.classification_report(y_test, predicted)))
+    disp = metrics.plot_confusion_matrix(k, X_test, y_test)
+    disp.figure_.suptitle("Confusion Matrix of %s"%k.__str__)
+    print("Confusion matrix:\n%s" % disp.confusion_matrix)
 
-def predict(clf, le, file): #prediction function based on the prepared classifier
-    X1 = pd.read_csv(file) #reading file
-
-    y1 = le.transform(X1['marker']) #saving the labels after conversion into numerical values
-    X1 = X1.drop(columns='marker') #saving the data
-    X1 = X1.replace(np.inf, np.finfo(np.float32).max) #replacing 'inf' with its equivalent in float32 datatype
-
-    y1p = clf.predict(X1) #predicting the labels
-    return np.sum(y1 == y1p)/y1.size #calculation of rate of success of the algorithm for the given dataset
-
-for i in range(2,16): #iterations over all available datasets
-    out = []
-    for k in clf:
-        out.insert(len(out), predict(k, le, "Data/data" + str(i) +".csv"))
-    print("Dataset nr %d was recognized with a success rate of %2.2f %s (Random Forests), %2.2f %s (SVM), %2.2f %s (MLP)." % (i, (out[0] * 100), '%', (out[1] * 100), '%' , (out[2] * 100), '%'))
+plt.show()
+    
