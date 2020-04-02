@@ -110,18 +110,10 @@ for i in range(1,16):
     # ax.legend(loc="lower right")
     # pdf.savefig(fig)
 
-  
-  acc = np.average(acc)
-  f1 = np.average(f1)
-  precision = np.average(precision)
-  recall = np.average(recall)
-
-  #print("Dataset %d, acc = %.3f, f1 = %.3f, precision = %.3f, recall = %.3f"%(i, acc, f1, precision, recall))
-
-  all_acc.append(acc)
-  all_f1.append(f1)
-  all_precision.append(precision)
-  all_recall.append(recall)
+  all_acc.append(np.average(acc))
+  all_f1.append(np.average(f1))
+  all_precision.append(np.average(precision))
+  all_recall.append(np.average(recall))
 
 
 comm.Barrier()
@@ -138,10 +130,10 @@ if rank == 0:
     plt.plot(x, all_acc[1], '-go', label = methods[1])
     plt.plot(x, all_acc[2], '-ro', label = methods[2])
     plt.plot(x, all_acc[3], '-yo', label = methods[3])
-    plt.xticks(x, k)
+    plt.xticks(x, k, rotation=45)
     plt.xlabel("Datasets")
     plt.ylabel("Accuracy")
-    plt.legend(loc="upper right")
+    plt.legend(loc="best")
     pdf.savefig()
 
     plt.close()
