@@ -10,15 +10,16 @@ import sys
 from scipy import interp
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import auc, plot_roc_curve, roc_curve
-from sklearn.model_selection import KFold, StratifiedKFold, cross_val_score, cross_validate, train_test_split
+from sklearn.model_selection import StratifiedKFold
 from matplotlib.backends.backend_pdf import PdfPages
+from sklearn.naive_bayes import GaussianNB
 
 comm = MPI.COMM_WORLD
 size = comm.Get_size()
 rank = comm.Get_rank()
 
 labels = ["NoEvents", "Attack", "Natural"]
-methods = ["RandomForest", "SVM", "MLP"]
+methods = ["RandomForest", "SVM", "MLP", "NaiveBayes"]
 #training
 
 all_acc = []
@@ -44,6 +45,7 @@ for i in range(1,16):
   clf.insert(len(clf), RandomForestClassifier()) #Random Forest classifier initialization
   clf.insert(len(clf), SVC())
   clf.insert(len(clf), MLPClassifier(hidden_layer_sizes=(20,)))
+  clf.insert(len(clf), GaussianNB())
   #adaboost
 
   cv = StratifiedKFold(n_splits=10)
@@ -130,34 +132,34 @@ all_recall = comm.gather(np.average(all_recall))
 
 if rank == 0:
   with PdfPages("results.pdf") as pdf:
-    y = range(1,16)
+    x = range(1,16)
     k = ["Dataset %d"%i for i in y]
-    plt.xticks(y, k)
-    plt.plot(all_acc[0,:], y, '-bo', label = methods[0])
-    plt.plot(all_acc[1,:], y, '-go', label = methods[1])
-    plt.plot(all_acc[2,:], y, '-ro', label = methods[2])
-
+    plt.plot(x, all_acc[0], '-bo', label = methods[0])
+    plt.plot(x, all_acc[1], '-go', label = methods[1])
+    plt.plot(x, all_acc[2], '-ro', label = methods[2])
+    plt.plot(x, all_acc[3], '-yo', label = methods[3])
+    plt.xticks(x, k)
     plt.xlabel("Datasets")
     plt.ylabel("Accuracy")
-    plt.legend(loc="best")
+    plt.legend(loc="upper right")
     pdf.savefig()
 
     plt.close()
     plt.clf()
 
-    y = range(3)
-    plt.xticks(y, methods)
-    plt.plot(all_f1, y, '-bo')
+    x = range(len(methods))
+    plt.plot(x, all_f1, '-bo')
     plt.xlabel("Learners")
     plt.ylabel("F-measure")
+    plt.xticks(x, methods)
 
     pdf.savefig()
 
     plt.close()
     plt.clf()
-
-    plt.xticks(y, methods)
-    plt.plot(all_precision, y, '-bo')
+ 
+    plt.plot(x, all_precision, '-bo')
+    plt.xticks(x, methods)
     plt.xlabel("Learners")
     plt.ylabel("Precision")
 
@@ -166,10 +168,10 @@ if rank == 0:
     plt.close()
     plt.clf()
 
-    plt.xticks(methods)
-    plt.plot(all_recall, y, '-bo')
+    plt.plot(x, all_recall, '-bo')
     plt.xlabel("Learners")
     plt.ylabel("Recall")
+    plt.xticks(x, methods)
 
     pdf.savefig()
 
