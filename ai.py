@@ -67,7 +67,7 @@ for i in range(1,16):
 
 
   clf = []
-  clf.insert(len(clf), RandomForestClassifier(n_estimators=100, max_features = 'log2')) #Random Forest classifier initialization
+  clf.insert(len(clf), RandomForestClassifier(n_estimators=100, max_features='log2')) #Random Forest classifier initialization
   clf.insert(len(clf), SVC(probability=True, max_iter=1000, cache_size=7000))
   clf.insert(len(clf), MLPClassifier(hidden_layer_sizes=(20,), max_iter=1000, early_stopping=True))
   clf.insert(len(clf), GaussianNB())
@@ -75,7 +75,7 @@ for i in range(1,16):
   cv = StratifiedKFold(n_splits=10)
 
   scores = cross_validate(clf[rank], X, y, cv=cv, scoring=['accuracy','f1_micro','f1_macro','f1_weighted','precision_micro','precision_macro','precision_weighted', 'recall_micro','recall_macro','recall_weighted'], n_jobs=2)
-
+  #GridSearchCV
   y_pred = cross_val_predict(clf[rank], X, y, cv=cv, n_jobs=3)
 
   yall = np.insert(yall, len(yall), y)
