@@ -3,3 +3,15 @@
 *.arff
 *.html
 test.py
+*.aux
+!cover.pdf
+*.gz
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.toc
+*.csv
