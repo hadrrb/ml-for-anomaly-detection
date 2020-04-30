@@ -1,4 +1,5 @@
 *.pdf
 *.zip
 *.arff
+*.html
 test.py
