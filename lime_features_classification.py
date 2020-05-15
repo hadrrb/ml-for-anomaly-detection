@@ -24,7 +24,7 @@ X = X.drop(columns='marker')
 features = list(X.columns)
 
 classifiers = [DecisionTreeClassifier(), RandomForestClassifier(n_estimators=100, max_features='log2'), MLPClassifier(hidden_layer_sizes=(20,), max_iter=1000, early_stopping=True)]
-clftxt = ["RandomForest" , "MLP"]
+clftxt = ["DecisionTree", "RandomForest" , "MLP"]
 X=X.values
 
 for clf, filen in zip(classifiers, clftxt):
