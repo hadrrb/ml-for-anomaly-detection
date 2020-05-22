@@ -15,3 +15,4 @@ test.py
 *.lot
 *.toc
 *.csv
+.*
