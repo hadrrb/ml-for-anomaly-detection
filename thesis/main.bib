@@ -1,119 +1,133 @@
 
-@article{karpatne_theory-guided_2017,
-	title = {Theory-{Guided} {Data} {Science}: {A} {New} {Paradigm} for {Scientific} {Discovery} from {Data}},
-	volume = {29},
-	issn = {1041-4347},
-	shorttitle = {Theory-{Guided} {Data} {Science}},
-	url = {http://ieeexplore.ieee.org/document/7959606/},
-	doi = {10.1109/TKDE.2017.2720168},
-	number = {10},
-	urldate = {2020-03-12},
-	journal = {IEEE Transactions on Knowledge and Data Engineering},
-	author = {Karpatne, Anuj and Atluri, Gowtham and Faghmous, James H. and Steinbach, Michael and Banerjee, Arindam and Ganguly, Auroop and Shekhar, Shashi and Samatova, Nagiza and Kumar, Vipin},
-	month = oct,
-	year = {2017},
-	pages = {2318--2331},
-	file = {Przesłana wersja:C\:\\Users\\bhadr\\Zotero\\storage\\KK7WFSAA\\Karpatne et al. - 2017 - Theory-Guided Data Science A New Paradigm for Sci.pdf:application/pdf}
+@misc{adhikari_power_2014,
+  title = {Power {{System Attack Datasets}}},
+  author = {Adhikari, Uttam and Pan, Shengyi and Morris, Tommy},
+  year = {2014},
+  month = apr,
+  file = {C\:\\Users\\bhadr\\Zotero\\storage\\E5NIBS6P\\PowerSystem_Dataset_README.pdf},
+  language = {English}
 }
 
-@article{swischuk_projection-based_2019,
-	title = {Projection-based model reduction: {Formulations} for physics-based machine learning},
-	volume = {179},
-	issn = {0045-7930},
-	shorttitle = {Projection-based model reduction},
-	url = {http://www.sciencedirect.com/science/article/pii/S0045793018304250},
-	doi = {10.1016/j.compfluid.2018.07.021},
-	abstract = {This paper considers the creation of parametric surrogate models for applications in science and engineering where the goal is to predict high-dimensional output quantities of interest, such as pressure, temperature and strain fields. The proposed methodology develops a low-dimensional parametrization of these quantities of interest using the proper orthogonal decomposition (POD), and combines this parametrization with machine learning methods to learn the map between the input parameters and the POD expansion coefficients. The use of particular solutions in the POD expansion provides a way to embed physical constraints, such as boundary conditions and other features of the solution that must be preserved. The relative costs and effectiveness of four different machine learning techniques—neural networks, multivariate polynomial regression, k-nearest-neighbors and decision trees—are explored through two engineering examples. The first example considers prediction of the pressure field around an airfoil, while the second considers prediction of the strain field over a damaged composite panel. The case studies demonstrate the importance of embedding physical constraints within learned models, and also highlight the important point that the amount of model training data available in an engineering setting is often much less than it is in other machine learning applications, making it essential to incorporate knowledge from physical models.},
-	language = {en},
-	urldate = {2020-03-12},
-	journal = {Computers \& Fluids},
-	author = {Swischuk, Renee and Mainini, Laura and Peherstorfer, Benjamin and Willcox, Karen},
-	month = jan,
-	year = {2019},
-	keywords = {Data-driven reduced models, Model reduction, Physics-based machine learning, Proper orthogonal decomposition, Surrogate models},
-	pages = {704--717},
-	file = {ScienceDirect Full Text PDF:C\:\\Users\\bhadr\\Zotero\\storage\\YPALB4YS\\Swischuk et al. - 2019 - Projection-based model reduction Formulations for.pdf:application/pdf;ScienceDirect Snapshot:C\:\\Users\\bhadr\\Zotero\\storage\\P8LCFKSX\\S0045793018304250.html:text/html}
-}
-
-@article{karpatne_physics-guided_2018,
-	title = {Physics-guided {Neural} {Networks} ({PGNN}): {An} {Application} in {Lake} {Temperature} {Modeling}},
-	shorttitle = {Physics-guided {Neural} {Networks} ({PGNN})},
-	url = {http://arxiv.org/abs/1710.11431},
-	abstract = {This paper introduces a novel framework for combining scientific knowledge of physics-based models with neural networks to advance scientific discovery. This framework, termed as physics-guided neural network (PGNN), leverages the output of physics-based model simulations along with observational features to generate predictions using a neural network architecture. Further, this paper presents a novel framework for using physics-based loss functions in the learning objective of neural networks, to ensure that the model predictions not only show lower errors on the training set but are also scientifically consistent with the known physics on the unlabeled set. We illustrate the effectiveness of PGNN for the problem of lake temperature modeling, where physical relationships between the temperature, density, and depth of water are used to design a physics-based loss function. By using scientific knowledge to guide the construction and learning of neural networks, we are able to show that the proposed framework ensures better generalizability as well as scientific consistency of results.},
-	urldate = {2020-03-12},
-	journal = {arXiv:1710.11431 [physics, stat]},
-	author = {Karpatne, Anuj and Watkins, William and Read, Jordan and Kumar, Vipin},
-	month = feb,
-	year = {2018},
-	note = {arXiv: 1710.11431},
-	keywords = {Computer Science - Artificial Intelligence, Computer Science - Computer Vision and Pattern Recognition, Computer Science - Machine Learning, Physics - Data Analysis, Statistics and Probability, Statistics - Machine Learning},
-	file = {arXiv Fulltext PDF:C\:\\Users\\bhadr\\Zotero\\storage\\SGIR5PK8\\Karpatne et al. - 2018 - Physics-guided Neural Networks (PGNN) An Applicat.pdf:application/pdf;arXiv.org Snapshot:C\:\\Users\\bhadr\\Zotero\\storage\\MMDNYMC8\\1710.html:text/html}
-}
-
-@article{zamzam_physics-aware_2019,
-	title = {Physics-{Aware} {Neural} {Networks} for {Distribution} {System} {State} {Estimation}},
-	url = {http://arxiv.org/abs/1903.09669},
-	abstract = {The distribution system state estimation problem seeks to determine the network state from available measurements. Widely used Gauss-Newton approaches are very sensitive to the initialization and often not suitable for real-time estimation. Learning approaches are very promising for real-time estimation, as they shift the computational burden to an offline training stage. Prior machine learning approaches to power system state estimation have been electrical model-agnostic, in that they did not exploit the topology and physical laws governing the power grid to design the architecture of the learning model. In this paper, we propose a novel learning model that utilizes the structure of the power grid. The proposed neural network architecture reduces the number of coefficients needed to parameterize the mapping from the measurements to the network state by exploiting the separability of the estimation problem. This prevents overfitting and reduces the complexity of the training stage. We also propose a greedy algorithm for phasor measuring units placement that aims at minimizing the complexity of the neural network required for realizing the state estimation mapping. Simulation results show superior performance of the proposed method over the Gauss-Newton approach.},
-	urldate = {2020-03-12},
-	journal = {arXiv:1903.09669 [cs, math]},
-	author = {Zamzam, Ahmed S. and Sidiropoulos, Nicholas D.},
-	month = jul,
-	year = {2019},
-	note = {arXiv: 1903.09669},
-	keywords = {Electrical Engineering and Systems Science - Systems and Control, Mathematics - Optimization and Control},
-	file = {arXiv Fulltext PDF:C\:\\Users\\bhadr\\Zotero\\storage\\9TW4JLDV\\Zamzam i Sidiropoulos - 2019 - Physics-Aware Neural Networks for Distribution Sys.pdf:application/pdf;arXiv.org Snapshot:C\:\\Users\\bhadr\\Zotero\\storage\\Z7TLLMRU\\1903.html:text/html}
-}
-
-@inproceedings{borges_hink_machine_2014,
-	address = {Denver, CO, USA},
-	title = {Machine learning for power system disturbance and cyber-attack discrimination},
-	isbn = {978-1-4799-4187-2 978-1-4799-7221-0},
-	url = {http://ieeexplore.ieee.org/document/6900095/},
-	doi = {10.1109/ISRCS.2014.6900095},
-	urldate = {2020-03-17},
-	booktitle = {2014 7th {International} {Symposium} on {Resilient} {Control} {Systems} ({ISRCS})},
-	publisher = {IEEE},
-	author = {Borges Hink, Raymond C. and Beaver, Justin M. and Buckner, Mark A. and Morris, Tommy and Adhikari, Uttam and Pan, Shengyi},
-	month = aug,
-	year = {2014},
-	pages = {1--8},
-	file = {Borges Hink et al. - 2014 - Machine learning for power system disturbance and .pdf:C\:\\Users\\bhadr\\Zotero\\storage\\NMTMU4PM\\Borges Hink et al. - 2014 - Machine learning for power system disturbance and .pdf:application/pdf}
-}
-
-@misc{morris_industrial_nodate,
-	title = {Industrial {Control} {System} ({ICS}) {Cyber} {Attack} {Datasets} - {Tommy} {Morris}},
-	url = {https://sites.google.com/a/uah.edu/tommy-morris-uah/ics-data-sets},
-	language = {English},
-	urldate = {2020-05-14},
-	author = {Morris, Tommy},
-	note = {Library Catalog: sites.google.com},
-	file = {Snapshot:C\:\\Users\\bhadr\\Zotero\\storage\\HRLL5AIM\\ics-data-sets.html:text/html}
+@inproceedings{borges_hink_machine_2014-1,
+  title = {Machine Learning for Power System Disturbance and Cyber-Attack Discrimination},
+  booktitle = {2014 7th {{International Symposium}} on {{Resilient Control Systems}} ({{ISRCS}})},
+  author = {Borges Hink, Raymond C. and Beaver, Justin M. and Buckner, Mark A. and Morris, Tommy and Adhikari, Uttam and Pan, Shengyi},
+  year = {2014},
+  month = aug,
+  pages = {1--8},
+  publisher = {{IEEE}},
+  address = {{Denver, CO, USA}},
+  doi = {10.1109/ISRCS.2014.6900095},
+  file = {C\:\\Users\\bhadr\\Zotero\\storage\\NMTMU4PM\\Borges Hink et al. - 2014 - Machine learning for power system disturbance and .pdf},
+  isbn = {978-1-4799-4187-2 978-1-4799-7221-0}
 }
 
 @article{breiman_random_2001,
-	title = {Random {Forests}},
-	volume = {45},
-	issn = {1573-0565},
-	url = {https://doi.org/10.1023/A:1010933404324},
-	doi = {10.1023/A:1010933404324},
-	abstract = {Random forests are a combination of tree predictors such that each tree depends on the values of a random vector sampled independently and with the same distribution for all trees in the forest. The generalization error for forests converges a.s. to a limit as the number of trees in the forest becomes large. The generalization error of a forest of tree classifiers depends on the strength of the individual trees in the forest and the correlation between them. Using a random selection of features to split each node yields error rates that compare favorably to Adaboost (Y. Freund \& R. Schapire, Machine Learning: Proceedings of the Thirteenth International conference, ***, 148–156), but are more robust with respect to noise. Internal estimates monitor error, strength, and correlation and these are used to show the response to increasing the number of features used in the splitting. Internal estimates are also used to measure variable importance. These ideas are also applicable to regression.},
-	language = {en},
-	number = {1},
-	urldate = {2020-04-18},
-	journal = {Machine Learning},
-	author = {Breiman, Leo},
-	month = oct,
-	year = {2001},
-	pages = {5--32},
-	file = {Springer Full Text PDF:C\:\\Users\\bhadr\\Zotero\\storage\\DEJC79TM\\Breiman - 2001 - Random Forests.pdf:application/pdf}
+  title = {Random {{Forests}}},
+  author = {Breiman, Leo},
+  year = {2001},
+  month = oct,
+  volume = {45},
+  pages = {5--32},
+  issn = {1573-0565},
+  doi = {10.1023/A:1010933404324},
+  abstract = {Random forests are a combination of tree predictors such that each tree depends on the values of a random vector sampled independently and with the same distribution for all trees in the forest. The generalization error for forests converges a.s. to a limit as the number of trees in the forest becomes large. The generalization error of a forest of tree classifiers depends on the strength of the individual trees in the forest and the correlation between them. Using a random selection of features to split each node yields error rates that compare favorably to Adaboost (Y. Freund \& R. Schapire, Machine Learning: Proceedings of the Thirteenth International conference, ***, 148\textendash 156), but are more robust with respect to noise. Internal estimates monitor error, strength, and correlation and these are used to show the response to increasing the number of features used in the splitting. Internal estimates are also used to measure variable importance. These ideas are also applicable to regression.},
+  file = {C\:\\Users\\bhadr\\Zotero\\storage\\DEJC79TM\\Breiman - 2001 - Random Forests.pdf},
+  journal = {Machine Learning},
+  language = {en},
+  number = {1}
 }
 
-@misc{adhikari_power_2014,
-	title = {Power {System} {Attack} {Datasets}},
-	language = {English},
-	author = {Adhikari, Uttam and Pan, Shengyi and Morris, Tommy},
-	month = apr,
-	year = {2014},
-	note = {Mississippi State University and Oak Ridge National Laboratory},
-	file = {PowerSystem_Dataset_README.pdf:C\:\\Users\\bhadr\\Zotero\\storage\\E5NIBS6P\\PowerSystem_Dataset_README.pdf:application/pdf}
+@article{karpatne_physics-guided_2018,
+  title = {Physics-Guided {{Neural Networks}} ({{PGNN}}): {{An Application}} in {{Lake Temperature Modeling}}},
+  shorttitle = {Physics-Guided {{Neural Networks}} ({{PGNN}})},
+  author = {Karpatne, Anuj and Watkins, William and Read, Jordan and Kumar, Vipin},
+  year = {2018},
+  month = feb,
+  abstract = {This paper introduces a novel framework for combining scientific knowledge of physics-based models with neural networks to advance scientific discovery. This framework, termed as physics-guided neural network (PGNN), leverages the output of physics-based model simulations along with observational features to generate predictions using a neural network architecture. Further, this paper presents a novel framework for using physics-based loss functions in the learning objective of neural networks, to ensure that the model predictions not only show lower errors on the training set but are also scientifically consistent with the known physics on the unlabeled set. We illustrate the effectiveness of PGNN for the problem of lake temperature modeling, where physical relationships between the temperature, density, and depth of water are used to design a physics-based loss function. By using scientific knowledge to guide the construction and learning of neural networks, we are able to show that the proposed framework ensures better generalizability as well as scientific consistency of results.},
+  archivePrefix = {arXiv},
+  eprint = {1710.11431},
+  eprinttype = {arxiv},
+  file = {C\:\\Users\\bhadr\\Zotero\\storage\\SGIR5PK8\\Karpatne et al. - 2018 - Physics-guided Neural Networks (PGNN) An Applicat.pdf;C\:\\Users\\bhadr\\Zotero\\storage\\MMDNYMC8\\1710.html},
+  journal = {arXiv:1710.11431 [physics, stat]},
+  keywords = {Computer Science - Artificial Intelligence,Computer Science - Computer Vision and Pattern Recognition,Computer Science - Machine Learning,Physics - Data Analysis; Statistics and Probability,Statistics - Machine Learning},
+  primaryClass = {physics, stat}
 }
+
+@article{karpatne_theory-guided_2017,
+  title = {Theory-{{Guided Data Science}}: {{A New Paradigm}} for {{Scientific Discovery}} from {{Data}}},
+  shorttitle = {Theory-{{Guided Data Science}}},
+  author = {Karpatne, Anuj and Atluri, Gowtham and Faghmous, James H. and Steinbach, Michael and Banerjee, Arindam and Ganguly, Auroop and Shekhar, Shashi and Samatova, Nagiza and Kumar, Vipin},
+  year = {2017},
+  month = oct,
+  volume = {29},
+  pages = {2318--2331},
+  issn = {1041-4347},
+  doi = {10.1109/TKDE.2017.2720168},
+  file = {C\:\\Users\\bhadr\\Zotero\\storage\\KK7WFSAA\\Karpatne et al. - 2017 - Theory-Guided Data Science A New Paradigm for Sci.pdf},
+  journal = {IEEE Transactions on Knowledge and Data Engineering},
+  number = {10}
+}
+
+@misc{morris_industrial_nodate,
+  title = {Industrial {{Control System}} ({{ICS}}) {{Cyber Attack Datasets}} - {{Tommy Morris}}},
+  author = {Morris, Tommy},
+  file = {C\:\\Users\\bhadr\\Zotero\\storage\\HRLL5AIM\\ics-data-sets.html},
+  howpublished = {https://sites.google.com/a/uah.edu/tommy-morris-uah/ics-data-sets},
+  language = {English}
+}
+
+@article{pedregosa_scikit-learn_2011,
+  title = {Scikit-Learn: {{Machine Learning}} in {{Python}}},
+  author = {Pedregosa, F. and Varoquaux, G. and Gramfort, A. and Michel, V. and Thirion, B. and Grisel, O. and Blondel, M. and Prettenhofer, P. and Weiss, R. and Dubourg, V. and Vanderplas, J. and Passos, A. and Cournapeau, D. and Brucher, M. and Perrot, M. and Duchesnay, E.},
+  year = {2011},
+  volume = {12},
+  pages = {2825--2830},
+  journal = {Journal of Machine Learning Research}
+}
+
+@article{swischuk_projection-based_2019,
+  title = {Projection-Based Model Reduction: {{Formulations}} for Physics-Based Machine Learning},
+  shorttitle = {Projection-Based Model Reduction},
+  author = {Swischuk, Renee and Mainini, Laura and Peherstorfer, Benjamin and Willcox, Karen},
+  year = {2019},
+  month = jan,
+  volume = {179},
+  pages = {704--717},
+  issn = {0045-7930},
+  doi = {10.1016/j.compfluid.2018.07.021},
+  abstract = {This paper considers the creation of parametric surrogate models for applications in science and engineering where the goal is to predict high-dimensional output quantities of interest, such as pressure, temperature and strain fields. The proposed methodology develops a low-dimensional parametrization of these quantities of interest using the proper orthogonal decomposition (POD), and combines this parametrization with machine learning methods to learn the map between the input parameters and the POD expansion coefficients. The use of particular solutions in the POD expansion provides a way to embed physical constraints, such as boundary conditions and other features of the solution that must be preserved. The relative costs and effectiveness of four different machine learning techniques\textemdash neural networks, multivariate polynomial regression, k-nearest-neighbors and decision trees\textemdash are explored through two engineering examples. The first example considers prediction of the pressure field around an airfoil, while the second considers prediction of the strain field over a damaged composite panel. The case studies demonstrate the importance of embedding physical constraints within learned models, and also highlight the important point that the amount of model training data available in an engineering setting is often much less than it is in other machine learning applications, making it essential to incorporate knowledge from physical models.},
+  file = {C\:\\Users\\bhadr\\Zotero\\storage\\YPALB4YS\\Swischuk et al. - 2019 - Projection-based model reduction Formulations for.pdf;C\:\\Users\\bhadr\\Zotero\\storage\\P8LCFKSX\\S0045793018304250.html},
+  journal = {Computers \& Fluids},
+  keywords = {Data-driven reduced models,Model reduction,Physics-based machine learning,Proper orthogonal decomposition,Surrogate models},
+  language = {en}
+}
+
+@incollection{witten_appendix_2017,
+  title = {Appendix {{B}} - {{The WEKA}} Workbench},
+  booktitle = {Data {{Mining}} ({{Fourth Edition}})},
+  editor = {Witten, Ian H. and Frank, Eibe and Hall, Mark A. and Pal, Christopher J.},
+  year = {2017},
+  edition = {Fourth Edition},
+  pages = {553--571},
+  publisher = {{Morgan Kaufmann}},
+  doi = {10.1016/B978-0-12-804291-5.00024-6},
+  isbn = {978-0-12-804291-5}
+}
+
+@article{zamzam_physics-aware_2019,
+  title = {Physics-{{Aware Neural Networks}} for {{Distribution System State Estimation}}},
+  author = {Zamzam, Ahmed S. and Sidiropoulos, Nicholas D.},
+  year = {2019},
+  month = jul,
+  abstract = {The distribution system state estimation problem seeks to determine the network state from available measurements. Widely used Gauss-Newton approaches are very sensitive to the initialization and often not suitable for real-time estimation. Learning approaches are very promising for real-time estimation, as they shift the computational burden to an offline training stage. Prior machine learning approaches to power system state estimation have been electrical model-agnostic, in that they did not exploit the topology and physical laws governing the power grid to design the architecture of the learning model. In this paper, we propose a novel learning model that utilizes the structure of the power grid. The proposed neural network architecture reduces the number of coefficients needed to parameterize the mapping from the measurements to the network state by exploiting the separability of the estimation problem. This prevents overfitting and reduces the complexity of the training stage. We also propose a greedy algorithm for phasor measuring units placement that aims at minimizing the complexity of the neural network required for realizing the state estimation mapping. Simulation results show superior performance of the proposed method over the Gauss-Newton approach.},
+  archivePrefix = {arXiv},
+  eprint = {1903.09669},
+  eprinttype = {arxiv},
+  file = {C\:\\Users\\bhadr\\Zotero\\storage\\9TW4JLDV\\Zamzam i Sidiropoulos - 2019 - Physics-Aware Neural Networks for Distribution Sys.pdf;C\:\\Users\\bhadr\\Zotero\\storage\\Z7TLLMRU\\1903.html},
+  journal = {arXiv:1903.09669 [cs, math]},
+  keywords = {Electrical Engineering and Systems Science - Systems and Control,Mathematics - Optimization and Control},
+  primaryClass = {cs, math}
+}
+
+
