@@ -54,7 +54,10 @@
 \endquotation
 }
 
+%\newcommand*{\FINAL}{}%
 \begin{document}
+
+\ifdefined\FINAL
 \include{cover}
 \newgeometry{top=2.2cm, bottom=1.5cm, outer=1cm, inner=2.1cm}
 \pagestyle{plain}
@@ -64,6 +67,9 @@
 \listoffigures
 \newpage
 \listoftables
+\else
+\newgeometry{top=2.2cm, bottom=1.5cm, outer=1cm, inner=2.1cm}
+\fi
 
 \include{chapters/intro}
 \include{chapters/methods}
