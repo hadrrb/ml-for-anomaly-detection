@@ -1,6 +1,6 @@
 \chapter{Features' importance}
 
-After having determined the most performant algorithm, which is Random Forest, it is time to go further and analyse which features impact the results of classification the most. In order to do that, six tools will be examined: Lime \cite{lime}, ELI5 \cite{mikhail_korobov_eli5_nodate}, YellowBrick \cite{bengfort_yellowbrick_2018}, Treeinterpreter \cite{ando_saabas_treeinterpreter_nodate}, dtreeviz \cite{terence_parr_dtreeviz_nodate} and export\_graphviz tool from scikit-learn, where the last three ones are designed for Random Forest and Decison Tree classifiers.
+After having determined the most performant algorithm, which is Random Forest, it is time to go further and analyse which features impact the results of classification the most. In order to do that, six tools will be examined: Lime \cite{lime}, ELI5 \cite{mikhail_korobov_eli5_nodate}, YellowBrick \cite{bengfort_yellowbrick_2018}, Treeinterpreter \cite{ando_saabas_treeinterpreter_nodate}, dtreeviz \cite{terence_parr_dtreeviz_nodate} and export\_graphviz tool from scikit-learn, where the last three ones are designed for Decison Tree classifiers, but can also work with unitary trees from the Random Forest.
 
 However, before going deeper into features' importance classification, the features itself should be discussed. The power system presented \cite{adhikari_power_2014} is described by 128 features: 116 provided by four phasor measurement units\footnote{Phasor measurement units measure the electrical waves on an electricity grid} (each one provides 29 types of measurements) and 12 other features are reserved for control panel logs, snort alerts, relay logs of 4 phasors. The mentioned 116 features, each has a label formed by concatenation of the source phasor reference (it can be R1, R2, R3, R4) and the measurement name, as provided in table \ref{tab:pmu_mes}.
 
@@ -115,5 +115,13 @@ For all classes:
 \subsection{Treeinterpreter}
 
 \subsection{dtreeviz}
+
+
+\begin{figure}[tb]
+    \centering
+    \makebox[\textwidth]{\includegraphics[width=.9\paperwidth, height=.9\textheight]{images/dtreeviz}}
+    \caption{dtreeviz's visualisation of the prediction path for Natural event mispredicted as Attack}
+    \label{fig:dtreeviz}
+\end{figure}
 
 \subsection{scikit-learn export\_graphviz}
