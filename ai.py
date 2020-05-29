@@ -6,6 +6,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import LinearSVC, SVC
 from sklearn.neural_network import MLPClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import NearestNeighbors
 from matplotlib import pyplot as plt
 from mpi4py import MPI 
 import sys
@@ -15,6 +16,7 @@ from sklearn.model_selection import StratifiedKFold, cross_val_predict, cross_va
 from matplotlib.backends.backend_pdf import PdfPages
 import seaborn as sn
 from itertools import cycle
+import pickle
 
 import matplotlib
 matplotlib.use('Agg')
@@ -24,7 +26,7 @@ size = comm.Get_size()
 rank = comm.Get_rank()
 
 labels = ["NoEvents", "Attack", "Natural"]
-methods = ["RandomForest", "SVM", "MLP", "NaiveBayes"]
+methods = ["RandomForest", "SVM", "MLP", "NaiveBayes", "NearestNeighbors"]
 methods = methods[:size]
 #training
 
@@ -71,6 +73,7 @@ for i in range(1,16):
   clf.insert(len(clf), SVC(probability=True, max_iter=1000, cache_size=7000))
   clf.insert(len(clf), MLPClassifier(hidden_layer_sizes=(20,), max_iter=1000, early_stopping=True))
   clf.insert(len(clf), GaussianNB())
+  clf.insert(len(clf), NearestNeighbors())
 
   cv = StratifiedKFold(n_splits=10)
 
@@ -159,6 +162,8 @@ all_recallmacro = comm.gather(np.average(all_recallmacro))
 all_recallw = comm.gather(np.average(all_recallw))
 
 if rank == 0:
+  with open('output.pickle', 'wb') as results:
+    pickle.dump([all_acc, all_f1micro, all_f1macro, all_f1w, all_precisionmicro, all_precisionmacro, all_precisionw, all_recallmicro, all_recallmacro, all_recallw], results)
   with PdfPages("results.pdf") as pdf:
     x = range(1,16)
     k = ["Dataset %d"%i for i in x]
@@ -167,6 +172,7 @@ if rank == 0:
     plt.plot(x, all_acc[1], '-go', label = methods[1])
     plt.plot(x, all_acc[2], '-ro', label = methods[2])
     plt.plot(x, all_acc[3], '-yo', label = methods[3])
+    plt.plot(x, all_acc[4], '-oo', label = methods[3])
     plt.xticks(x, k, rotation=45)
     plt.xlabel("Datasets")
     plt.ylabel("Accuracy")
