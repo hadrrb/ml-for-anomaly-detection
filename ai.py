@@ -6,7 +6,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import LinearSVC, SVC
 from sklearn.neural_network import MLPClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.neighbors import NearestNeighbors
 from matplotlib import pyplot as plt
 from mpi4py import MPI 
 import sys
@@ -73,7 +72,6 @@ for i in range(1,16):
   clf.insert(len(clf), SVC(probability=True, max_iter=1000, cache_size=7000))
   clf.insert(len(clf), MLPClassifier(hidden_layer_sizes=(20,), max_iter=1000, early_stopping=True))
   clf.insert(len(clf), GaussianNB())
-  clf.insert(len(clf), NearestNeighbors())
 
   cv = StratifiedKFold(n_splits=10)
 
