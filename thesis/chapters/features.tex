@@ -1,29 +1,9 @@
 \chapter{Features' importance}
 
 After having determined the most performant algorithm, which is Random Forest, it is time to go further and analyse which features impact the results of classification the most. In order to do that, six tools will be examined: Lime \cite{lime}, ELI5 \cite{mikhail_korobov_eli5_nodate}, YellowBrick \cite{bengfort_yellowbrick_2018}, Treeinterpreter \cite{ando_saabas_treeinterpreter_nodate}, dtreeviz \cite{terence_parr_dtreeviz_nodate} and export\_graphviz tool from scikit-learn, where the last three ones are designed for Decison Tree classifiers, but can also work with unitary trees from the Random Forest.
+%features contribue dans les mauvaises predictions
 
-However, before going deeper into features' importance classification, the features itself should be discussed. The power system presented \cite{adhikari_power_2014} is described by 128 features: 116 provided by four phasor measurement units\footnote{Phasor measurement units measure the electrical waves on an electricity grid} (each one provides 29 types of measurements) and 12 other features are reserved for control panel logs, snort alerts, relay logs of 4 phasors. The mentioned 116 features, each has a label formed by concatenation of the source phasor reference (it can be R1, R2, R3, R4) and the measurement name, as provided in table \ref{tab:pmu_mes}.
-
-\begin{table}[H]
-    \centering
-    \caption[Phasor measurements]{Phasor measurements \cite{adhikari_power_2014}} \label{tab:pmu_mes}
-    \begin{tabular}{|c|c|}\hline
-        \textbf{Feature}&\textbf{Description} \\\hline
-        PA1:VH – PA3:VH&Phase A - C Voltage Phase Angle \\\hline
-        PM1: V – PM3: V&Phase A - C Voltage Phase Magnitude \\\hline
-        PA4:IH – PA6:IH&Phase A - C Current Phase Angle \\\hline
-        PM4: I – PM6: I&Phase A - C Current Phase Magnitude \\\hline
-        PA7:VH – PA9:VH&Pos. – Neg. – Zero Voltage Phase Angle \\\hline
-        PM7: V – PM9: V&Pos. – Neg. – Zero Voltage Phase Magnitude \\\hline
-        PA10:VH - PA12:VH&Pos. – Neg. – Zero Current Phase Angle \\\hline
-        PM10: V - PM12: V&Pos. – Neg. – Zero Current Phase Magnitude \\\hline
-        F&Frequency for relays \\\hline
-        DF&Frequency Delta (dF/dt) for relays \\\hline
-        PA:Z&Appearance Impedance for relays \\\hline
-        PA:ZH&Appearance Impedance Angle for relays \\\hline
-        S&Status Flag for relays \\\hline
-    \end{tabular}
-\end{table}
+However, before going deeper into features' importance classification, the features itself should be discussed. 
 
 \section{Lime}
 Lime is a tool that is used to explain the behaviour of machine learning classifiers. It supports, as for this day, only the explanation of individual predictions. As output it gives a list of features ordered by their relative importance in the prediction of this particular sample.

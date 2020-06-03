@@ -25,7 +25,7 @@ size = comm.Get_size()
 rank = comm.Get_rank()
 
 labels = ["NoEvents", "Attack", "Natural"]
-methods = ["RandomForest", "SVM", "MLP", "NaiveBayes", "NearestNeighbors"]
+methods = ["RandomForest", "SVM", "MLP", "NaiveBayes"]
 methods = methods[:size]
 #training
 
@@ -170,7 +170,6 @@ if rank == 0:
     plt.plot(x, all_acc[1], '-go', label = methods[1])
     plt.plot(x, all_acc[2], '-ro', label = methods[2])
     plt.plot(x, all_acc[3], '-yo', label = methods[3])
-    plt.plot(x, all_acc[4], '-oo', label = methods[3])
     plt.xticks(x, k, rotation=45)
     plt.xlabel("Datasets")
     plt.ylabel("Accuracy")

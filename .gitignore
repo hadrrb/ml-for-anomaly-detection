@@ -18,3 +18,4 @@ test.py
 .*
 !thesis/images/*/*
 !thesis/images/*
+*.pickle
