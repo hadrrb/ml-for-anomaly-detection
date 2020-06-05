@@ -1,14 +1,60 @@
 \chapter{Features' importance}
 
-After having determined the most performant algorithm, which is Random Forest, it is time to go further and analyse which features impact the results of classification the most. In order to do that, six tools will be examined: Lime \cite{lime}, ELI5 \cite{mikhail_korobov_eli5_nodate}, YellowBrick \cite{bengfort_yellowbrick_2018}, Treeinterpreter \cite{ando_saabas_treeinterpreter_nodate}, dtreeviz \cite{terence_parr_dtreeviz_nodate} and export\_graphviz tool from scikit-learn, where the last three ones are designed for Decison Tree classifiers, but can also work with unitary trees from the Random Forest.
-%features contribue dans les mauvaises predictions
+After having determined the most performant algorithm, which is Random Forest, it is time to go further and analyse which features impact the results of classification the most. The focus will be especially on false predictions. In order to do that, six tools will be compared: LIME \cite{lime}, ELI5 \cite{mikhail_korobov_eli5_nodate}, YellowBrick \cite{bengfort_yellowbrick_2018}, Treeinterpreter \cite{ando_saabas_treeinterpreter_nodate}, dtreeviz \cite{terence_parr_dtreeviz_nodate} and export\_graphviz tool from scikit-learn, where the last three ones are designed for Decision Tree and Random Forest classifiers.
 
-However, before going deeper into features' importance classification, the features itself should be discussed. 
+\section{Result's interpreters' comparison}
+\subsection{LIME}
+LIME (Local Interpretable Model-agnostic Explanations) is a tool that is used to explain the behaviour of machine learning classifiers. It supports, as for this day, only the explanation of individual predictions for any scikit-learn classifier or regressor. This explanation consist in a list of features ordered by their relative importance for a particular prediction. This list can be shown is a raw mode (as a python list) or in a visual form (pyplot figure, jupyter notebook or html file).
 
-\section{Lime}
-Lime is a tool that is used to explain the behaviour of machine learning classifiers. It supports, as for this day, only the explanation of individual predictions. As output it gives a list of features ordered by their relative importance in the prediction of this particular sample.
+In order to class the features according to their importance, LIME approximates the model by an interpretable one, created based on perturbing the features of the examined instance. More the perturbed instances are similar to the examined instance, higher is the weight of the perturbed feature.
 
-In order to class the features according to their importance, Lime approximates the model by an interpretable one, created based on perturbing the features of the examined instance. More the perturbed instances are similar to the examined instance, higher is the weight that gets the perturbed feature.
+\subsection{ELI5}
+ELI5 (Explain like I am a 5-year old) is a tool, in form of a Python package, used to debug machine learning classifiers and explain their predictions. It supports multiple machine learning frameworks, including scikit-learn. It can be used to explain how the model works both locally for one prediction and globally for the whole model. The output can take several forms just like in LIME case.
+
+For white-box models, ELI5 works as an extension of scikit-learn and it's capable to extract the weights of model's features for different classes. In addition to that it can show the weights that contributed in a particular prediction. On the other hand, for black-box models, this tool integrates a modified version of LIME, supporting more machine learning frameworks, and a permutation importance method, which checks how the model's accuracy decreases when removing one of the features and on this basis determines the importance of the features.
+
+\subsection{YellowBrick}
+YellowBrick is another Python package, which is an extension of scikit-learn framework. It is meant to give global interpretation of the analysed model on different levels. It is possible not only to visualize features importances calculated directly by scikit-learn, but also to give a classification report (accuracy, recall, precision, f-measure), plot a confusion matrix, a ROC curve and much more. In addition to all that, YellowBrick comes with a tool for determination of correlation between features in the dataset.
+
+\subsection{Treeinterpreter}
+Treeinterpreter is a simple Python package that works with scikit-learn trees and random forest classifiers. It's only usage consists in decomposing the obtained prediction into bias and contributions of different features. The output is given in the form of a numpy array.
+
+\subsection{scikit-learn export\_graphviz}
+export\_graphviz is a scikit-learn embedded function that enables the user to visualise a decision tree with all the branches and save it into Graphviz\footnote{a set of tools for diagram creation using graphs.} format, that can be converted into a vector graphic. It is possible also to visualise decision trees composing random forest model in scikit-learn, since the possibility to extract particular decision trees when using this framework. However the interpretability of results for random forest classifier can be hard.
+
+\subsection{dtreeviz}
+dtreeviz is a more advanced version of export\_graphviz available in scikit-learn. For every leaf in the tree it can show a histogram indicating the influence of feature value on class selection. In addition to that, dtreeviz enables the user to show the path of a particular prediction. The result is saved in the form of a svg vector graphic. 
+
+% \begin{figure}[tb]
+%     \centering
+%     \makebox[\textwidth]{\includegraphics[width=.9\paperwidth, height=.9\textheight]{images/dtreeviz}}
+%     \caption{dtreeviz's visualisation of the prediction path for Natural event mispredicted as Attack}
+%     \label{fig:dtreeviz}
+% \end{figure}
+
+
+
+\subsection{Summary}
+It can be concluded that ELI5 is the most versatile package compared to others, especially because it enables both global and local interpretations and does not limit its support to scikit-learn, plus it has LIME integrated in it. YellowBrick on other hand adds the possibility to analyse from a statistical view the features available in the dataset. Finally comes Treeinterpreter and dtreeviz that are interesting tools when analysing especially Decision Trees. A summary of the most import features of all 5 packages is shown in table \ref{tab:comp}.
+
+\begin{table}[H]
+    \centering
+    \caption{Comparison of tools for model analysis} \label{tab:comp}
+    \begin{tabular}{lccccc} \toprule
+        & LIME & ELI5 & YellowBrick & Treeinterpreter & dtreeviz \\\midrule
+        Global interpretation & \xmark & \cmark & \cmark & \xmark & \xmark \\
+        Local interpretation & \cmark & \cmark & \xmark & \cmark & \cmark \\
+        Black-box models support & \cmark & \cmark & \cmark & \xmark & \xmark \\
+        Features' statistical analysis & \xmark & \xmark & \cmark & \xmark & \xmark \\
+        Works only with scikit-learn & \cmark & \xmark & \cmark & \cmark & \cmark \\
+        Decision Trees graphical visualisation & \xmark & \xmark & \xmark & \xmark & \cmark \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Features' importance determination}
+%Lime
+For the rest of the chapter LIME was chosen to determine the features' importance because of it working with all black-box models available in scikit-learn. The capabilities of LIME were sufficient and that is why ELI5 was not used in his place.
 
 Since in this case the explanations of single samples are not really interesting, an attempt to generalize the results was made: Lime explainer was run on 100 false predictions of a chosen class. The results are concatenated together, and for all the features that are duplicated, the importance is calculated as the mean value of the importances and only one entry is kept with the calculated average importance. This algorithm was also run omitting the differentiation between classes. The results, reduced to 10 entries each, are shown below.
 
@@ -87,21 +133,3 @@ For all classes:
     
     [331 rows x 1 columns]
 \end{verbatim}
-\section{ELI5}
-
-\section{YellowBrick}
-
-\section{Random Forest and Decision Trees}
-\subsection{Treeinterpreter}
-
-\subsection{dtreeviz}
-
-
-\begin{figure}[tb]
-    \centering
-    \makebox[\textwidth]{\includegraphics[width=.9\paperwidth, height=.9\textheight]{images/dtreeviz}}
-    \caption{dtreeviz's visualisation of the prediction path for Natural event mispredicted as Attack}
-    \label{fig:dtreeviz}
-\end{figure}
-
-\subsection{scikit-learn export\_graphviz}
