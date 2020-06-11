@@ -40,18 +40,24 @@ The datasets provided in \cite{morris_industrial_nodate} represent \textbf{78377
     \label{fig:scen_distro_file}
 \end{figure}
 
-Figure \ref{fig:scen_distro_file} shows also this distribution for the binary datasets, it is sufficient to add the number of natural (orange) and normal operation (green) events.
+Figure \ref{fig:scen_distro_file} shows also this distribution for the binary datasets. It is sufficient to add the number of natural (orange) and normal operation (green) events.
 
 The scenarios are not equally distributed in the case of the 37 schemes dataset, it is especially shown by the standard deviation of 61, which is an important value compared to some scenarios counting less than 100 events. On the other hand, in the case of 3-class scenarios, the distribution is even more not equal compared to the 37 schemes dataset. The \textbf{mean standard deviation among all files is equal to 1767}, which is an enormous result given that some scenarios count only around 100 events.
 
-Each of previously mentioned events is described by \textbf{128 features}: 116 provided by four phasor measurement units\footnote{Phasor measurement units measure the electrical waves on an electricity grid} (each one provides 29 types of measurements) and 12 other features are reserved for control panel logs, snort alerts, relay logs of 4 phasors. The mentioned 116 features, each has a label formed by \textbf{concatenation} of the \textbf{source phasor reference} (it can be R1, R2, R3, R4) and the \textbf{measurement name}, as provided in table \ref{tab:pmu_mes}. For example R4-PM5:I stands for phase B current phase magnitude measured by R4.
+Every electrical grid around the world uses a \textbf{3-phased} electric power. Such a grid is composed of three alternating current generators combined. Those generators pass the current in three conductors. That way three conductors are obtained, and each of them conducts a phase of current named A, B and C respectively. The current phases have the same frequency, but a difference of phase of 1/3 of a cycle between each of them. In addition to that, each current has a corresponding voltage, with the same frequency and phases differences \cite{noauthor_three-phase_2020}.
+
+In order to simplify the analysis of three-phase power systems, symmetrical components method is used. This method consists in decomposing the vector of A-C phases into a sum of three symmetrical sequence component vectors. The sequence components obtained that way are named respectively zero, positive and negative \cite{noauthor_symmetrical_2019}. 
+
+Each phase is a \textbf{sinusoidal} function. Its equation form is $y = A \cdot \sin(\omega t + \theta)$, where $A$ is the amplitude, $\omega$ the angular frequency and $\theta$ the initial phase. Two terms will be used in what follows: the \textbf{magnitude} which is the absolute value of the amplitude and the \textbf{angle} which refers to initial phase.
+
+Every previously mentioned event is described by \textbf{128 features}: 116 provided by four IEDs (each one provides 29 types of measurements) and 12 other features are reserved for control panel logs, snort alerts, relay logs of 4 IEDs. The mentioned 116 features, each has a label formed by \textbf{concatenation} of the \textbf{source IED reference} (it can be R1, R2, R3, R4) and the \textbf{measurement name}, as provided in table \ref{tab:pmu_mes}. For example R4-PM5:I stands for phase B current phase magnitude measured by R4.
 %give exemple - preciser plus les features 
 %expliquer les features plus
 %figure pour explication de phase, magnitude
 
 \begin{table}[H]
     \centering
-    \caption[Phasor measurements]{Phasor measurements \cite{adhikari_power_2014}} \label{tab:pmu_mes}
+    \caption[IED measurements]{IED measurements \cite{adhikari_power_2014}} \label{tab:pmu_mes}
     \begin{tabular}{lr}
         \toprule
         Feature&Description \\
@@ -72,5 +78,6 @@ Each of previously mentioned events is described by \textbf{128 features}: 116 p
         \bottomrule
     \end{tabular}
 \end{table} 
+
 
 Those datasets have been used in several works related to CPS cyber-attack classification, one of which is \cite{borges_hink_machine_2014-1}, where the author try to find the most accurate algorithm to predict the status of the power system. The following chapter shows an attempt to partially reproduce the results obtained by them.
