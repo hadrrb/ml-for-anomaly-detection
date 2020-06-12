@@ -35,7 +35,15 @@ dtreeviz is a more advanced version of export\_graphviz available in scikit-lear
 
 
 \subsection{Summary}
-It can be concluded that ELI5 is the most versatile package compared to others, especially because it enables both global and local interpretations and does not limit its support to scikit-learn, plus it has LIME integrated in it. YellowBrick on other hand adds the possibility to analyse from a statistical view the features available in the dataset. Finally comes Treeinterpreter and dtreeviz that are interesting tools when analysing especially Decision Trees. A summary of the most import features of all 5 packages is shown in table \ref{tab:comp}.
+It can be concluded that ELI5 is the most versatile package compared to others, especially because it enables both global and local interpretations and does not limit its support to scikit-learn, plus it has LIME integrated in it. YellowBrick, on other hand, adds the possibility to analyse from a statistical view the features available in the dataset. Finally comes Treeinterpreter and dtreeviz that are interesting tools when analysing especially Decision Trees. A summary of the most import features of all 5 packages is shown in table \ref{tab:comp}, where 6 comparison metrics where taken into consideration:
+\begin{itemize}
+    \item global interpretation: capacity of the tool to interpret the whole model,
+    \item local interpretation: capacity of the tool to interpret a particular sample from the dataset,
+    \item black-box models support: the fact if the tool supports only black-box models (models that can not be simply interpreted),
+    \item features' statistical analysis: the fact if the tool supports statistical analysis of features in the dataset, without taking into consideration the model,
+    \item works only with scikit-learn,
+    \item decision trees graphical visualisation.
+\end{itemize}
 
 \begin{table}[H]
     \centering
@@ -112,7 +120,7 @@ For Natural class:
     R3:F > 60.00             0.004873
     R2:F > 60.00             0.005168
     
-    [331 rows x 1 columns]]
+    [331 rows x 1 columns]
 \end{verbatim}
 
 For all classes:
