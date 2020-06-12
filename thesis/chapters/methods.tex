@@ -18,26 +18,54 @@ The whole training process was done using the graphical interface of Weka for 5 
     \item recall: ratio of correct classifications for a particular class, over all samples corresponding for this class,
     \item f-measure: weighted average of precision and recall given by the equation: \\f-measure\nolinebreak${= 2 \times \frac{\mathrm{precision} \times \mathrm{recall}}{\mathrm{precision} + \mathrm{recall}}}$.
 \end{itemize}
-The obtained values of those indicators were illustrated on figures \ref{fig:weka_acc}, \ref{fig:weka_prec}, \ref{fig:weka_recall} and \ref{fig:weka_f1}. 
+The obtained values of those indicators were illustrated on figures \ref{fig:weka_acc3}, \ref{fig:weka_prec}, \ref{fig:weka_recall} and \ref{fig:weka_f1}. 
 
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.5\textwidth}
-        \includegraphics[width=\linewidth]{images/weka_accuracy.png}
+        \includegraphics[width=\linewidth]{images/weka_accuracy3}
         \caption{Our attempt}
     \end{subfigure}%
     \begin{subfigure}[t]{0.5\textwidth}
-        \includegraphics[width=\linewidth]{images/weka_accuracy_cite.png}
+        \includegraphics[width=\linewidth]{images/weka_accuracy3_cite.png}
         \caption{Original results \cite{borges_hink_machine_2014-1}}
     \end{subfigure}
-    \caption{Accuracy}
-    \label{fig:weka_acc}
+    \caption{Accuracy for three-class datasets}
+    \label{fig:weka_acc3}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.5\textwidth}
-        \includegraphics[width=\linewidth]{images/weka_precision.png}
+        \includegraphics[width=\linewidth]{images/weka_accuracy2}
+        \caption{Our attempt}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.5\textwidth}
+        \includegraphics[width=\linewidth]{images/weka_accuracy2_cite.png}
+        \caption{Original results \cite{borges_hink_machine_2014-1}}
+    \end{subfigure}
+    \caption{Accuracy for binary datasets}
+    \label{fig:weka_acc2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.5\textwidth}
+        \includegraphics[width=\linewidth]{images/weka_accuracyall}
+        \caption{Our attempt}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.5\textwidth}
+        \includegraphics[width=\linewidth]{images/weka_accuracyall_cite.png}
+        \caption{Original results \cite{borges_hink_machine_2014-1}}
+    \end{subfigure}
+    \caption{Accuracy for multiclass datasets}
+    \label{fig:weka_accall}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.5\textwidth}
+        \includegraphics[width=\linewidth]{images/weka_precision}
         \caption{Our attempt}
     \end{subfigure}%
     \begin{subfigure}[t]{0.5\textwidth}
@@ -51,7 +79,7 @@ The obtained values of those indicators were illustrated on figures \ref{fig:wek
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.5\textwidth}
-        \includegraphics[width=\linewidth]{images/weka_recall.png}
+        \includegraphics[width=\linewidth]{images/weka_recall}
         \caption{Our attempt}
     \end{subfigure}%
     \begin{subfigure}[t]{0.5\textwidth}
@@ -65,7 +93,7 @@ The obtained values of those indicators were illustrated on figures \ref{fig:wek
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.5\textwidth}
-        \includegraphics[width=\linewidth]{images/weka_f1.png}
+        \includegraphics[width=\linewidth]{images/weka_f1}
         \caption{Our attempt}
     \end{subfigure}%
     \begin{subfigure}[t]{0.5\textwidth}
