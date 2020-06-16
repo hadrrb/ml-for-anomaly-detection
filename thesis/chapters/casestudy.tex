@@ -46,14 +46,48 @@ The scenarios are not equally distributed in the case of the 37 schemes dataset,
 
 Every electrical grid around the world uses a \textbf{3-phased} electric power. Such a grid is composed of three alternating current generators combined. Those generators pass the current in three conductors. That way three conductors are obtained, and each of them conducts a phase of current named A, B and C respectively. The current phases have the same frequency, but a difference of phase of 1/3 of a cycle between each of them. In addition to that, each current has a corresponding voltage, with the same frequency and phases differences \cite{noauthor_three-phase_2020}.
 
-In order to simplify the analysis of three-phase power systems, symmetrical components method is used. This method consists in decomposing the vector of A-C phases into a sum of three symmetrical sequence component vectors. The sequence components obtained that way are named respectively zero, positive and negative \cite{noauthor_symmetrical_2019}. 
+In order to simplify the analysis of three-phase power systems, symmetrical components transformation is used, for both voltage and current. This transformation is defined as:
+\begin{equation}
+     \begin{bmatrix}
+        V_0 \\ V_1 \\ V_2 
+    \end{bmatrix} = \frac 1 3 \begin{bmatrix}
+        1 & 1& 1 \\
+        1 & a & a^2 \\
+        1 & a^2 & a
+    \end{bmatrix}
+    \begin{bmatrix}
+        V_A \\ V_B \\ V_C
+    \end{bmatrix},
+\end{equation}
+where $\mathbf{V_0}$, $\mathbf{V_1}$, $\mathbf{V_2}$ are called respectively \textbf{zero sequence}, \textbf{positive sequence} and \textbf{negative sequence}, $a = e^{i \frac{2\pi}{3}}$ and $V_A$, $V_B$, $V_C$ the A-C voltage phases \cite{jl_kirtley_jr_introduction_nodate}. As each sequence is a weighted sum of sinusoidal functions (A-C phases), it can be on its own written as one sinusoidal function after mathematical transformations.
 
-Each phase is a \textbf{sinusoidal} function. Its equation form is $y = A \cdot \sin(\omega t + \theta)$, where $A$ is the amplitude, $\omega$ the angular frequency and $\theta$ the initial phase. Two terms will be used in what follows: the \textbf{magnitude} which is the absolute value of the amplitude and the \textbf{angle} which refers to initial phase.
+Each phase is a \textbf{sinusoidal} function. Its equation form is $y = A \cdot \sin(\omega t + \theta)$, where $A$ is the amplitude, $\omega$ the angular frequency and $\theta$ the initial phase. Two terms will be used in what follows: the \textbf{magnitude} which is the absolute value of the amplitude and the \textbf{angle} which refers to initial phase. These two variables were illustrated on figure \ref{fig:sin}.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \draw[->] (-7,0) -- (10,0) node[right] {$x$};
+      \draw[->] (0,-3) -- (0,4.2) node[above] {$y$};
+      \draw[scale=1,domain=0:9.42,smooth,variable=\x,blue] plot ({\x},{3*sin(\x r)});
+      \draw[scale=1,domain=0:8.635,smooth,variable=\x,red] plot ({\x},{3*sin((\x + 3.14/4) r)});
+      \draw[scale=1,domain=0:7.85,smooth,variable=\x,black!60!green] plot ({\x},{3*sin((\x + 3.14/2) r)});
+      \draw[black, thick] (-4,0) circle (3cm);
+      \draw[blue, dotted] (1.57, 0) -- (1.57, 3) node[midway, below, rotate=90, scale=0.7] {Magnitude};
+      \draw[red, dotted] (0.785, 0) -- (0.785, 3) node[midway, below, rotate=90, scale=0.7] {Magnitude};
+      \draw[black!60!green, dotted] (6.28, 0) -- (6.28, 3) node[midway, below, rotate=90, scale=0.7] {Magnitude};
+      \draw[black!60!green, dashed] (-4,3) -- (0, 3);
+      \draw[black!60!green, thick] (-4,3) -- (-4,0);
+      \draw[black!60!green] (-3.5,0) arc (0:90:0.5) node[midway, above, pos = 0.75] {$\theta$};
+      \draw[red, dashed] (-1.88,2.12) -- (0, 2.12);
+      \draw[red, thick] (-4,0) -- (-1.88, 2.12) ;
+      \draw[red] (-3,0) arc (0:45:1) node[below, align = right] {$\theta$};
+      \draw[blue, dashed] (-1,0) -- (0,0);
+      \draw[blue, thick] (-4,0) -- (-1,0);
+    \end{tikzpicture}
+    \caption{Magnitude and angle ($\theta$) of sinusoidal functions} \label{fig:sin}
+\end{figure}
 
 Every previously mentioned event is described by \textbf{128 features}: 116 provided by four IEDs (each one provides 29 types of measurements) and 12 other features are reserved for control panel logs, snort alerts, relay logs of 4 IEDs. The mentioned 116 features, each has a label formed by \textbf{concatenation} of the \textbf{source IED reference} (it can be R1, R2, R3, R4) and the \textbf{measurement name}, as provided in table \ref{tab:pmu_mes}. For example R4-PM5:I stands for phase B current phase magnitude measured by R4.
-%give exemple - preciser plus les features 
-%expliquer les features plus
-%figure pour explication de phase, magnitude
 
 \begin{table}[H]
     \centering
@@ -81,3 +115,5 @@ Every previously mentioned event is described by \textbf{128 features}: 116 prov
 
 
 Those datasets have been used in several works related to CPS cyber-attack classification, one of which is \cite{borges_hink_machine_2014-1}, where the author try to find the most accurate algorithm to predict the status of the power system. The following chapter shows an attempt to partially reproduce the results obtained by them.
+
+
