@@ -9,7 +9,7 @@ for openfile, savefile in zip(openfiles, savefiles):
     methods = ["RandomForest", "SVM", "MLP", "NaiveBayes"]
     all_acc, all_f1micro, all_f1macro, all_f1w, all_precisionmicro, all_precisionmacro, all_precisionw, all_recallmicro, all_recallmacro, all_recallw = pickle.load(open(openfile, "rb"))
 
-    with PdfPages("thesis/images/" + savefile) as pdf:
+    with PdfPages(savefile) as pdf:
         x = range(1,16)
         k = ["Dataset %d"%i for i in x]
         # plt.figure()

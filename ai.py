@@ -9,8 +9,7 @@ from sklearn.naive_bayes import GaussianNB
 from matplotlib import pyplot as plt
 from mpi4py import MPI 
 import sys
-from scipy import interp
-from sklearn.metrics import auc, confusion_matrix, roc_curve
+from sklearn.metrics import auc, confusion_matrix, roc_curve, make_scorer, precision_score
 from sklearn.model_selection import StratifiedKFold, cross_val_predict, cross_validate
 from matplotlib.backends.backend_pdf import PdfPages
 import seaborn as sn
@@ -69,18 +68,18 @@ for i in range(1,16):
 
   clf = []
   clf.insert(len(clf), RandomForestClassifier(n_estimators=100, max_features='log2')) #Random Forest classifier initialization
-  clf.insert(len(clf), SVC(probability=True, max_iter=1000, cache_size=7000))
+  clf.insert(len(clf), SVC())
   clf.insert(len(clf), MLPClassifier(hidden_layer_sizes=(20,), max_iter=1000, early_stopping=True))
   clf.insert(len(clf), GaussianNB())
 
   cv = StratifiedKFold(n_splits=10)
 
-  scores = cross_validate(clf[rank], X, y, cv=cv, scoring=['accuracy','f1_micro','f1_macro','f1_weighted','precision_micro','precision_macro','precision_weighted', 'recall_micro','recall_macro','recall_weighted'], n_jobs=2)
+  scores = cross_validate(clf[rank], X, y, cv=cv, scoring={'accuracy':'accuracy','f1_micro':'f1_micro','f1_macro':'f1_macro','f1_weighted':'f1_weighted','precision_micro':make_scorer(precision_score, average = 'micro', zero_division = 0),'precision_macro': make_scorer(precision_score, average = 'macro',zero_division = 0),'precision_weighted':make_scorer(precision_score, average = 'weighted',zero_division = 0), 'recall_micro':'recall_micro','recall_macro':'recall_macro','recall_weighted':'recall_weighted'}, n_jobs=2)
   #GridSearchCV
   y_pred = cross_val_predict(clf[rank], X, y, cv=cv, n_jobs=3)
 
-  yall = np.insert(yall, len(yall), y)
-  yall_score.insert(len(yall_score), cross_val_predict(clf[rank], X, y, cv=cv, method='predict_proba', n_jobs=3))
+  # yall = np.insert(yall, len(yall), y)
+  # yall_score.insert(len(yall_score), cross_val_predict(clf[rank], X, y, cv=cv, method='predict_proba', n_jobs=3))
   
   conf_matrix_list_of_arrays.append(confusion_matrix(y, y_pred, labels=[0,1,2], normalize="all"))
  
@@ -98,37 +97,37 @@ for i in range(1,16):
   all_recallmacro.append(np.average(scores["test_recall_macro"]))
   all_recallw.append(np.average(scores["test_recall_weighted"]))
 
-yall_score = np.concatenate(yall_score, axis = 0)
-y_bin = label_binarize(yall, classes=[0, 1, 2])
-n_classes = y_bin.shape[1]
+# yall_score = np.concatenate(yall_score, axis = 0)
+# y_bin = label_binarize(yall, classes=[0, 1, 2])
+# n_classes = y_bin.shape[1]
 
-fpr = dict()
-tpr = dict()
-roc_auc = dict()
-try:
-  for k in range(n_classes):
-      fpr[k], tpr[k], _ = roc_curve(y_bin[:, k], yall_score[:, k])
-      roc_auc[k] = auc(fpr[k], tpr[k])
-  colors = cycle(['blue', 'red', 'green'])
-  for k, color in zip(range(n_classes), colors):
-      plt.plot(fpr[k], tpr[k], color=color,
-              label='ROC curve of class {0} (area = {1:0.2f})'
-              ''.format(labels[k], roc_auc[k]))
-  plt.plot([0, 1], [0, 1], 'k--')
-  plt.xlim([-0.05, 1.0])
-  plt.ylim([0.0, 1.05])
-  plt.xlabel('False Positive Rate')
-  plt.ylabel('True Positive Rate')
-  plt.title('Receiver operating characteristic for %s classifier'%methods[rank])
-  plt.legend(loc="lower right")
-  pdf_roc = PdfPages("%s.pdf"%methods[rank])
-  pdf_roc.savefig()
-  plt.close()
-  plt.clf()
-except ValueError:
-  pdf_roc = PdfPages("%s.pdf"%methods[rank])
-  pass
-
+# fpr = dict()
+# tpr = dict()
+# roc_auc = dict()
+# try:
+#   for k in range(n_classes):
+#       fpr[k], tpr[k], _ = roc_curve(y_bin[:, k], yall_score[:, k])
+#       roc_auc[k] = auc(fpr[k], tpr[k])
+#   colors = cycle(['blue', 'red', 'green'])
+#   for k, color in zip(range(n_classes), colors):
+#       plt.plot(fpr[k], tpr[k], color=color,
+#               label='ROC curve of class {0} (area = {1:0.2f})'
+#               ''.format(labels[k], roc_auc[k]))
+#   plt.plot([0, 1], [0, 1], 'k--')
+#   plt.xlim([-0.05, 1.0])
+#   plt.ylim([0.0, 1.05])
+#   plt.xlabel('False Positive Rate')
+#   plt.ylabel('True Positive Rate')
+#   plt.title('Receiver operating characteristic for %s classifier'%methods[rank])
+#   plt.legend(loc="lower right")
+#   pdf_roc = PdfPages("%s.pdf"%methods[rank])
+#   pdf_roc.savefig()
+#   plt.close()
+#   plt.clf()
+# except ValueError:
+#   pdf_roc = PdfPages("%s.pdf"%methods[rank])
+#   pass
+pdf_roc = PdfPages("%s.pdf"%methods[rank])
 mean_of_conf_matrix_arrays = np.mean(conf_matrix_list_of_arrays, axis=0)
 df_cm = pd.DataFrame(mean_of_conf_matrix_arrays, index = labels, columns = labels)
 f, ax = plt.subplots(figsize=(10,10))
@@ -143,10 +142,11 @@ plt.clf()
 pdf_roc.close()
 print(methods[rank], mean_of_conf_matrix_arrays, all_acc, all_f1macro, all_f1micro, all_f1w, all_precisionmacro, all_precisionmicro, all_precisionw, all_recallmacro, all_recallmicro, all_recallw)
 print("\n%s algorithm done!\n"%(methods[rank]))
-sys.stdout.flush()
-comm.Barrier()
-all_acc = comm.gather(all_acc)
+#sys.stdout.flush()
 
+comm.Barrier()
+
+all_acc = comm.gather(all_acc)
 all_f1micro = comm.gather(np.average(all_f1micro))
 all_f1macro = comm.gather(np.average(all_f1macro))
 all_f1w = comm.gather(np.average(all_f1w))
