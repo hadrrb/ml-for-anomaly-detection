@@ -4,52 +4,74 @@
 %roc pour tous les scenariaux
 %concatenate all datasets
 
-Before going further and analysing neural networks, a deeper look at classical machine learning algorithms will be taken, in particular Random Forest and Support Vector Machine (SVM) in the context of anomaly detection in the CPS presented in chapter \ref{chap:intro}. However this was done before in \cite{borges_hink_machine_2014-1} using the black-box model algorithms only. In their approach they used Weka \cite{witten_appendix_2017} in order to find the most performant algorithm among 7 they have chosen (OneR, NNge, Random Forest, Naïve Bayes, SVM, JRipper, Adaboost). 
+%rappeler objectif
+Before going further and analysing neural networks, a deeper look at classical machine learning algorithms will be taken, in particular Random Forest, Support Vector Machine (SVM) and NaïveBayes in the context of anomaly detection in the CPS presented in chapter \ref{chap:intro}. However this was done before in \cite{borges_hink_machine_2014-1} using the black-box model algorithms only. In their approach they used Weka \cite{witten_appendix_2017} in order to find the most performant algorithm among 7 they have chosen (OneR, NNge, Random Forest, Naïve Bayes, SVM, JRipper, Adaboost). 
 
 This chapter shows an attempt to reproduce the results provided in \cite{borges_hink_machine_2014-1}, using two different machine learning toolkits (Weka and scikit-learn \cite{pedregosa_scikit-learn_2011}) in order to confirm the obtained results. That is why, first, these two toolkits will be presented, then the obtained results will be discussed.  
 
-\section{Weka} \label{sec:weka_in_chap:methods}
+\section{Machine learning toolkits}
+\subsection{Weka} \label{sec:weka_in_chap:methods}
 %les parametres des algos, m par defaut
 \textbf{Weka}, or more exactly \textbf{W}aikato \textbf{E}nvironment for \textbf{K}nowledge \textbf{A}nalysis, is an open source machine learning software developed at The University of Waikato in Hamilton, New Zealand and based on Java programming language. It is well known especially in academic environments and a lot of machine learning researches were conducted using it, one of them the mentioned before \cite{borges_hink_machine_2014-1}. It incorporates various machine learning tools: classifiers, regressors, visualizers, data pre-processor etc...
 
 Weka is characterised by 3 main operating schemes. First, it can be run using a \textbf{graphical user interface} (GUI), enabling the user, even without deep knowledge in programming, to make machine learning experiments and analyse available classifiers. Second, more advanced users have the option to run all the available tools using a \textbf{command line}. Finally, Weka's tools can be \textbf{integrated directly into code in several programming languages (Java, Python, R, Spark)}, which enables even larger versatility.
 
-\section{scikit-learn}
+\subsection{scikit-learn}
 scikit-learn is an open-source machine learning \textbf{Python library} developed originally by David Cournapeau as a Google Summer of Code project and now it is maintained by a team of volunteers. It is well known in both academic and commercial environments, since it is used by many enterprises such as Spotify, Evernote, Booking.com, and research facilities like Inria or Télécom ParisTech \cite{noauthor_who_nodate}. It includes, just like Weka, various machine learning tools such as classifiers, regressors, data pre-processor etc... Its visualisation capabilities are limited, however there exist many additional Python packages for data visualisation such as YellowBrick, Eli5 and others... They will be further discussed in next chapter.
 
 scikit-learn can be used only as an extension of Python language, what makes a bit harder for non experts to start working with it. However, since Python is an user friendly programming language and scikit-learn has a well made documentation, this toolkit is easy to use. Along with other Python packages, and especially pandas, scikit-learn is a very powerful, ergonomic and versatile solution for machine learning problems.  
 
 It might be also interesting to mention that scikit-learn can be used within Weka after installing the appropriate add-on. This enables Weka users to use scikit-learn classifiers and regressors and run Python code just inside Weka's GUI.
 
-\section{Metrics for classifiers comparison}
-After the presentation of the used toolkits, in order to be able to compare machine learning algorithms the following metrics are introduced:
-\begin{itemize}
-    \item \textbf{accuracy}: ratio of correct classifications over the total number of samples,
-    \item \textbf{precision}:  ratio of correct classifications for a particular class over all classifications that indicated that class,
-    \item \textbf{recall}: ratio of correct classifications for a particular class, over all samples corresponding for this class,
-    \item \textbf{f-measure}: weighted average of precision and recall given by the equation: 
-    \begin{equation*}
-        \text{f-measure} = 2 \times \frac{\mathrm{precision} \times \mathrm{recall}}{\mathrm{precision} + \mathrm{recall}}.
-    \end{equation*}
-\end{itemize}
+\section{Used machine learning algorithms}
+Before talking about the comparison of machine learning algorithms, the used classifiers are briefly described in this section in order to better understand how do they work. In parallel, values of classifiers' parameters used during all the tests are presented in tables \ref{tab:rf_param}, \ref{tab:svm_param} and \ref{tab:nb_param}, and, in majority, they represent the default values found in Weka, in order to reproduce the results from~\cite{borges_hink_machine_2014-1}.
 
-In addition to that, precision, recall and f-measure metrics, can be calculated in three different ways:
+\subsection{Random Forest}
+Random Forest, as the name indicates, is an \textbf{ensemble} of a given number of trees, and more exactly \textbf{decision trees}. This given number of trees is set using the parameter \textit{numIterations} in Weka and \textit{n\_estimators} in scikit-learn. Each of decision trees is created based on a randomly chosen set of features of the dataset. The number of features is given by the parameter \textit{numFeatures} in Weka and \textit{max\_features} in scikit-learn, which indicate the way it is calculated - in this case as the logarithm of base 2 of the number of features. 
 
-\begin{itemize}
-    \item \textbf{micro}: the metrics are determined globally by calculating true positives, false negatives and false positives,
-    \item \textbf{macro}: the metrics are calculated for each class, then it gives their unweighted mean value,
-    \item \textbf{weighted}: the metrics are calculated for each class, then it gives their weighted average value by the number of true instances for each class.
-\end{itemize}
+On the other hand, decision trees represent a structure capable of determining the class of the predicted sample. It is composed of nodes connected to each other in a form of tree. Each node corresponds to a condition related to the features, for example if a particular feature is higher than a certain number. Each node, except the decision ones, has two child nodes corresponding to the answer as yes or no to the condition from from parent node. For each of two answers, particular classes are assigned, for example, given the case study in this work, yes answer can correspond to classes Attack and Natural and the answer no to class NoEvents. When running a tree on a particular sample, the nodes are followed given the answers on conditions, until arriving to the decision node. The class corresponding to this node is taken as the final output of the decision tree. The number of layers of nodes is called the depth of the tree and it is set using the parameter \textit{maxDepth} in both Weka and scikit-learn.
 
-\section{Experimental setup}
-In order to reproduce the results presented in \cite{borges_hink_machine_2014-1}, Weka version 3.8.4 and scikit-learn version 0.23.1, running on Anaconda 3.18.11 with Python 3.7.6.final.0, were used. Given the availability of classifiers between these two toolkits, only 3 classifiers were chosen: SVM, NaïveBayes and Random Forest. SVM in Weka comes from a package untitled libsvm available for this toolkit. The used parameters are presented for both scikit-learn and Weka in tables \ref{tab:sklearn_params} and \ref{tab:weka_params} respectively in order to help in the reproduction of this work in the features. For more information about particular parameters the references to their explanation are given in square-brackets next to each classifier.
+The choice of condition in a node is based on calculating \textbf{gini impurity} or \textbf{information gain} metric for each feature and determining, based on one of them, which feature has the biggest effect on the choice of the class. Gini impurity determines the probability of a feature being classified incorrectly when selected randomly, it is given by the equation:
+\begin{equation}
+    \text{Gini impurity} = 1 - \sum^n_{i=1} (p_i)^2,
+\end{equation}
+where n is the number of classes and $p_i$ the probability of the feature being classified for the class i. The information gain on the other hand, determines the quantity of information that the features gives about a particular class, it is calculated as:
+\begin{equation}
+    E(S) = \sum^n_{i=1} - p_i \log_2 p_i.
+\end{equation}
+Weka uses the information gain metric, while in scikit-learn it is possible to choose the metric using the parameter \textit{criterion}, which by default is set to gini impurity, which is less computationally complex.
+
+The random forest, composed of a number of those decision trees, determines the class of a sample taking the class, which was chosen by the biggest amount of decision trees. In both Weka and scikit-learn, this classifier comes with more, less crucial parameters, which are all listed in table~\ref{tab:rf_param}.
 
 \begin{table}[H]
-    \caption{Scikit-learn classifiers parameters} \label{tab:sklearn_params}
-    \scriptsize
+    \footnotesize
     \centering
-    \begin{subtable}[t]{.33\linewidth}
-        \caption{Random Forest \cite{noauthor_sklearnensemblerandomforestclassifier_nodate}}
+    \caption{Random Forest classifier parameters} \label{tab:rf_param}
+    \begin{subtable}[t]{.5\linewidth}
+        \caption{Weka \cite{noauthor_randomforest_nodate}}
+        \centering
+        \begin{tabular}{lr}\toprule
+            Parameter & Value \\\midrule
+            bagSizePercent & 100\\
+            batchSize & 100 \\
+            breakTiesRandomly & False \\
+            calcOutOfBag & False \\
+            computeAttributeImportance & False \\
+            debug & False \\
+            doNotCHeckCapabilities & False \\
+            maxDepth & 0 \\
+            numDecimalPlaces & 2 \\
+            numExecutionSlots & 1 \\
+            numFeatures & 0 \\
+            numIterations & 100 \\
+            outputOutOfBagComplexityStatistics & False \\
+            printClassifiers & False \\
+            seed & 1 \\
+            storeOutOfBagPredictions & False \\\bottomrule
+        \end{tabular}
+    \end{subtable}%
+    \begin{subtable}[t]{.5\linewidth}
+        \caption{scikit-learn \cite{noauthor_sklearnensemblerandomforestclassifier_nodate}}
         \centering
         \begin{tabular}{lr}\toprule
             Parameter & Value \\\midrule
@@ -74,69 +96,26 @@ In order to reproduce the results presented in \cite{borges_hink_machine_2014-1}
             max\_samples & None \\\bottomrule
         \end{tabular}
     \end{subtable}%
-    \begin{subtable}[t]{.35\linewidth}
-        \caption{SVM \cite{noauthor_sklearnsvmsvc_nodate}}
-        \centering
-        \begin{tabular}{lr}\toprule
-            Parameter & Value \\\midrule
-            C & 1.0 \\
-            kernel & "rbf" \\
-            degree & 3 \\
-            gamma & "scale" \\
-            coef0 & 0.0 \\
-            shrinking & True \\
-            probability & True \\
-            tol & 1e-3 \\
-            cache\_size & 7000 \\
-            class\_weight & None \\
-            verbose & False \\
-            max\_iter & 1000 \\
-            decision\_function\_shape & "ovr" \\
-            break\_ties & False \\
-            random\_state & None \\\bottomrule
-        \end{tabular}
-    \end{subtable}%
-    \begin{subtable}[t]{.23\linewidth}
-        \caption{NaïveBayes \cite{noauthor_sklearnnaive_bayesgaussiannb_nodate}}
-        \centering
-        \begin{tabular}{lr}\toprule
-            Parameter & Value \\\midrule
-            priors & None \\
-            var\_smoothing & 1e-9 \\\bottomrule
-        \end{tabular}
-    \end{subtable}%
 \end{table}
 
+\subsection{SVM}
+
+SVM, or more exactly \textbf{Support Vector Machine}, is a classifier that creates an N-dimensional space, in which all the samples from the training dataset are put, and then divided, geometrically, into regions, where each region corresponds to one class. The N dimensions of this space corresponds to all the features of the datasets and their transformations (for example a square of one of the features). Those transformations are done using a kernel function which can be set in Weka and scikit-learn using the \textit{kernelType/kernel} parameter. Three kernel types are more commonly used: linear, polynomial and radial basis function (exponent based). The default kernel in both Weka and scikit-learn is radial basis function. Each type of kernel function comes with a set a parameters itself, like the degree in the case of polynomial and all of them can be set through the parameters of both used machine learning toolkits.
+
+In fact, the transformations do not calculate additional dimensions for every sample, but calculate the distance between points in the N-dimensional space. This distance is mathematically defined as the \textbf{dot product} of the two points. The dot product on other hand is defined of the sum of products of coordinates for every dimension. 
+
+The division is made by determining so called \textbf{hyperplane}, which for example in a 2D features spaces is just a line. The points from each class that are the closest to the hyperplane are called \textbf{support vector points}, from where comes the name of this classifier \cite{yadav_support_2018} \cite{noauthor_support_2014}. 
+
+The algorithm is running within a set number of iterations (can be set within Weka and scikit-learn) dividing the training dataset to smaller tranches using the cross-validation technique. The goal is to find the hyperplane that way so the number of misclassified samples is the smallest in that particular iteration. 
+
+SVM in Weka and scikit-learn comes additionally with other parameters than a:re listed on table~\ref{tab:svm_param}.
 
 \begin{table}[H]
-    \caption{Weka classifiers parameters} \label{tab:weka_params}
-    \scriptsize
+    \footnotesize
     \centering
-    \begin{subtable}[t]{.37\linewidth}
-        \caption{Random Forest \cite{noauthor_randomforest_nodate}}
-        \centering
-        \begin{tabular}{lr}\toprule
-            Parameter & Value \\\midrule
-            bagSizePercent & 100\\
-            batchSize & 100 \\
-            breakTiesRandomly & False \\
-            calcOutOfBag & False \\
-            computeAttributeImportance & False \\
-            debug & False \\
-            doNotCHeckCapabilities & False \\
-            maxDepth & 0 \\
-            numDecimalPlaces & 2 \\
-            numExecutionSlots & 1 \\
-            numFeatures & 0 \\
-            numIterations & 100 \\
-            outputOutOfBagComplexityStatistics & False \\
-            printClassifiers & False \\
-            seed & 1 \\
-            storeOutOfBagPredictions & False \\\bottomrule
-        \end{tabular}
-    \end{subtable}%
-    \begin{subtable}[t]{.37\linewidth}
-        \caption{SVM \cite{noauthor_libsvm_nodate}}
+    \caption{SVM classifier parameters} \label{tab:svm_param}
+    \begin{subtable}[t]{.5\linewidth}
+        \caption{Weka \cite{noauthor_libsvm_nodate}}
         \centering
         \begin{tabular}{lr}\toprule
             Parameter & Value \\\midrule
@@ -163,8 +142,47 @@ In order to reproduce the results presented in \cite{borges_hink_machine_2014-1}
             weights & \\\bottomrule
         \end{tabular}
     \end{subtable}%
-    \begin{subtable}[t]{0.385\linewidth}
-        \caption{NaïveBayes \cite{noauthor_naivebayes_nodate}}
+    \begin{subtable}[t]{.5\linewidth}
+        \caption{scikit-learn \cite{noauthor_sklearnsvmsvc_nodate}}
+        \centering
+        \begin{tabular}{lr}\toprule
+            Parameter & Value \\\midrule
+            C & 1.0 \\
+            kernel & "rbf" \\
+            degree & 3 \\
+            gamma & "scale" \\
+            coef0 & 0.0 \\
+            shrinking & True \\
+            probability & True \\
+            tol & 1e-3 \\
+            cache\_size & 7000 \\
+            class\_weight & None \\
+            verbose & False \\
+            max\_iter & 1000 \\
+            decision\_function\_shape & "ovr" \\
+            break\_ties & False \\
+            random\_state & None \\\bottomrule
+        \end{tabular}
+    \end{subtable}%
+\end{table}
+ 
+\subsection{NaïveBayes}
+NaïveBayes is a classifier based on the \textbf{Bayes theorem}, which states that the probability of event A, given that the event B happened is equal to the product of the probability of B given that A occurred and the probability of A, divided by the probability of B:
+\begin{equation}
+    P(A|B) = \frac{P(B|A)\dot P(A)}{P(B)}.
+\end{equation}
+While the naivety of the algorithm is due to it does not taking into consideration the eventual relations between the features.
+
+The NaïveBayes classifier can be both \textbf{multinomial} and \textbf{gaussian}. In the multinomial case the probabilities are calculated the classical way (number of occurrences over all samples), whereas in the gaussian case, the probabilities are taken from the gaussian distribution of a given event. For both Weka and scikit-learn the gaussian case were used.
+
+The list of all the parameters available is listed on table \ref{tab:nb_param}, however they impact on how the algorithm works is marginal. 
+
+\begin{table}[H]
+    \footnotesize
+    \centering
+    \caption{NaïveBayes classifier parameters} \label{tab:nb_param}
+    \begin{subtable}[t]{0.5\linewidth}
+        \caption{weka \cite{noauthor_naivebayes_nodate}}
         \centering
         \begin{tabular}{lr}\toprule
             Parameter & Value \\\midrule
@@ -177,13 +195,61 @@ In order to reproduce the results presented in \cite{borges_hink_machine_2014-1}
             useSupervisedDiscretization & False\\\bottomrule
         \end{tabular}
     \end{subtable}%
+    \begin{subtable}[t]{.5\linewidth}
+        \caption{scikit-learn \cite{noauthor_sklearnnaive_bayesgaussiannb_nodate}}
+        \centering
+        \begin{tabular}{lr}\toprule
+            Parameter & Value \\\midrule
+            priors & None \\
+            var\_smoothing & 1e-9 \\\bottomrule
+        \end{tabular}
+    \end{subtable}%
 \end{table}
 
-% \includegraphics{/images/weka/randomforest.png}
-% \includegraphics{/images/weka/nb.png}
-% \includegraphics{/images/weka/svm.png}
-\section{Comparison results}
+%parametres les plus importants. weka vs scikit-learn
 
+\section{Metrics for classifiers comparison}
+All those classifiers give predictions that can be divided into 4 main groups. Assuming for a moment that normal fault class is positive and attack class is negative, it could be differentiated between:
+\begin{itemize}
+    \item true positive predictions (\textbf{tp}): correct prediction of the normal fault class,
+    \item true negative predictions (\textbf{tn}): correct prediction of the attack class,
+    \item false positive predictions (\textbf{fp}): incorrect prediction of normal fault class,
+    \item false negative predictions (\textbf{fn}): incorrect prediction of attack class.
+\end{itemize}
+For that two classes, several metrics can be defined, that will be useful to compare between the used classifiers: 
+\begin{itemize}
+    \item \textbf{accuracy}: ratio of correct classifications over the total number of samples, or in other words:
+    \begin{equation}
+        \text{accuracy} = \frac{tp + tn}{tp + tn + fp + fn}
+    \end{equation}
+    \item \textbf{precision}:  ratio of correct classifications for a particular class over all classifications that indicated that class, or:
+    \begin{equation}
+        \text{precision} = \frac{tp}{tp + fp}
+    \end{equation}
+    \item \textbf{recall}: ratio of correct classifications for a particular class, over all samples corresponding for this class, or:
+    \begin{equation}
+        \text{recall} = \frac{tp}{tp + fn}
+    \end{equation}
+    \item \textbf{f-measure}: weighted average of precision and recall given by the equation: 
+    \begin{equation*}
+        \text{f-measure} = 2 \times \frac{\mathrm{precision} \times \mathrm{recall}}{\mathrm{precision} + \mathrm{recall}}.
+    \end{equation*}
+\end{itemize}
+
+Given that those metrics work only with binary problems with a positive and a negative class, for multiclass problems the \textbf{accuracy is always calculated as the ratio of true classifications over all classifications}, however for precision, recall and f-measure, the average is calculated, and that in 3 different ways \cite{shmueli_multi-class_2020}:
+
+\begin{itemize}
+    \item \textbf{micro} average: the metrics are determined globally by calculating true positives as all correct predictions, false negatives and false positives as all incorrect predictions (assuming two classes A and B, when A is misclassified as B is a false positive for A, and in the same time a false negative for B). In this case precision, recall, f-measure and accuracy have exactly the same value,
+    \item \textbf{macro} average: the metrics are calculated for each class, the concerned class is considered as positive, while the sum of others as negative. Then their arithmetic mean value is calculated,
+    \item \textbf{weighted} average: the metrics are calculated for each class, then it calculates their weighted average value by the number of true instances for each class.
+\end{itemize}
+
+scikit-learn supports the calculation of precision, recall and f-measure in the 3 different ways explicitly, however in Weka only for f-measure all 3 are available, while for precision and recall there is the choice between the generic ones and the weighted averages. The generic ones the most probably correspond to the macro average, since, after some tests, the obtained values for those metrics are not the same. The exact information about the nature of those averages could not be found in Weka's documentation.
+
+\section{Comparison results}
+In order to reproduce the results presented in \cite{borges_hink_machine_2014-1}, Weka version 3.8.4 and scikit-learn version 0.23.1, running on Anaconda 3.18.11 with Python 3.7.6.final.0, were used. SVM in Weka comes from a package untitled \textit{libsvm} available for this toolkit. The results are shown in tables below:
+
+% TODO: Complete the figures and add ROCs and an analysis
 
 \begin{figure}[H]
     \centering
@@ -290,9 +356,9 @@ The obtained results indicate clearly that Random Forest algorithm is the more a
     \caption{Precision}
     \label{fig:scikit_prec}
 \end{subfigure}
-\caption{scikit-learn results}
-\end{figure}
-\begin{figure}[H]\ContinuedFloat
+% \caption{scikit-learn results}
+% \end{figure}
+% \begin{figure}[H]\ContinuedFloat
 \begin{subfigure}[t]{0.475\textwidth}
     \centering
     \includegraphics[page=4, width=\linewidth]{images/results_scikit.pdf}

@@ -26,9 +26,9 @@ y = le.transform(X['marker'])
 #y = X['marker'].values
 X = X.drop(columns='marker').values
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, train_size = 0.9)
+X_train, X_test, y_train, y_test = train_test_split(X, y, train_size = 0.8)
 
-methods = [RandomForestClassifier(n_estimators=100, max_features='log2'), SVC(),  MLPClassifier(hidden_layer_sizes=(20,), max_iter=1000, early_stopping=True), GaussianNB()]
+methods = [RandomForestClassifier(n_estimators=100, max_features='log2'), SVC(probability=True),  MLPClassifier(hidden_layer_sizes=(20,), max_iter=1000, early_stopping=True), GaussianNB()]
 
 with PdfPages("roc_2c.pdf") as pdf:
     for method in methods:
