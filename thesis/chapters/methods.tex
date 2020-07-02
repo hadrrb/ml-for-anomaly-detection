@@ -209,7 +209,7 @@ The list of all the parameters available is listed on table \ref{tab:nb_param}, 
 %parametres les plus importants. weka vs scikit-learn
 
 \section{Metrics for classifiers comparison}
-All those classifiers give predictions that can be divided into 4 main groups. Assuming for a moment that normal fault class is positive and attack class is negative, it could be differentiated between:
+All those classifiers give predictions that can be divided into 4 main groups. Assuming for a moment, for illustration purposes, that normal fault class is positive and attack class is negative, it could be differentiated between:
 \begin{itemize}
     \item true positive predictions (\textbf{tp}): correct prediction of the normal fault class,
     \item true negative predictions (\textbf{tn}): correct prediction of the attack class,
@@ -253,13 +253,17 @@ In order to reproduce the results presented in \cite{borges_hink_machine_2014-1}
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.4\textwidth}
         \includegraphics[width=\linewidth]{images/weka_accuracy3}
-        \caption{Our attempt}
+        \caption{Our attempt - Weka}
     \end{subfigure}%
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.4\textwidth}
         \includegraphics[width=\linewidth]{images/weka_accuracy3_cite.png}
         \caption{Original results \cite{borges_hink_machine_2014-1}}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.4\textwidth}
+        \includegraphics[width=\linewidth, page = 2]{images/accuracy}
+        \caption{Our attempt - scikit-learn}
     \end{subfigure}
     \caption{Accuracy for three-class datasets}
     \label{fig:weka_acc3}
@@ -267,13 +271,17 @@ In order to reproduce the results presented in \cite{borges_hink_machine_2014-1}
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.4\textwidth}
         \includegraphics[width=\linewidth]{images/weka_accuracy2}
-        \caption{Our attempt}
+        \caption{Our attempt - Weka}
     \end{subfigure}%
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.4\textwidth}
         \includegraphics[width=\linewidth]{images/weka_accuracy2_cite.png}
         \caption{Original results \cite{borges_hink_machine_2014-1}}
+    \end{subfigure}    
+    \begin{subfigure}[t]{0.4\textwidth}
+        \includegraphics[width=\linewidth, page = 1]{images/accuracy}
+        \caption{Our attempt - scikit-learn}
     \end{subfigure}
     \caption{Accuracy for binary datasets}
     \label{fig:weka_acc2}
@@ -281,13 +289,17 @@ In order to reproduce the results presented in \cite{borges_hink_machine_2014-1}
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.4\textwidth}
         \includegraphics[width=\linewidth]{images/weka_accuracyall}
-        \caption{Our attempt}
+        \caption{Our attempt - Weka}
     \end{subfigure}%
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.4\textwidth}
         \includegraphics[width=\linewidth]{images/weka_accuracyall_cite.png}
         \caption{Original results \cite{borges_hink_machine_2014-1}}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.4\textwidth}
+        \includegraphics[width=\linewidth, page = 3]{images/accuracy}
+        \caption{Our attempt - scikit-learn}
     \end{subfigure}
     \caption{Accuracy for multiclass datasets}
     \label{fig:weka_accall}
@@ -295,45 +307,125 @@ In order to reproduce the results presented in \cite{borges_hink_machine_2014-1}
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.4\textwidth}
         \includegraphics[width=\linewidth]{images/weka_precision}
-        \caption{Our attempt}
+        \caption{Our attempt - Weka}
     \end{subfigure}%
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.4\textwidth}
         \includegraphics[width=\linewidth]{images/weka_precision_cite.png}
         \caption{Original results \cite{borges_hink_machine_2014-1}}
     \end{subfigure}
+    \begin{subfigure}[t]{0.4\textwidth}
+        \includegraphics[width=\linewidth, page = 2]{images/precision}
+        \caption{Our attempt - scikit-learn}
+    \end{subfigure}
     \caption{Precision}
-    \label{fig:weka_prec}
+    \label{fig:prec}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.4\textwidth}
         \includegraphics[width=\linewidth]{images/weka_recall}
-        \caption{Our attempt}
+        \caption{Our attempt - Weka}
     \end{subfigure}%
-    \begin{subfigure}[t]{0.5\textwidth}
+    \begin{subfigure}[t]{0.4\textwidth}
         \includegraphics[width=\linewidth]{images/weka_recall_cite.png}
         \caption{Original results \cite{borges_hink_machine_2014-1}}
     \end{subfigure}
+    \begin{subfigure}[t]{0.4\textwidth}
+        \includegraphics[width=\linewidth, page = 2]{images/recall}
+        \caption{Our attempt - scikit-learn}
+    \end{subfigure}
     \caption{Recall}
-    \label{fig:weka_recall}
+    \label{fig:recall}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.5\textwidth}
         \includegraphics[width=\linewidth]{images/weka_f1}
-        \caption{Our attempt}
+        \caption{Our attempt - Weka}
     \end{subfigure}%
     \begin{subfigure}[t]{0.5\textwidth}
         \includegraphics[width=\linewidth]{images/weka_f1_cite.png}
         \caption{Original results \cite{borges_hink_machine_2014-1}}
     \end{subfigure}
     \caption{F-measure}
-    \label{fig:weka_f1}
+    \label{fig:f1}
 \end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.5\textwidth}
+        \includegraphics[width=\linewidth]{images/weka_f1macro}
+        \caption{Weka}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.42\textwidth}
+        \includegraphics[width=\linewidth, page = 2]{images/fmeasure}
+        \caption{scikit-learn}
+    \end{subfigure}
+    \caption{F-measure macro}
+    \label{fig:f1_macro}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.5\textwidth}
+        \includegraphics[width=\linewidth]{images/weka_f1micro}
+        \caption{Weka}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.42\textwidth}
+        \includegraphics[width=\linewidth, page = 1]{images/fmeasure}
+        \caption{scikit-learn}
+    \end{subfigure}
+    \caption{F-measure micro}
+    \label{fig:f1_micro}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.5\textwidth}
+        \includegraphics[width=\linewidth]{images/weka_f1weight}
+        \caption{Weka}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.42\textwidth}
+        \includegraphics[width=\linewidth, page = 3]{images/fmeasure}
+        \caption{scikit-learn}
+    \end{subfigure}
+    \caption{F-measure weighted}
+    \label{fig:f1_weight}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.5\textwidth}
+        \includegraphics[width=\linewidth]{images/weka_precweight}
+        \caption{Weka}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.42\textwidth}
+        \includegraphics[width=\linewidth, page = 3]{images/precision}
+        \caption{scikit-learn}
+    \end{subfigure}
+    \caption{Precision weighted}
+    \label{fig:prec_weight}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.5\textwidth}
+        \includegraphics[width=\linewidth]{images/weka_recallweight}
+        \caption{Weka}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.42\textwidth}
+        \includegraphics[width=\linewidth, page = 3]{images/recall}
+        \caption{scikit-learn}
+    \end{subfigure}
+    \caption{Recall weighted}
+    \label{fig:recall_weight}
+\end{figure}
+
 
 The obtained results indicate clearly that Random Forest algorithm is the more accurate and gives clearly the best results, with Adaboost+JRIP with slightly worse performance. On the other hand, the results presented in \cite{borges_hink_machine_2014-1} shows better results for Adaboost+JRIP. For SVM and Naïve Bayes the results are comparable, expect for precision value for SVM. The origin of this difference is so far unknown.
 
@@ -341,39 +433,6 @@ The obtained results indicate clearly that Random Forest algorithm is the more a
 
 % The results of classification analysis are shown on figure \ref{fig:scikit_results}. In contrast to Weka's result, precision, recall and f-measure indicators come with three different values:
 
-
-\begin{figure}[H]
-\centering
-\begin{subfigure}[t]{0.475\textwidth}
-    \centering
-    \includegraphics[page=1, width=\linewidth]{images/results_scikit.pdf}
-    \caption{Accuracy}
-    \label{fig:scikit_accuracy}
-\end{subfigure}
-\begin{subfigure}[t]{0.475\textwidth}
-    \centering
-    \includegraphics[page=3, width=\linewidth]{images/results_scikit.pdf}
-    \caption{Precision}
-    \label{fig:scikit_prec}
-\end{subfigure}
-% \caption{scikit-learn results}
-% \end{figure}
-% \begin{figure}[H]\ContinuedFloat
-\begin{subfigure}[t]{0.475\textwidth}
-    \centering
-    \includegraphics[page=4, width=\linewidth]{images/results_scikit.pdf}
-    \caption{Recall\footnote{micro and weighted values are the same in this case.}}
-    \label{fig:scikit_recall}
-\end{subfigure}
-\begin{subfigure}[t]{0.475\textwidth}
-    \centering
-    \includegraphics[page=2, width=\linewidth]{images/results_scikit.pdf}
-    \caption{F-measure}
-    \label{fig:scikit_f1}
-\end{subfigure}
-\caption{scikit-learn results}
-\label{fig:scikit_results}
-\end{figure}
 
 It can be observed that the obtained results are partially different from those obtained using Weka. The results for MLP and Naïve Bayes are comparable to those from Weka, but on the other hand, the results for Random Forest and SVM differ considerably. This made MLP the most reliable classifier compared to others in this comparison.
 

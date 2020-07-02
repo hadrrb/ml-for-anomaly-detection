@@ -78,7 +78,7 @@ X = X.drop(columns='marker').values
 
 clf = []
 clf.insert(len(clf), RandomForestClassifier(n_estimators=100, max_features='log2')) #Random Forest classifier initialization
-clf.insert(len(clf), SVC())#(probability=True, max_iter=1000, cache_size=7000))
+clf.insert(len(clf), SVC(probability=True, max_iter=1000, cache_size=7000))
 clf.insert(len(clf), MLPClassifier(hidden_layer_sizes=(20,), max_iter=1000, early_stopping=True))
 clf.insert(len(clf), GaussianNB())
 
