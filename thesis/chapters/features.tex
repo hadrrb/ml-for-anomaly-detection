@@ -6,12 +6,57 @@ After having determined the most performant algorithm, which is Random Forest, i
 \subsection{LIME} %detaille plus
 LIME (Local Interpretable Model-agnostic Explanations) is a tool that is used to explain the behaviour of machine learning classifiers. It supports, as for this day, only the explanation of individual predictions for any scikit-learn classifier or regressor. This explanation consist in a list of features ordered by their relative importance for a particular prediction. This list can be shown is a raw mode (as a python list) or in a visual form (pyplot figure, jupyter notebook or html file).
 
-In order to class the features according to their importance, LIME approximates the model by an interpretable one, created based on perturbing the features of the examined instance. More the perturbed instances are similar to the examined instance, higher is the weight of the perturbed feature.
+In order to class the features according to their importance, LIME approximates the model by an interpretable one, created based on perturbing the features of the examined instance. More the perturbed instances are similar to the examined instance, higher is the weight of the perturbed feature. 
+
+For example purposes, let the pigeon image on figure \ref{fig:limepigeon} be considered as a sample used in a classification problem based on a classifier noted \textit{f}. The image can be divided into several regions, like it is shown on figure \ref{fig:limediv}, each region corresponds to a feature.
+
+\begin{minipage}{.45\textwidth}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\linewidth]{images/lime/pigeon}
+        \caption{Pigeon}
+        \label{fig:limepigeon}
+    \end{figure}
+\end{minipage}
+\begin{minipage}{.45\textwidth}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\linewidth]{images/lime/grid}
+        \caption{Image grid}
+        \label{fig:limediv}
+    \end{figure}
+\end{minipage}
+\vspace{0.5cm}
+
+In the next step, a new dataset is created by modifying the features. In the case of the pigeon image some regions can be simply greyed out like it is shown on figure \ref{fig:limegrey}. For each of these the probability if it represents a pigeon or not is calculated using the classifier \textit{f}.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.32\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/lime/pert1}
+        \caption{Perturbation 1}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.32\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/lime/pert2}
+        \caption{Perturbation 2}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.32\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/lime/pert3}
+        \caption{Perturbation 3}
+    \end{subfigure}
+    \caption{Greyed-out images forming a new dataset}
+    \label{fig:limegrey}
+\end{figure}
+
+Using this data it is possible to determine the importance of regions/features of this particular sample. This importance is local and has a meaning only in relation to the sample image from figure~\ref{fig:limepigeon}. 
 
 \subsection{ELI5}
 ELI5 (Explain like I am a 5-year old) is a tool, in form of a Python package, used to debug machine learning classifiers and explain their predictions. It supports multiple machine learning frameworks, including scikit-learn. It can be used to explain how the model works both locally for one prediction and globally for the whole model. The output can take several forms just like in LIME case.
 
-For white-box models, ELI5 works as an extension of scikit-learn and it's capable to extract the weights of model's features for different classes. In addition to that it can show the weights that contributed in a particular prediction. On the other hand, for black-box models, this tool integrates a modified version of LIME, supporting more machine learning frameworks, and a permutation importance method, which checks how the model's accuracy decreases when removing one of the features and on this basis determines the importance of the features.
+For white-box models, ELI5 works as an extension of scikit-learn and it's capable to extract the weights of model's features for different classes. In addition to that it can show the weights that contributed in a particular prediction. It is done by removing particular features and checking how the accuracy of the classifier was altered. On the other hand, for black-box models, this tool integrates a modified version of LIME, supporting more machine learning frameworks, and a permutation importance method, which checks how the model's accuracy decreases when removing one of the features and on this basis determines the importance of the features.
 
 \subsection{YellowBrick}
 YellowBrick is another Python package, which is an extension of scikit-learn framework. It is meant to give global interpretation of the analysed model on different levels. It is possible not only to visualize features importances calculated directly by scikit-learn, but also to give a classification report (accuracy, recall, precision, f-measure), plot a confusion matrix, a ROC curve and much more. In addition to all that, YellowBrick comes with a tool for determination of correlation between features in the dataset.

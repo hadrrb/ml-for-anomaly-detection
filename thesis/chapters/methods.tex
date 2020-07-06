@@ -206,7 +206,8 @@ The list of all the parameters available is listed on table \ref{tab:nb_param}, 
     \end{subtable}%
 \end{table}
 
-%parametres les plus importants. weka vs scikit-learn
+\subsection{Multilayer perceptron}
+%TODO: Develop this subsection
 
 \section{Metrics for classifiers comparison}
 All those classifiers give predictions that can be divided into 4 main groups. Assuming for a moment, for illustration purposes, that normal fault class is positive and attack class is negative, it could be differentiated between:
@@ -247,7 +248,7 @@ Given that those metrics work only with binary problems with a positive and a ne
 scikit-learn supports the calculation of precision, recall and f-measure in the 3 different ways explicitly, however in Weka only for f-measure all 3 are available, while for precision and recall there is the choice between the generic ones and the weighted averages. The generic ones the most probably correspond to the macro average, since, after some tests, the obtained values for those metrics are not the same. The exact information about the nature of those averages could not be found in Weka's documentation.
 
 \section{Comparison results}
-In order to reproduce the results presented in \cite{borges_hink_machine_2014-1}, Weka version 3.8.4 and scikit-learn version 0.23.1, running on Anaconda 3.18.11 with Python 3.7.6.final.0, were used. SVM in Weka comes from a package untitled \textit{libsvm} available for this toolkit. The results are shown in tables below:
+In order to reproduce the results presented in \cite{borges_hink_machine_2014-1}, Weka version 3.8.4 and scikit-learn version 0.23.1, running on Anaconda 3.18.11 with Python 3.7.6.final.0, were used. SVM in Weka comes from a package untitled \textit{libsvm} available for this toolkit. The results are displayed in the same order as in \cite{borges_hink_machine_2014-1}, thus, the accuracy was presented on figures \ref{fig:weka_acc3}, \ref{fig:weka_acc2} and \ref{fig:weka_accall} for the three class, binary and all 37 class cases respectively. Then, the precision, recall and f-measure can be found on figures \ref{fig:prec}, \ref{fig:recall} and \ref{fig:f1}. For f-measure the scikit-learn plot is not displayed because Weka differentiates between micro, macro and weighted averages and a generic value for f-measure. The generic value does not correspond by value to the other averages.  
 
 % TODO: Complete the figures and add ROCs and an analysis
 
@@ -355,6 +356,16 @@ In order to reproduce the results presented in \cite{borges_hink_machine_2014-1}
     \label{fig:f1}
 \end{figure}
 
+The accuracies in the three-class case are quite similar on the three plots, except SVM in scikit-learn, which show a huge discrepancy of accuracy between datasets. Moreover, a remarkably higher values of accuracy for Random Forest classifier are observed in the attempt using Weka, compared to other plots.
+
+In the binary and multiclass cases, the Random Forest classifier in the attempts using Weka always shows higher values compared to other plots. Scikit-learn, on other hand, for Random Forest classifier, gives results similar to those made by \cite{borges_hink_machine_2014-1}. For SVM classifier, the variance this time, in the plots made by scikit-learn, is remarkably less important and the values oscillate around a constant value. For the binary case, this value is about 0.3, while in Weka the obtained value is 0.75 (comparable to the original results in \cite{borges_hink_machine_2014-1}). On the other hand, in the multiclass case, it oscillates around 0.1, like it is the case in the results from \cite{borges_hink_machine_2014-1}. In the attempt made in Wake the accuracy is much higher at about 0.6. For the NaïveBayes classifier the results are comparable, except the results obtained in scikit-learn in the binary case.
+
+Concerning the other metrics, Random Forest classifier shows values close to 1 in both Weka and scikit-learn, while the original results for recall and f-measure show small values. For the rest of classifiers the results are generally totally different between attempts, with some exceptions (like SVM recall with Weka in three-class case compared to \cite{borges_hink_machine_2014-1}, or also SVM recall, but with scikit-learn and in multiclass case compared to \cite{borges_hink_machine_2014-1}).
+
+It can be concluded from here, that the results from \cite{borges_hink_machine_2014-1} were successfully reproduced in Weka in the three-class and binary cases, however for multiclass the reproduction of the results failed. Scikit-learn, on other hand, gives different results than Weka despite using the same algorithms with the same set of parameters. The more efficient classifier is certainly Random Classifier, especially when using Weka. However, MLP classifier gives also quite good results.
+
+Moreover to get more information about the behaviour of the classifiers the f-measure macro, micro and weighted averages were calculated, along with precision and recall weighted averages. The results are shown on figures \ref{fig:f1_macro}, \ref{fig:f1_micro}, \ref{fig:f1_weight}, \ref{fig:prec_weight} and \ref{fig:recall_weight} respectively. The values of f-measure micro, weighted and precision weighted for NaïveBayes classifier for multiclass case could not be calculated for unknown reason. These metrics were not presented in \cite{borges_hink_machine_2014-1}.
+
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.5\textwidth}
@@ -426,30 +437,34 @@ In order to reproduce the results presented in \cite{borges_hink_machine_2014-1}
     \label{fig:recall_weight}
 \end{figure}
 
+It would be hard to say that the obtained results in Weka and scikit-learn are similar, except the three-class case, where the results are quite similar. These results confirm once more time that Weka and scikit-learn tend to produce different results and that the best classifier is Random Forest, followed by MLP, especially in binary and three-class cases.
 
-The obtained results indicate clearly that Random Forest algorithm is the more accurate and gives clearly the best results, with Adaboost+JRIP with slightly worse performance. On the other hand, the results presented in \cite{borges_hink_machine_2014-1} shows better results for Adaboost+JRIP. For SVM and Naïve Bayes the results are comparable, expect for precision value for SVM. The origin of this difference is so far unknown.
-
-% In addition to the mentioned algorithms, the multiplayer perceptron algorithm (MLP) was used in order to have an initial idea on its performance. The obtained results show that it is less accurate than Random Forest and Adaboost+JRIP algorithms with an accuracy of approximatively 90\%, the values of precision and recall are respectively 0.8 and 0.65, which are good results.
-
-% The results of classification analysis are shown on figure \ref{fig:scikit_results}. In contrast to Weka's result, precision, recall and f-measure indicators come with three different values:
-
-
-It can be observed that the obtained results are partially different from those obtained using Weka. The results for MLP and Naïve Bayes are comparable to those from Weka, but on the other hand, the results for Random Forest and SVM differ considerably. This made MLP the most reliable classifier compared to others in this comparison.
-
-It can be also deducted that Weka is calculating metrics globally (corresponds to micro in scikit-learn).
+Since the results for three-class and binary cases were comparable and the three-class case gives more information about the status of the system, in what follows, the focus will be on the three-class case.
 
 \section{scikit-learn further methods' analysis}
 
-In addition to all that, scikit-learn enables the user to plot the receiver operating characteristic (ROC) curves for each class and the confusion matrix. The ROC curve represents the plot od true positive rate when the false positive rate changes. The confusion matrix on the other hand shows the normalized number (over the total number of samples) of predicted values of each class for each class. The results are illustrated on figures \ref{fig:ROCCM_RF}, \ref{fig:ROCCM_SVM}, \ref{fig:ROCCM_NB} and \ref{fig:ROCCM_MLP}.
+In addition to all that, scikit-learn enables the user to plot the receiver operating characteristic (ROC) curves for each class and the confusion matrix. The ROC curve represents the plot od true positive rate when the false positive rate changes. It is based on the prediction probabilities for each class given for each tested sample. Those predictions can be provided in two different ways:
+\begin{itemize}
+    \item concatenation of these probabilities for each cross-validation iteration,
+    \item determination of probabilities for preselected test dataset values.
+\end{itemize} 
+The confusion matrix on the other hand shows the normalized number (over the total number of samples) of predicted values of each class for each class. The results are illustrated on figures \ref{fig:ROCCM_RF}, \ref{fig:ROCCM_SVM}, \ref{fig:ROCCM_NB} and \ref{fig:ROCCM_MLP}.
 
 \begin{figure}[H]
-    \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \begin{subfigure}[t]{0.33\textwidth}
         \centering
         \includegraphics[page=1, width=\linewidth]{images/results_scikit/RandomForest}
+        \caption{ROC Curve - cross-validation}
+        \label{fig:scikit_RF_ROC}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.33\textwidth}
+        \centering
+        \includegraphics[page=1, width=\linewidth]{images/roc_3c}
         \caption{ROC Curve}
         \label{fig:scikit_RF_ROC}
     \end{subfigure}
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.3\textwidth}
         \centering
         \includegraphics[page=2, width=\linewidth, trim= 0 50 0 100, clip]{images/results_scikit/RandomForest}
         \caption{Confusion Matrix}
@@ -460,13 +475,20 @@ In addition to all that, scikit-learn enables the user to plot the receiver oper
 \end{figure}
 
 \begin{figure}[H]
-    \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \begin{subfigure}[t]{0.33\textwidth}
         \centering
         \includegraphics[page=1, width=\linewidth]{images/results_scikit/SVM}
-        \caption{ROC Curve}
+        \caption{ROC Curve - cross-validation}
         \label{fig:scikit_SVM_ROC}
     \end{subfigure}
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.33\textwidth}
+        \centering
+        \includegraphics[page=2, width=\linewidth]{images/roc_3c}
+        \caption{ROC Curve}
+        \label{fig:scikit_RF_ROC}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.3\textwidth}
         \centering
         \includegraphics[page=2, width=\linewidth, trim= 0 50 0 100, clip]{images/results_scikit/SVM}
         \caption{Confusion Matrix}
@@ -477,13 +499,19 @@ In addition to all that, scikit-learn enables the user to plot the receiver oper
 \end{figure}
 
 \begin{figure}[H]
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.33\textwidth}
         \centering
         \includegraphics[page=1, width=\linewidth]{images/results_scikit/NaiveBayes}
-        \caption{ROC Curve}
+        \caption{ROC Curve - cross-validation}
         \label{fig:scikit_NB_ROC}
     \end{subfigure}
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.33\textwidth}
+        \centering
+        \includegraphics[page=4, width=\linewidth]{images/roc_3c}
+        \caption{ROC Curve}
+        \label{fig:scikit_RF_ROC}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.3\textwidth}
         \centering
         \includegraphics[page=2, width=\linewidth, trim= 0 50 0 100, clip]{images/results_scikit/NaiveBayes}
         \caption{Confusion Matrix}
@@ -494,13 +522,19 @@ In addition to all that, scikit-learn enables the user to plot the receiver oper
 \end{figure}
 
 \begin{figure}[H]
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.33\textwidth}
         \centering
         \includegraphics[page=1, width=\linewidth]{images/results_scikit/MLP}
-        \caption{ROC Curve}
+        \caption{ROC Curve - cross-validation}
         \label{fig:scikit_MLP_ROC}
     \end{subfigure}
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.33\textwidth}
+        \centering
+        \includegraphics[page=3, width=\linewidth]{images/roc_3c}
+        \caption{ROC Curve}
+        \label{fig:scikit_RF_ROC}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.3\textwidth}
         \centering
         \includegraphics[page=2, width=\linewidth, trim= 0 50 0 100, clip]{images/results_scikit/MLP}
         \caption{Confusion Matrix}
@@ -510,7 +544,9 @@ In addition to all that, scikit-learn enables the user to plot the receiver oper
     \label{fig:ROCCM_MLP}
 \end{figure}
 
-The previous figures show that Random Forest classifier has the higher capacities to distinguish between the occurrence of each class, or it's absence. It's visible on both ROC curve and the confusion matrix, where the highest number of predictions is shown for the true positives for each class. SVM tends to predict only NoEvents and Attacks but does not really succeed in distinguishing between them. Naïve Bayes fails to make true predictions, it considers everything of class natural. Finally MLP, it succeeds in determining the class NoEvents, but does not distinguish over classes almost at all, despite the high accuracy (it is due because of the huge number of samples of class NoEvents).
+The previous figures show that Random Forest classifier has the higher capacities to distinguish between the occurrence of each class, or it's absence. It's visible on both ROC curves and the confusion matrix, where the highest number of predictions is shown for the true positives for each class. SVM tends to predict only NoEvents and Attacks but does not really succeed in distinguishing between them. Naïve Bayes fails to make true predictions, it considers everything of class natural. Finally MLP, it succeeds in determining the class NoEvents, but does not distinguish over classes almost at all, despite the high accuracy (it is due because of the huge number of samples of class NoEvents).
 
-Given this analysis, it can be deducted that Random Forest algorithm acts the best, and that is why it will be adapted in next chapters, in which, at first, an analysis of features and their importance will be made. However a deeper look at the amelioration of MLP will be also made later.
+The two methods of plotting the ROC curve does not give exactly the same results, however the conclusions remain the same in both cases. This fact may be due to a slightly different set of test data used for its creation.
+
+Given this analysis, it can be deducted that Random Forest algorithm acts the best, and that is why it will be adapted in next chapters, in which, at first, an analysis of features and their importance will be made. However a deeper look at the amelioration of MLP, in order to succeed in differentiation between the classes, will be also made later.
 
