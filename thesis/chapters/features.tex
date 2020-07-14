@@ -3,12 +3,18 @@
 After having determined the most performant algorithm, which is Random Forest, it is time to go further and analyse which features impact the results of classification the most. The focus will be especially on false predictions. In order to do that, six tools will be compared: LIME \cite{lime}, ELI5 \cite{mikhail_korobov_eli5_nodate}, YellowBrick \cite{bengfort_yellowbrick_2018}, Treeinterpreter \cite{ando_saabas_treeinterpreter_nodate}, dtreeviz \cite{terence_parr_dtreeviz_nodate} and export\_graphviz tool from scikit-learn, where the last three ones are designed for Decision Tree and Random Forest classifiers.
 
 \section{Result's interpreters' comparison}
-\subsection{LIME} %detaille plus
+\subsection{LIME} 
 LIME (Local Interpretable Model-agnostic Explanations) is a tool that is used to explain the behaviour of machine learning classifiers. It supports, as for this day, only the explanation of individual predictions for any scikit-learn classifier or regressor. This explanation consist in a list of features ordered by their relative importance for a particular prediction. This list can be shown is a raw mode (as a python list) or in a visual form (pyplot figure, jupyter notebook or html file).
 
-In order to class the features according to their importance, LIME approximates the model by an interpretable one, created based on perturbing the features of the examined instance. More the perturbed instances are similar to the examined instance, higher is the weight of the perturbed feature. 
+In order to class the features according to their importance, LIME approximates the model by an interpretable one, created based on perturbing the features of the examined instance. More the perturbed instances are similar to the examined instance, higher is the weight of the perturbed feature. This approximation process is called explanation and is described using the following equation:
 
-For example purposes, let the pigeon image on figure \ref{fig:limepigeon} be considered as a sample used in a classification problem based on a classifier noted \textit{f}. The image can be divided into several regions, like it is shown on figure \ref{fig:limediv}, each region corresponds to a feature.
+\begin{equation}
+    \xi(x) = \operatorname*{argmin}_{g \in G} \mathcal{L}(f, g, \pi_x) + \Omega(g)\quad\cite{lime},
+\end{equation}
+
+\noindent where $g$ is the explanation model from the set of interpretable models $G$, $f$ is the probability that the sample $x$ corresponds to a certain class, $\pi_x$ is the distance between an instance $z$ and the sample~$x$. $\mathcal{L}(f, g, \pi_x)$ describes to which extent $g$ is unfaithful in the approximation of $f$ in the neighbourhood defined by $\pi_x$, while $\Omega(g)$ describes the complexity of the explanation (for example the depth of the tree if $f$ is a decision tree). The goal of the explanation is to find the most faithful approximation of $f$ taking into consideration the neighbourhood $\pi_x$.
+
+To better illustrate the algorithm, let the pigeon image on figure \ref{fig:limepigeon} be considered as a sample used in a classification problem based on a classifier noted \textit{f}. The image can be divided into several regions, like it is shown on figure \ref{fig:limediv}, each region corresponds to a feature.
 
 \begin{minipage}{.45\textwidth}
     \begin{figure}[H]

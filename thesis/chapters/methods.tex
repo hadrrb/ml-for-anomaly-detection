@@ -5,7 +5,7 @@
 %concatenate all datasets
 
 %rappeler objectif
-Before going further and analysing neural networks, a deeper look at classical machine learning algorithms will be taken, in particular Random Forest, Support Vector Machine (SVM) and NaïveBayes in the context of anomaly detection in the CPS presented in chapter \ref{chap:intro}. However this was done before in \cite{borges_hink_machine_2014-1} using the black-box model algorithms only. In their approach they used Weka \cite{witten_appendix_2017} in order to find the most performant algorithm among 7 they have chosen (OneR, NNge, Random Forest, Naïve Bayes, SVM, JRipper, Adaboost). 
+Before going further and analysing neural networks in order to create a hybrid machine learning algorithm for anomaly detection in the power distribution system presented in chapter \ref{chap:intro}, a deeper look at classical machine learning algorithms will be taken, in particular Random Forest, Support Vector Machine (SVM), NaïveBayes and multilayer perceptron. However this was done before in \cite{borges_hink_machine_2014-1} using the black-box model algorithms only. In their approach they used Weka \cite{witten_appendix_2017} in order to find the most performant algorithm among 7 they have chosen (OneR, NNge, Random Forest, Naïve Bayes, SVM, JRipper, Adaboost). 
 
 This chapter shows an attempt to reproduce the results provided in \cite{borges_hink_machine_2014-1}, using two different machine learning toolkits (Weka and scikit-learn \cite{pedregosa_scikit-learn_2011}) in order to confirm the obtained results. That is why, first, these two toolkits will be presented, then the obtained results will be discussed.  
 
@@ -207,7 +207,55 @@ The list of all the parameters available is listed on table \ref{tab:nb_param}, 
 \end{table}
 
 \subsection{Multilayer perceptron}
-%TODO: Develop this subsection
+The multilayer perceptron is a classifier inspired by the structure of the human brain. It is constituted from a set of interconnected neurons, which are divided into at least 2 layers: input layer, $n$ hidden layers and output layer. Each layer consist of a number of neurons. The input layer has always a number of neurons equal to the number of features, and the output layer has always this number equal to the number of outputs of the problem. That is why, in the analysed case the input layer has 128 neurons and the output layer only one neuron corresponding to the status of the power plant (normal behaviour, natural fault, attack). Each of the mentioned neurons has a weight. The neurons are interconnected. The output of a neuron is considered as the input for the neurons of the following layer. Those neurons of the following layer calculates the weighted sum of the inputs and passes the results through a function, called activation function. The result obtained this way is considered as the output of the given neuron and goes to the following layer. The only exception is the input layer, which input is the values of features and its neurons just copy the input to the output \cite{patel_implementing_2020} \cite{noauthor_neural_nodate} \cite{stokfiszewski_soft_nodate}.
+
+The training process consists in updating the weights of the neurons during a predefined number of iterations called epochs. Before starting the training process the initial weights $w_i$ values for hidden and output layers should be chosen. This choice can be done empirically or randomly. Moreover, a real positive number $\eta$ called training step must be fixed. In each epoch and for each training pattern, the weights are updated following the equation:
+\begin{equation}
+    w_i = w_i + \eta\cdot (z^{(\mu)}-y) \cdot x_i^{(\mu)},
+\end{equation}
+where $z^{(\mu)}$ is the desired output for the $\mu$-th training sample, $y$ is the neuron output (weighted sum passed through the activation function), $x_i^{(\mu)}$ is the neuron's input value for the same $\mu$-th training sample and $i$ indicates the neuron index in the trained layer. After each epoch, the training samples are shuffled \cite{stokfiszewski_soft_nodate}. 
+
+The scikit-learn implementation of multilayer perceptron classifier is limited because it does not give a full control of each hidden layer and its activation function. It integrates however the possibility to determine the number of epochs called iterations and the training step called learning rate. All available parameters available are shown in table \ref{tab:mlp_param}. The implementation of MLP exists also in Weka, but it is as well limited, for this reason the analysis of its results will not be taken into consideration.
+
+There exists multiple python frameworks offering much more flexibility when creating neural networks like PyTorch or Keras framework, which were created in order to offer the possibility to create complex neural networks able to be used in large-scale applications. Even the developers of scikit-learn state on their website \cite{noauthor_neural_nodate}:
+
+\begin{quote}
+    \textit{This implementation is not intended for large-scale applications. In particular, \mbox{scikit-learn} offers no GPU support.} 
+\end{quote}
+
+The mentioned frameworks will not be used in this work because this flexibility is not required in this case. However, it does not mean that it is not possible to make the results even better using those frameworks.
+
+\begin{table}[H]
+    \footnotesize
+    \centering
+    \caption{MLP classifier parameters in scikit-learn \cite{noauthor_sklearnneural_networkmlpclassifier_nodate}} \label{tab:mlp_param} 
+    \begin{tabular}{lr}\toprule
+        Parameter & Value \\\midrule
+        hidden\_layer\_sizes & (20,) \\
+        activation & 'relu' \\
+        solver & 'adam' \\
+        alpha & $0.0001$ \\
+        batch\_size & 'auto' \\
+        learning\_rate & 'constant' \\
+        learning\_rate\_init & $0.001$ \\
+        power\_t & $0.5$ \\
+        max\_iter & 1000 \\
+        shuffle & True \\
+        random\_state & None \\
+        tol & $1e-4$ \\
+        verbose & False \\
+        warm\_start & False \\
+        momentum & $0.9$ \\
+        nesterovs\_momentum & True \\
+        early\_stopping & True \\
+        validation\_fraction & $0.1$ \\
+        beta\_1 & $0.9$ \\
+        beta\_2 & $0.999$ \\
+        epsilon & $1e-8$ \\
+        n\_iter\_no\_change & $10$ \\
+        max\_fun & $15000$ \\\bottomrule
+    \end{tabular}
+\end{table}
 
 \section{Metrics for classifiers comparison}
 All those classifiers give predictions that can be divided into 4 main groups. Assuming for a moment, for illustration purposes, that normal fault class is positive and attack class is negative, it could be differentiated between:
@@ -249,8 +297,6 @@ scikit-learn supports the calculation of precision, recall and f-measure in the 
 
 \section{Comparison results}
 In order to reproduce the results presented in \cite{borges_hink_machine_2014-1}, Weka version 3.8.4 and scikit-learn version 0.23.1, running on Anaconda 3.18.11 with Python 3.7.6.final.0, were used. SVM in Weka comes from a package untitled \textit{libsvm} available for this toolkit. The results are displayed in the same order as in \cite{borges_hink_machine_2014-1}, thus, the accuracy was presented on figures \ref{fig:weka_acc3}, \ref{fig:weka_acc2} and \ref{fig:weka_accall} for the three class, binary and all 37 class cases respectively. Then, the precision, recall and f-measure can be found on figures \ref{fig:prec}, \ref{fig:recall} and \ref{fig:f1}. For f-measure the scikit-learn plot is not displayed because Weka differentiates between micro, macro and weighted averages and a generic value for f-measure. The generic value does not correspond by value to the other averages.  
-
-% TODO: Complete the figures and add ROCs and an analysis
 
 \begin{figure}[H]
     \centering
