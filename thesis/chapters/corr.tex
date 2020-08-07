@@ -2,7 +2,42 @@
 After having chosen the appropriate machine learning algorithms and found a way to determine the most important features in the classification problem, this chapter is an attempt to create a model able to enhance the results obtained by the basic classification. Three different approaches are presented. First of all, the most important features values were altered and the effect of this modification is examined. Second, a formula for calculating the distance between different samples is established then a way to use that information. Finally, the Hidden Markov Models were used in order to determine the likeliness of prediction of a particular class and this data was used to modify the machine learning algorithm. 
 
 \section{Features values modification}
+The first proposed solution considers changing the values of most important features in the dataset after the training process. In other words the training process occurs normally, then the importances are determined and a correction function is created (figure \ref{fig:train}). This correction function will act then on the samples introduced to the model in order to change the features values and obtain better predictions (figure \ref{fig:predict}). 
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \node[rectangle, draw=black] (main) {Training data};
+        \node[rectangle, draw=black] (DecisionTree) [right=of main] {Classifier};
+        \node[rectangle, draw=black] (out1) [right=of DecisionTree] {Trained model};
+        \node[rectangle, draw=black] (out2) [below=of out1] {Features importances};
+        \node[rectangle, draw=black] (feat) [right=of out2] {Features correction model};
+   
+        \draw[->] (main.east) -- (DecisionTree.west);
+        \draw[->] (DecisionTree.east) -- (out1.west);
+        \draw[->] (DecisionTree.east) -- (out2.west); 
+        \draw[->] (out2.east) -- (feat.west);
+    \end{tikzpicture}
+    \caption{Training process illustration} \label{fig:train}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \node[rectangle, draw=black] (main) {Sample};
+        \node[rectangle, draw=black] (correl) [right=of main] {Features correction model};
+        \node[rectangle, draw=black] (model) [right=of correl] {Trained model};
+        \node[rectangle, draw=black](out) [right=of model] {Predicted class};
+
+        \draw[->] (main.east) -- (correl.west);
+        \draw[->] (correl.east) -- (model.west);
+        \draw[->] (model.east) -- (out.west);
+    \end{tikzpicture}
+    \caption{Prediction illustration} \label{fig:predict}
+\end{figure}
 
 \section{Distance between features}
 
+
 \section{Hidden Markov Models}
+
