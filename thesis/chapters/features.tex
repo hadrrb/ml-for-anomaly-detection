@@ -115,80 +115,66 @@ It can be concluded that ELI5 is the most versatile package compared to others, 
 %Lime
 For the rest of the chapter LIME was chosen to determine the features' importance because of it working with all black-box models available in scikit-learn. The capabilities of LIME were sufficient and that is why ELI5 was not used in his place.
 
-Since in this case the explanations of single samples are not really interesting, an attempt to generalize the results was made: Lime explainer was run on 100 false predictions of a chosen class. The results are concatenated together, and for all the features that are duplicated, the importance is calculated as the mean value of the importances and only one entry is kept with the calculated average importance. This algorithm was also run omitting the differentiation between classes. The results, reduced to 10 entries each, are shown below.
+In what follows the Decision Tree classifier will be used because its ease of interpretation. The explication of the algorithm was provided in \ref{sec:rf} as the part of Random Forest classifier algorithm, since the Random Forest is composed of a certain number of Decision Trees.
 
-For NoEvents class:
-\begin{verbatim}
-                                     importance
- feature                                      
- R2-PM1:V > 130872.03                -0.013013
- R3-PA2:VH <= -93.75                 -0.011134
- R2-PA7:VH <= -101.20                -0.010218
- R3-PM2:V > 130431.15                -0.009583
- R2-PM7:V > 130857.40                -0.009377
- ...                                       ...
- R3-PM5:I <= 330.70                   0.005762
- 0.00 < R1-PA12:IH <= 32.04           0.007514
- 128762.21 < R2-PM1:V <= 129859.49    0.007776
- R3-PM2:V <= 128425.29                0.007998
- R4-PA5:IH > 115.38                   0.008534
- 
- [361 rows x 1 columns]
-\end{verbatim}
+Because in this case the explanations of single samples are not really interesting, an attempt to generalize the results was made: Lime explainer was run on 100 false predictions of a chosen class made using Decision Tree classifier. The results are concatenated together. For all the duplicates of features, the mean importance is calculated and only one entry is kept along with this calculated mean value. This algorithm was also run without taking into consideration the true class. The results, reduced to 5 most important features for NoEvents, Attack, Natural and all samples, are shown respectively in tables \ref{tab:5best:noev}, \ref{tab:5best:attack}, \ref{tab:5best:natural} and \ref{tab:5best:all}.
 
-For Attack class:
-\begin{verbatim}
-                                   importance
-    feature                                 
-    R3-PA2:VH > 113.97             -0.012837
-    -97.10 < R4-PA7:VH <= -35.66   -0.010994
-    -97.43 < R1-PA7:VH <= -35.85   -0.010306
-    R2-PA2:VH > 114.00             -0.009730
-    R3-PM2:V <= 128425.29          -0.006914
-    ...                                  ...
-    R3-PA2:VH <= -93.75             0.008307
-    R3-PA7:VH <= -101.22            0.008676
-    R2-PM1:V > 130872.03            0.009242
-    R3:S > 0.00                     0.010717
-    R2-PA7:VH <= -101.20            0.014018
-    
-    [380 rows x 1 columns]
-\end{verbatim}
+\begin{table}[H]
+    \centering
+    \caption{5 most important features for NoEvents samples} \label{tab:5best:noev}
+    \begin{tabular}{lr}\toprule
+        feature  &importance\\\midrule            
+        R4-PA5:IH > 115.38                  & 0.008534\\
+        R3-PM2:V <= 128425.29               & 0.007998\\
+        128762.21 < R2-PM1:V <= 129859.49   & 0.007776\\
+        0.00 < R1-PA12:IH <= 32.04          & 0.007514\\
+        R3-PM5:I <= 330.70                  & 0.005762\\
+        ...                                 & ... \\\bottomrule
+    \end{tabular}
+\end{table}
 
-For Natural class: 
-\begin{verbatim}
-                            importance
-    feature                          
-    R2-PA5:IH <= -74.26     -0.003613
-    R4-PM3:V > 132484.78    -0.002835
-    R4-PM2:V > 132187.18    -0.002437
-    R2-PM7:V <= 128751.24   -0.002290
-    R2-PM1:V <= 128762.21   -0.002151
-    ...                           ...
-    R1-PA1:VH > 71.28        0.003518
-    R2-PM7:V > 130857.40     0.003693
-    R2-PA5:IH > 63.30        0.004103
-    R3:F > 60.00             0.004873
-    R2:F > 60.00             0.005168
-    
-    [331 rows x 1 columns]
-\end{verbatim}
+\begin{table}[H]
+    \centering
+    \caption{5 most important features for Attack samples} \label{tab:5best:attack}
+    \begin{tabular}{lr}\toprule
+        feature                   & importance \\\midrule
+        R3:S > 0.00                    & 0.010717  \\
+        R2-PA7:VH <= -101.20           & 0.014018   \\
+        R2-PM1:V > 130872.03           & 0.009242 \\
+        R3-PA7:VH <= -101.22           & 0.008676 \\
+        R3-PA2:VH <= -93.75            & 0.008307 \\
+        ...                            & ... \\\bottomrule
+    \end{tabular}
+\end{table}
 
-For all classes:
-\begin{verbatim}
-                                 importance
-    feature                                
-    R3-PM2:V <= 128425.29         -0.006715
-    R2-PA7:VH > 65.91             -0.006353
-    R3-PM5:I <= 330.70            -0.006009
-    -40.44 < R3-PA1:VH <= 65.76   -0.005808
-    R3-PA4:IH <= -65.22           -0.005764
-    ...                                 ...
-    R2-PA3:VH <= -75.28            0.005588
-    R3-PA4:IH > 102.49             0.005723
-    R4-PA1:VH > 71.50              0.007481
-    R3-PM2:V > 130431.15           0.008501
-    R2-PM1:V > 130872.03           0.009070
-    
-    [331 rows x 1 columns]
-\end{verbatim}
+\begin{table}[H]
+    \centering
+    \caption{5 most important features for Natural samples} \label{tab:5best:natural}
+    \begin{tabular}{lr}\toprule
+        feature                & importance   \\\midrule    
+        R2:F > 60.00           &  0.005168 \\
+        R3:F > 60.00           &  0.004873 \\
+        R2-PA5:IH > 63.30      &  0.004103 \\
+        R2-PM7:V > 130857.40   &  0.003693 \\
+        R1-PA1:VH > 71.28     &   0.003518 \\
+        ...                    &       ...    \\\bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{5 most important features for all samples} \label{tab:5best:all}
+    \begin{tabular}{lr}\toprule
+        feature                   &    importance   \\ \midrule                            
+        R2-PM1:V > 130872.03     &      0.009070   \\
+        R3-PM2:V > 130431.15      &     0.008501 \\
+        R4-PA1:VH > 71.50         &     0.007481 \\
+        R3-PA4:IH > 102.49        &     0.005723 \\
+        R2-PA3:VH <= -75.28      &      0.005588 \\
+        ...                       &          ... \\\bottomrule
+    \end{tabular}
+\end{table}
+
+It can be observed that the five most important features among false predictions for each class are different. This implies creating a correction model for every important feature among all classes.  The exact procedure is described in the next chapter.
+
+In this chapter different result interpreters were presented in details. Among them, Lime have been chosen to create an algorithm for features importance determination. The most important features will be used in next chapter to correct the obtained predictions. 
