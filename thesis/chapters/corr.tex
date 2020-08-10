@@ -36,6 +36,67 @@ The first proposed solution considers changing the values of most important feat
     \caption{Prediction illustration} \label{fig:predict}
 \end{figure}
 
+First of all the correction function was defined as the modification function of the feature values for the predicted samples. This modification consists in shifting the feature value so the feature value would not meet the condition to make a false prediction from tables \ref{tab:5best:noev}-\ref{tab:5best:natural}. This function python code is as follows:  
+\begin{python}
+def modify(feat, val):
+    X[feat] = X[feat].apply(lambda x: x + val)
+\end{python}
+where \textit{X} is a pandas DataFrame object containing all the samples to predict.
+
+Second, the five most important features are taken from tables \ref{tab:5best:noev}-\ref{tab:5best:natural} and the values of features from the samples to predict are altered using the previous function. The following code shows this operation:
+\begin{python}
+modify("R4-PA5:IH", -115.38)
+modify("R3-PM2:V", 128525.29)
+modify("R2-PM1:V", 2000)
+modify("R1-PA12:IH", 32.04)
+modify("R3-PM5:I", 330.7)
+modify("R3:S", 0)
+modify("R2-PA7:VH", 101.20)
+modify("R2-PM1:V", -1300872.03)
+modify("R3-PA7:VH", 101.22)
+modify("R3-PA2:VH", 93.75)    
+modify("R2:F", -60)
+modify("R3:F", -60)
+modify("R2-PA5:IH",- 63.30)
+modify("R2-PM7:V", -130857.40) 
+\end{python}
+
+The samples modified this way are then used for the predictions. In order to check the success of this method, the classification\_report method from scikit-learn was used. The results before and after modifying the samples are displayed in tables \ref{tab:clreport:before} and \ref{tab:clreport:after}.
+
+\begin{table}[H]
+    \centering
+    \caption{Classification report before features modification} \label{tab:clreport:before}
+    \begin{tabular}{rcccc}\toprule
+        & precision    &recall & f1-score  & support \\\midrule
+            NoEvents  &   $  0.72 $  &  $ 0.76 $  &  $ 0.74 $  & $ 51797 $\\
+              Attack   &  $  0.27 $   & $ 0.26 $  &  $ 0.26 $  & $ 17382 $\\
+             Natural   &  $  0.19 $   & $ 0.08 $  &  $ 0.12 $  & $  4232 $\\
+            accuracy   &            &          &  $0.60$  &   $73411$ \\
+           macro avg   &  $  0.39 $   & $ 0.37 $  &  $ 0.37 $  & $ 73411 $\\
+        weighted avg   &  $  0.58 $  &  $ 0.60 $  &  $ 0.59 $ &  $ 73411 $\\\bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Classification report after features modification} \label{tab:clreport:after}   
+    \begin{tabular}{rcccc}\toprule
+        &precision   & recall & f1-score &  support  \\\midrule
+
+        NoEvents   &    0.71   &   0.83  &    0.77   &  51797 \\
+          Attack    &   0.26   &   0.17  &    0.21   &  17382 \\
+         Natural   &    0.10   &   0.03   &   0.05  &    4232 \\
+    
+        accuracy    &          &          &   0.63   &  73411 \\
+       macro avg    &   0.36   &   0.34   &   0.34   &  73411 \\
+    weighted avg     &  0.57   &   0.63   &   0.59   &  73411    \\     \bottomrule   
+    \end{tabular}
+\end{table}
+
+The tables \ref{tab:clreport:before} and \ref{tab:clreport:after} shows a general increase of the accuracy of the model after changing the features. The more detailed results, shows a remarkably better recall and f-measure for NoEvents class, with a small decrease of precision, but for all other classes a decrease can be observed for all the metrics. 
+
+For this particular set of samples, there is a slight increase of weighted recall, weighted f-measure and accuracy. That it is why, it may be concluded that this method succeeded with this particular dataset, especially given the unequal distribution of the samples between classes and model's tendency to predict NoEvents class. However, with any other dataset, where the NoEvents class samples are less common compared to other classes, this method causes worse predictions.
+
 \section{Distance between features}
 
 

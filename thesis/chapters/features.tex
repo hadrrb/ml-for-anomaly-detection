@@ -4,9 +4,9 @@ After having determined the most performant algorithm, which is Random Forest, i
 
 \section{Result's interpreters' comparison}
 \subsection{LIME} 
-LIME (Local Interpretable Model-agnostic Explanations) is a tool that is used to explain the behaviour of machine learning classifiers. It supports, as for this day, only the explanation of individual predictions for any scikit-learn classifier or regressor. This explanation consist in a list of features ordered by their relative importance for a particular prediction. This list can be shown is a raw mode (as a python list) or in a visual form (pyplot figure, jupyter notebook or html file).
+LIME (Local Interpretable Model-agnostic Explanations) is a tool that is used to explain the behaviour of machine learning classifiers. It supports, as for this day, only the explanation of individual predictions for any scikit-learn classifier or regressor. This explanation consist in a list of features (and more precisely decision nodes composed of feature name and a numeric condition) ordered by their relative importance for a particular prediction. This list can be shown is a raw mode (as a python list) or in a visual form (pyplot figure, jupyter notebook or html file).
 
-In order to class the features according to their importance, LIME approximates the model by an interpretable one, created based on perturbing the features of the examined instance. More the perturbed instances are similar to the examined instance, higher is the weight of the perturbed feature. This approximation process is called explanation and is described using the following equation:
+In order to class the features according to their importance, LIME approximates the model by an interpretable one, created based on perturbing the features of the examined instance. More the perturbed instances are similar to the examined instance, higher is the weight of the perturbed feature. The interpretable model can be This approximation process is called explanation and is described using the following equation:
 
 \begin{equation}
     \xi(x) = \operatorname*{argmin}_{g \in G} \mathcal{L}(f, g, \pi_x) + \Omega(g)\quad\cite{lime},
@@ -117,7 +117,36 @@ For the rest of the chapter LIME was chosen to determine the features' importanc
 
 In what follows the Decision Tree classifier will be used because its ease of interpretation. The explication of the algorithm was provided in \ref{sec:rf} as the part of Random Forest classifier algorithm, since the Random Forest is composed of a certain number of Decision Trees.
 
-Because in this case the explanations of single samples are not really interesting, an attempt to generalize the results was made: Lime explainer was run on 100 false predictions of a chosen class made using Decision Tree classifier. The results are concatenated together. For all the duplicates of features, the mean importance is calculated and only one entry is kept along with this calculated mean value. This algorithm was also run without taking into consideration the true class. The results, reduced to 5 most important features for NoEvents, Attack, Natural and all samples, are shown respectively in tables \ref{tab:5best:noev}, \ref{tab:5best:attack}, \ref{tab:5best:natural} and \ref{tab:5best:all}.
+Because in this case the explanations of single samples are not really interesting, an attempt to generalize the results was made: Lime explainer was run on 100 false predictions of a chosen class made using Decision Tree classifier. The results are concatenated together. For all the duplicates of features, the mean importance is calculated and only one entry is kept along with this calculated mean value. In other words:
+
+\begin{python}
+import pandas as pd
+import numpy as np
+from lime.lime_tabular import LimeTabularExplainer
+
+# explainer initialization with training data
+explainer = LimeTabularExplainer(X, training_labels = y, feature_names = features, class_names = labels)
+
+# Xall = all samples, yall = all true classes corresponding to samples (not used in training)
+boole = (yall != clf.predict(Xall)) # all false predicitions
+faulty = boole & (yall == 0) # false predicitions of true class equal 0 (NoEvents)
+X_test = Xall[faulty] # all false predicition samples
+y_test = yall[faulty] # all false predicition true classes
+lst = [] # initialization of a list
+for idx in range(0, 100): # create explanation for 100 first samples
+    exp = explainer.explain_instance(X_test[idx], clf.predict_proba, num_features=128, labels=[0, 1, 2])
+    lst.append(exp.as_list(label=0))
+# transform to dataframe
+lst = np.array(lst)
+clst = np.concatenate(lst, axis=0)
+dtfr = pd.DataFrame(clst, columns=['feature', 'importance'])
+dtfr["importance"] = pd.to_numeric(dtfr["importance"])
+# group by feature then sort
+dtfr = dtfr.groupby(['feature']).mean()
+res = dtfr.sort_values(by="importance")
+\end{python}
+
+The results, reduced to 5 most important features for NoEvents, Attack, Natural and all samples, are shown respectively in tables \ref{tab:5best:noev}, \ref{tab:5best:attack} and \ref{tab:5best:natural}.
 
 \begin{table}[H]
     \centering
@@ -161,19 +190,19 @@ Because in this case the explanations of single samples are not really interesti
     \end{tabular}
 \end{table}
 
-\begin{table}[H]
-    \centering
-    \caption{5 most important features for all samples} \label{tab:5best:all}
-    \begin{tabular}{lr}\toprule
-        feature                   &    importance   \\ \midrule                            
-        R2-PM1:V > 130872.03     &      0.009070   \\
-        R3-PM2:V > 130431.15      &     0.008501 \\
-        R4-PA1:VH > 71.50         &     0.007481 \\
-        R3-PA4:IH > 102.49        &     0.005723 \\
-        R2-PA3:VH <= -75.28      &      0.005588 \\
-        ...                       &          ... \\\bottomrule
-    \end{tabular}
-\end{table}
+% \begin{table}[H]
+%     \centering
+%     \caption{5 most important features for all samples} \label{tab:5best:all}
+%     \begin{tabular}{lr}\toprule
+%         feature                   &    importance   \\ \midrule                            
+%         R2-PM1:V > 130872.03     &      0.009070   \\
+%         R3-PM2:V > 130431.15      &     0.008501 \\
+%         R4-PA1:VH > 71.50         &     0.007481 \\
+%         R3-PA4:IH > 102.49        &     0.005723 \\
+%         R2-PA3:VH <= -75.28      &      0.005588 \\
+%         ...                       &          ... \\\bottomrule
+%     \end{tabular}
+% \end{table}
 
 It can be observed that the five most important features among false predictions for each class are different. This implies creating a correction model for every important feature among all classes.  The exact procedure is described in the next chapter.
 
