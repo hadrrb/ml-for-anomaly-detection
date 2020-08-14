@@ -93,12 +93,58 @@ The samples modified this way are then used for the predictions. In order to che
     \end{tabular}
 \end{table}
 
-The tables \ref{tab:clreport:before} and \ref{tab:clreport:after} shows a general increase of the accuracy of the model after changing the features. The more detailed results, shows a remarkably better recall and f-measure for NoEvents class, with a small decrease of precision, but for all other classes a decrease can be observed for all the metrics. 
+The tables \ref{tab:clreport:before} and \ref{tab:clreport:after} show a general increase of the accuracy of the model after changing the features. The more detailed results, show a remarkably better recall and f-measure for NoEvents class, with a small decrease of precision, but for all other classes a decrease can be observed for all the metrics. 
 
 For this particular set of samples, there is a slight increase of weighted recall, weighted f-measure and accuracy. That it is why, it may be concluded that this method succeeded with this particular dataset, especially given the unequal distribution of the samples between classes and model's tendency to predict NoEvents class. However, with any other dataset, where the NoEvents class samples are less common compared to other classes, this method causes worse predictions.
 
 \section{Distance between features}
+The second proposed solution considers using a transformation routine, which, reduces the number of features to the 15 most important from tables \ref{tab:5best:noev}-\ref{tab:5best:natural} and adds another feature that represents the closest class to the treated sample. The prediction steps were illustrated on figure \ref{fig:distill}.
 
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \node[rectangle, draw=black](sample) {Sample};
+        \node[rectangle, draw=black](trans) [right=of sample] {Transformation};
+        \node[rectangle, draw=black](class) [right=of trans] {Classifier};
+        \node[rectangle, draw=black](out) [right=of class] {Predicted class};
 
+        \draw[->] (sample.east) -- (trans.west);
+        \draw[->] (trans.east) -- (class.west);
+        \draw[->] (class.east) -- (out.west);
+    \end{tikzpicture}
+    \caption{Distance algorithm illustration}
+    \label{fig:distill}
+\end{figure}
+
+The transformation routine on other hand takes the form of a python class and is composed of 4 methods:
+\begin{enumerate}
+    \item \textbf{distance(X1, X2)}: returns the distance between two samples X1 and X2. It is calculated as the sum of differences between features,
+    \item \textbf{important(X)}: returns the samples with only 15 most important features. The input must be a pandas DataFrame or Series. The choice of features to keep is made by hand directly in the method, without the possibility to change them afterwards,
+    \item \textbf{fit(X,y)}: determines the reference class sample for each class by calculating the mean value of each feature among all samples corresponding to the treated class. It is called only during data fitting to the classifier,
+    \item \textbf{transform(X)}: determines the class with the smallest distance to the sample, based on reference samples determined by fit(X,y) method. The obtained values are then added as a new feature to the samples X and returned afterwards by the method.
+\end{enumerate}
+
+This routine has been coupled with DecisionTree classifier using \textbf{pipeline} class in scikit-learn, which construct acts like a classifier (has fit and predict methods). 
+
+The success rate of this method was verified, once more, using classification\_report method from scikit-learn. The result before the test are the same as in table \ref{tab:clreport:before}, while the results after using the described method are shown in table \ref{tab:distrep}.
+
+\begin{table}[H]
+    \centering
+    \caption{Classification report after using the distance routine} \label{tab:distrep}
+    \begin{tabular}{rcccc}\toprule
+     &   precision    &recall & f1-score &  support  \\\midrule
+
+        NoEvents    &   0.72   &   0.79   &   0.75  &   51797 \\
+          Attack    &   0.28   &   0.23   &   0.25  &   17382 \\
+         Natural   &    0.19   &   0.08   &   0.11  &    4232 \\
+    
+        accuracy    &           &         &   0.62   &  73411 \\
+       macro avg    &   0.40    &  0.37   &   0.37  &   73411 \\
+    weighted avg   &   0.58   &   0.62   &   0.60   &  73411   \\  \bottomrule
+    \end{tabular}
+\end{table}
+
+Tables \ref{tab:clreport:before} and \ref{tab:distrep} show an increase of model's accuracy by $0.02$. Precision value for Attack class increased by 0.01, with no changes for other classes. Recall value increased for NoEvents by 0.03 and decreased for Attack by 0.03. Finally, f-measure increased for NoEvents class and decreased by 0.01 for other classes. The f-measure value difference for Natural class, despite the same precision and recall, is due to rounding numbers to two decimal places. 
+
+It may be concluded that this method does not really enhance the results, despite the better accuracy. For the other metrics, ones increased, but other decreased, what makes the obtained result less satisfying. In addition to that, the same problem with unequal class distribution mentioned in previous method discussion arises. 
 \section{Hidden Markov Models}
-
