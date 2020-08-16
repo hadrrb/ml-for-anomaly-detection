@@ -147,4 +147,51 @@ The success rate of this method was verified, once more, using classification\_r
 Tables \ref{tab:clreport:before} and \ref{tab:distrep} show an increase of model's accuracy by $0.02$. Precision value for Attack class increased by 0.01, with no changes for other classes. Recall value increased for NoEvents by 0.03 and decreased for Attack by 0.03. Finally, f-measure increased for NoEvents class and decreased by 0.01 for other classes. The f-measure value difference for Natural class, despite the same precision and recall, is due to rounding numbers to two decimal places. 
 
 It may be concluded that this method does not really enhance the results, despite the better accuracy. For the other metrics, ones increased, but other decreased, what makes the obtained result less satisfying. In addition to that, the same problem with unequal class distribution mentioned in previous method discussion arises. 
-\section{Hidden Markov Models}
+
+\section{Hidden Markov Model}
+The last proposed solution consists in determining the probabilities of occurrence of different classes using so called Hidden Markov Model. The obtained probabilities are then used to modify the split condition in the decision tree classifier. 
+
+The Hidden Markov Model is a probabilistic model for generating observable data in a random way by a sequence of internal hidden states, which can not be observed directly. The transitions between those hidden states have the form of a Markov chain \cite{noauthor_tutorial_nodate}. The Markov chain, on other hand, is a chain of interconnected states, where each state's probability depends only of the probability of predecessing state, without taking into consideration what happened before \cite{amit_introduction_2019}.
+
+In the studied example, the observable data are the features values available in the samples and the states are represented by the 3 classes NoEvents, Attack and Normal. The Hidden Markov Model was used to determine the stationary distribution of the states (invariable in time probability distribution in the Markov chain).
+
+It exists a Python package that implements the Hidden Markov Models and it is compatible with scikit-learn, it's name is \textbf{hmmlearn} \cite{noauthor_hmmlearn_2020}. It can be used just like any other scikit-learn classifiers, especially that it offers methods like fit(), predict(), predict\_proba(), etc...
+
+Using \textbf{hmmlearn} the stationary distribution was determined in 4 lines of code:
+\begin{python}
+from hmmlearn.hmm import GaussianHMM 
+clf2 = GaussianHMM(n_components = 3) # 3 states
+clf2.fit(X)
+coefs = clf2.get_stationary_distribution()
+\end{python}
+The Gaussian HMM was used because the observations (features) are continuous. It was initialized by a number of components equal to 3 because of 3 states - NoEvents, Attack and Natural.
+
+The stationary distribution obtained this way was then used to set the class\_weight parameter in DecisionTreeClassifier in scikit-learn, as shown in the listing below.
+
+\begin{python}
+ctest = DecisionTreeClassifier(class_weight = {0: coefs[0], 1:coefs[1], 2:coefs[2]})  
+\end{python}
+
+The results are presented in table \ref{tab:hmm}.
+
+\begin{table}[H]
+    \centering
+    \caption{Classification report after using Hidden Markov Model} \label{tab:hmm}
+    \begin{tabular}{rcccc}\toprule
+       & precision &   recall & f1-score  & support \\\midrule
+
+        NoEvents    &   0.71    &  0.75  &    0.73     &51797\\
+          Attack     &  0.27    &  0.26  &    0.26 &   17382\\
+         Natural    &   0.16  &    0.06    &  0.09  &    4232\\
+    
+        accuracy     &          &         &   0.60   &  73411\\
+       macro avg     &  0.38    &  0.36   &   0.36  &   73411\\
+    weighted avg    &   0.58    &  0.60   &   0.59  &   73411   \\ \bottomrule   
+    \end{tabular}
+\end{table}
+
+The tables \ref{tab:clreport:before} and \ref{tab:hmm} show that the accuracy did not change after using the probabilities obtained from Hidden Markov Model. Looking more in details, it can be observed a general small decrease of precision and a small increase of recall and f-measure. 
+
+It may be concluded that this method does not really work with the given dataset. The possible cause of this may be the fact that the samples in the dataset does not include any information about their order in time. If the dataset contained information about the time of the event, the results, probably, would be more significant. \\
+
+In this chapter, three methods for results' enhancement were presented. The best result was obtained using the distance between features approach because the values of certain metrics increased without decreasing significally the values of other metrics like in the case of the approach with values modification. The worst results were obtained using the Hidden Markov Model and this probably because the provided dataset is time independent. 
