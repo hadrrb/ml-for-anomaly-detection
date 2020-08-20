@@ -10,11 +10,11 @@ for i in range(1,16):
   X = X.replace(np.inf, np.finfo(np.float32).max) #replacing 'inf' with its equivalent in float32 datatype
   
   #preparing the label converter
-  le = preprocessing.LabelEncoder()
-  le.fit(labels)
+  # le = preprocessing.LabelEncoder()
+  # le.fit(labels)
 
-  #assigning the training data and the labels into variables
-  X['marker'] = le.transform(X['marker'])
+  # #assigning the training data and the labels into variables
+  # X['marker'] = le.transform(X['marker'])
 
   arff.dump('Data_out/data%d.arff'%i
       , X.values
