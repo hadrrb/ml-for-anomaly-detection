@@ -1,5 +1,5 @@
 \chapter{Model enhancement}
-After having chosen the appropriate machine learning algorithms and found a way to determine the most important features in the classification problem, this chapter is an attempt to create a model able to enhance the results obtained by the basic classification. Three different approaches are presented. First of all, the most important features values were altered and the effect of this modification is examined. Second, a formula for calculating the distance between different samples is established then a way to use that information. Finally, the Hidden Markov Models were used in order to determine the likeliness of prediction of a particular class and this data was used to modify the machine learning algorithm. 
+After having chosen the appropriate machine learning algorithms and found a way to determine the most important features in the classification problem, this chapter is an attempt to create a model able to enhance the results obtained by the basic classification. Three different approaches are presented. First of all, the most important features values were altered and the effect of this modification is examined. Second, a formula for calculating the distance between different samples is established then a way to use that information. Finally, the Hidden Markov Model were used in order to determine the likehood of prediction of a particular class and this data was used to modify the machine learning algorithm. 
 
 \section{Features values modification}
 The first proposed solution considers changing the values of most important features in the dataset after the training process. In other words the training process occurs normally, then the importances are determined and a correction function is created (figure \ref{fig:train}). This correction function will act then on the samples introduced to the model in order to change the features values and obtain better predictions (figure \ref{fig:predict}). 
@@ -36,7 +36,7 @@ The first proposed solution considers changing the values of most important feat
     \caption{Prediction illustration} \label{fig:predict}
 \end{figure}
 
-First of all the correction function was defined as the modification function of the feature values for the predicted samples. This modification consists in shifting the feature value so the feature value would not meet the condition to make a false prediction from tables \ref{tab:5best:noev}-\ref{tab:5best:natural}. This function python code is as follows:  
+First of all the correction function was defined as the modification function of the feature values for the predicted samples. This modification consists in shifting the feature value so the feature value would not meet the condition to make a false prediction from tables \ref{tab:5best:noev}-\ref{tab:5best:natural}. This function code in Python is as follows:  
 \begin{python}
 def modify(feat, val):
     X[feat] = X[feat].apply(lambda x: x + val)
@@ -124,7 +124,7 @@ The transformation routine on other hand takes the form of a python class and is
     \item \textbf{transform(X)}: determines the class with the smallest distance to the sample, based on reference samples determined by fit(X,y) method. The obtained values are then added as a new feature to the samples X and returned afterwards by the method.
 \end{enumerate}
 
-This routine has been coupled with DecisionTree classifier using \textbf{pipeline} class in scikit-learn, which construct acts like a classifier (has fit and predict methods). 
+This routine has been coupled with DecisionTree classifier using \textbf{pipeline} class in scikit-learn, which construct acts like a classifier (it has fit and predict methods). 
 
 The success rate of this method was verified, once more, using classification\_report method from scikit-learn. The result before the test are the same as in table \ref{tab:clreport:before}, while the results after using the described method are shown in table \ref{tab:distrep}.
 

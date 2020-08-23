@@ -6,7 +6,7 @@ After having determined the most performant algorithm, which is Random Forest, i
 \subsection{LIME} 
 LIME (Local Interpretable Model-agnostic Explanations) is a tool that is used to explain the behaviour of machine learning classifiers. It supports, as for this day, only the explanation of individual predictions for any scikit-learn classifier or regressor. This explanation consist in a list of features (and more precisely decision nodes composed of feature name and a numeric condition) ordered by their relative importance for a particular prediction. This list can be shown is a raw mode (as a python list) or in a visual form (pyplot figure, jupyter notebook or html file).
 
-In order to class the features according to their importance, LIME approximates the model by an interpretable one, created based on perturbing the features of the examined instance. More the perturbed instances are similar to the examined instance, higher is the weight of the perturbed feature. The interpretable model can be This approximation process is called explanation and is described using the following equation:
+In order to class the features according to their importance, LIME approximates the model by an interpretable one, created based on perturbing the features of the examined instance. More the perturbed instances are similar to the examined instance, higher is the weight of the perturbed feature. This approximation process is called explanation and is described using the following equation:
 
 \begin{equation}
     \xi(x) = \operatorname*{argmin}_{g \in G} \mathcal{L}(f, g, \pi_x) + \Omega(g)\quad\cite{lime},
@@ -34,7 +34,7 @@ To better illustrate the algorithm, let the pigeon image on figure \ref{fig:lime
 \end{minipage}
 \vspace{0.5cm}
 
-In the next step, a new dataset is created by modifying the features. In the case of the pigeon image some regions can be simply greyed out like it is shown on figure \ref{fig:limegrey}. For each of these the probability if it represents a pigeon or not is calculated using the classifier \textit{f}.
+In the next step, a new dataset is created by modifying the features. In the case of the pigeon image some regions can be simply greyed out like it is shown on figure \ref{fig:limegrey}. For each of these regions the probability if it represents a pigeon or not is calculated using the classifier \textit{f}.
 
 \begin{figure}[H]
     \centering
@@ -62,7 +62,7 @@ Using this data it is possible to determine the importance of regions/features o
 \subsection{ELI5}
 ELI5 (Explain like I am a 5-year old) is a tool, in form of a Python package, used to debug machine learning classifiers and explain their predictions. It supports multiple machine learning frameworks, including scikit-learn. It can be used to explain how the model works both locally for one prediction and globally for the whole model. The output can take several forms just like in LIME case.
 
-For white-box models, ELI5 works as an extension of scikit-learn and it's capable to extract the weights of model's features for different classes. In addition to that it can show the weights that contributed in a particular prediction. It is done by removing particular features and checking how the accuracy of the classifier was altered. On the other hand, for black-box models, this tool integrates a modified version of LIME, supporting more machine learning frameworks, and a permutation importance method, which checks how the model's accuracy decreases when removing one of the features and on this basis determines the importance of the features.
+For white-box models, ELI5 works as an extension of scikit-learn and it is capable to extract the weights of model's features for different classes. In addition to that it can show the weights that contributed in a particular prediction. It is done by removing particular features and checking how the accuracy of the classifier was altered. On the other hand, for black-box models, this tool integrates a modified version of LIME, supporting more machine learning frameworks, and a permutation importance method, which checks how the model's accuracy decreases when removing one of the features and on this basis determines the importance of the features.
 
 \subsection{YellowBrick}
 YellowBrick is another Python package, which is an extension of scikit-learn framework. It is meant to give global interpretation of the analysed model on different levels. It is possible not only to visualize features importances calculated directly by scikit-learn, but also to give a classification report (accuracy, recall, precision, f-measure), plot a confusion matrix, a ROC curve and much more. In addition to all that, YellowBrick comes with a tool for determination of correlation between features in the dataset.
@@ -71,10 +71,10 @@ YellowBrick is another Python package, which is an extension of scikit-learn fra
 Treeinterpreter is a simple Python package that works with scikit-learn trees and random forest classifiers. It's only usage consists in decomposing the obtained prediction into bias and contributions of different features. The output is given in the form of a numpy array.
 
 \subsection{scikit-learn export\_graphviz}
-export\_graphviz is a scikit-learn embedded function that enables the user to visualise a decision tree with all the branches and save it into Graphviz\footnote{a set of tools for diagram creation using graphs.} format, that can be converted into a vector graphic. It is possible also to visualise decision trees composing random forest model in scikit-learn, since the possibility to extract particular decision trees when using this framework. However the interpretability of results for random forest classifier can be hard.
+export\_graphviz is a scikit-learn embedded function that enables the user to visualize a decision tree with all the branches and save it into Graphviz\footnote{a set of tools for diagram creation using graphs.} format, that can be converted into a vector graphic. It is possible also to visualize decision trees composing random forest model in scikit-learn, since the possibility to extract particular decision trees when using this framework. However the interpretability of results for random forest classifier can be hard.
 
 \subsection{dtreeviz}
-dtreeviz is a more advanced version of export\_graphviz available in scikit-learn. For every leaf in the tree it can show a histogram indicating the influence of feature value on class selection. In addition to that, dtreeviz enables the user to show the path of a particular prediction. The result is saved in the form of a svg vector graphic. 
+dtreeviz is a more advanced version of export\_graphviz available in scikit-learn. For every leaf in the tree it can show a histogram indicating the influence of feature's value on class selection. In addition to that, dtreeviz enables the user to show the path of a particular prediction. The result is saved in the form of a svg vector graphic. 
 
 % \begin{figure}[tb]
 %     \centering
@@ -93,7 +93,7 @@ It can be concluded that ELI5 is the most versatile package compared to others, 
     \item black-box models support: the fact if the tool supports only black-box models (models that can not be simply interpreted),
     \item features' statistical analysis: the fact if the tool supports statistical analysis of features in the dataset, without taking into consideration the model,
     \item works only with scikit-learn,
-    \item decision trees graphical visualisation.
+    \item decision trees graphical visualization.
 \end{itemize}
 
 \begin{table}[H]
@@ -106,7 +106,7 @@ It can be concluded that ELI5 is the most versatile package compared to others, 
         Black-box models support & \cmark & \cmark & \cmark & \xmark & \xmark \\
         Features' statistical analysis & \xmark & \xmark & \cmark & \xmark & \xmark \\
         Works only with scikit-learn & \cmark & \xmark & \cmark & \cmark & \cmark \\
-        Decision Trees graphical visualisation & \xmark & \xmark & \xmark & \xmark & \cmark \\
+        Decision Trees graphical visualization & \xmark & \xmark & \xmark & \xmark & \cmark \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -204,6 +204,6 @@ The results, reduced to 5 most important features for NoEvents, Attack, Natural 
 %     \end{tabular}
 % \end{table}
 
-It can be observed that the five most important features among false predictions for each class are different. This implies creating a correction model for every important feature among all classes.  The exact procedure is described in the next chapter.
+It can be observed that the five most important features among false predictions for each class are different. This implies creating a correction model for every important feature among all classes. The exact procedure is described in the next chapter.
 
 In this chapter different result interpreters were presented in details. Among them, Lime have been chosen to create an algorithm for features importance determination. The most important features will be used in next chapter to correct the obtained predictions. 

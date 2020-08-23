@@ -19,7 +19,7 @@ The operation of this power system can be described following 6 main scenarios:
 \end{itemize} 
 Each of those scenarios can be divided into several sub-scenarios concerning different entities of the system or/and the failure range. Every scenario was labelled with a number between 1 and 41. In this way \textbf{37 scenarios} are obtained, divided and numbered as follows:
 \begin{itemize}
-    \item 1 no events scenario, its number it is 41,
+    \item 1 no events scenario, its number is 41,
     \item 8 natural fault scenarios, its number ranges are 1-6 (short-circuit) and 13-14 (line maintenance),
     \item 28 attack scenarios, its number ranges are 7-12 (fault imitation), 15-20 (remotely opening the breakers), 20-30 and 35-40 (disruption of fault protection system).
 \end{itemize}
@@ -31,9 +31,9 @@ The datasets provided in \cite{morris_industrial_nodate} represent \textbf{78377
     \centering
     \includegraphics[]{images/distr_allscen.pdf}
     \caption{Scenarios distribution throughout all 15 files} \label{fig:scen_distro_37}
-\end{figure}
+\end{figure}   
 
-\begin{figure}[H]
+\begin{figure}[H] 
     \centering
     \includegraphics[]{images/distr_3classes.pdf}
     \caption{Scenarios distribution throughout the 3-class dataset files}
@@ -42,9 +42,9 @@ The datasets provided in \cite{morris_industrial_nodate} represent \textbf{78377
 
 Figure \ref{fig:scen_distro_file} shows also this distribution for the binary datasets. It is sufficient to add the number of natural (orange) and normal operation (green) events.
 
-The scenarios are not equally distributed in the case of the 37 schemes dataset, it is especially shown by the standard deviation of 61, which is an important value compared to some scenarios counting less than 100 events. On the other hand, in the case of 3-class scenarios, the distribution is even more not equal compared to the 37 schemes dataset. The \textbf{mean standard deviation among all files is equal to 1767}, which is an enormous result given that some scenarios count only around 100 events.
+The scenarios are not equally distributed in the case of the 37 schemes dataset, it is especially shown by the standard deviation of 61, which is an important value. This is also visible because some scenarios counting less than 100 events and others even 500. On the other hand, in the case of 3-class scenarios, the distribution is even more unequal compared to the 37 schemes dataset. The \textbf{mean standard deviation among all files is equal to 1767}, which is an enormous result.
 
-Every electrical grid around the world uses a \textbf{3-phased} electric power. Such a grid is composed of three alternating current generators combined. Those generators pass the current in three conductors. That way three conductors are obtained, and each of them conducts a phase of current named A, B and C respectively. The current phases have the same frequency, but a difference of phase of 1/3 of a cycle between each of them. In addition to that, each current has a corresponding voltage, with the same frequency and phases differences \cite{noauthor_three-phase_2020}.
+Every electrical grid around the world uses a \textbf{3-phased} electric power. Such a grid is composed of three alternating current generators combined. Those generators pass the current in three conductors. Each of these conductors conducts a phase of current named A, B and C respectively. The current phases have the same frequency, but a difference of phase of 1/3 of a cycle between each of them. In addition to that, each current has a corresponding voltage, with the same frequency and phases differences \cite{noauthor_three-phase_2020}.
 
 In order to simplify the analysis of three-phase power systems, symmetrical components transformation is used, for both voltage and current. This transformation is defined as:
 \begin{equation}
