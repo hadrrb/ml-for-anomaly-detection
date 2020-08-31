@@ -1,38 +1,38 @@
-% \newgeometry{top=6cm,bottom=2.2cm,right=0.83cm,left=3.47cm}
+\newgeometry{top=6cm,bottom=2.2cm,right=0.83cm,left=3.47cm}
 \pagestyle{empty}
-% \pdfoverlaySetPDF{cover.pdf}
+\pdfoverlaySetPDF{cover.pdf}
 \begin{center}
 
-% {\large \textbf{PRACA DYPLOMOWA MAGISTERSKA}}
-% \vspace{6cm}
+{\large \textbf{PRACA DYPLOMOWA MAGISTERSKA}}
+\vspace{6cm}
 
-{\large \textbf{RAPPORT DE STAGE}}
-\vspace{8cm}
+% {\large \textbf{RAPPORT DE STAGE}}
+% \vspace{8cm}
 
 {\fontsize{18}{18}\selectfont \textbf{Hybrid neural networks for anomaly detection in~cyber-physical systems}}
 \end{center}
 \normalsize
 
-% \vspace{6cm}
-% \textbf{Wydział Fizyki Technicznej, Informatyki i Matematyki Stosowanej \\
-% Promotor:} dr hab. inż. Aneta Poniszewska-Marańda\\
-% \textbf{Dyplomant:} inż. Ramzi Hadrich\\
-% \textbf{Nr albumu:} 227488\\
-% \textbf{Kierunek:} Informatyka\\
-% \textbf{Specjalność:} Computer Science \& Information Technology\\
-% \begin{center}
-%     Łódź, \today r.
-% \end{center}
-
-\vspace{8cm}
-\noindent Ramzi HADRICH \\
-\textbf{Entreprise:} LORIA\\
-\textbf{Tuteur Entreprise:} Abdelkader LAHMADI\\
-\textbf{Tuteur ENSEM:} Radu RANTA\\
-\textbf{Filière:} ISN\\
+\vspace{6cm}
+\textbf{Wydział Fizyki Technicznej, Informatyki i Matematyki Stosowanej \\
+Promotor:} dr hab. inż. Aneta Poniszewska-Marańda\\
+\textbf{Dyplomant:} inż. Ramzi Hadrich\\
+\textbf{Nr albumu:} 227488\\
+\textbf{Kierunek:} Informatyka\\
+\textbf{Specjalność:} Computer Science \& Information Technology\\
 \begin{center}
-    \today
+    Łódź, \today r.
 \end{center}
+
+% \vspace{8cm}
+% \noindent Ramzi HADRICH \\
+% \textbf{Entreprise:} LORIA\\
+% \textbf{Tuteur Entreprise:} Abdelkader LAHMADI\\
+% \textbf{Tuteur ENSEM:} Radu RANTA\\
+% \textbf{Filière:} ISN\\
+% \begin{center}
+%     \today
+% \end{center}
 
 % First copy: start a new page, and save the page number.
 \cleardoublepage
@@ -40,14 +40,14 @@
 % Uncomment the next line if you do NOT want a page number on your
 % abstract and acknowledgments pages.
 \begin{abstract}
-Nowadays cyber-physical systems are widely used in different application domains. In parallel, machine learning algorithms are used widely to detect the anomalies in the behaviour of these systems. However, this detection is limited to two states: normal behaviour and faulty functioning. This work aims to extend this detection to differentiate between attacks and normal faults. In first place, a power system is described as an example to work on. Then, various machine learning algorithms are evaluated on the given datasets, and this using two machine learning toolkits - scikit-learn and Weka. Later, various tools for feature analysis are presented and an algorithm to find the features that contributed the most into the false predictions is described. Finally, three solutions to the initial problem are presented and evaluated - one solution uses the features found in the previous step and modifies their values, the second shrinks the samples from the dataset to have only the previously mentioned features and evaluates the distance between those samples and the third solution uses the Hidden Markov Model. The test have shown that the best performing solution was the second, even if the gain in accuracy is not very significant.  
+Nowadays cyber-physical systems are widely used in different application domains. In parallel, machine learning algorithms are used widely to detect the anomalies in the behaviour of these systems. However, this detection is limited to two states: normal behaviour and faulty functioning. This work aims to extend this detection to differentiate between attacks and normal faults. In first place, a power system is described as an example to work on. Then, various machine learning algorithms are evaluated on the given datasets, and this using two machine learning toolkits - scikit-learn and Weka. Later, various tools for feature analysis are presented and an algorithm to find the features that contributed the most into the false predictions is described. Finally, three solutions to the initial problem are presented and evaluated - one solution uses the features found in the previous step and modifies their values, the second shrinks the samples from the dataset to have only the previously mentioned features and evaluates the distance between those samples and the third solution uses the Hidden Markov Model. The tests of those methods have been made on three different machine learning classifiers - Decision Tree, Random Forest and Multilayer Perceptron. The results show that the first method works the best with Random Forest classifier, the second with Decision Tree classifier and the third fails to enhance the results. For Multilayer Perceptron classifier all the presented methods failed.
 \end{abstract}
 
-\newpage
-\renewcommand{\abstractname}{Résumé}
-\begin{abstract}
-De nos jours, les systèmes cyber-physiques sont largement utilisés dans différents domaines d'application. Parallèlement, les algorithmes d'apprentissage automatique sont largement utilisés pour détecter les anomalies dans le comportement de ces systèmes. Toutefois, cette détection se limite à deux états : un comportement normal et un fonctionnement défectueux. Ce travail vise à étendre cette détection afin de différencier les attaques des défauts liés au fonctionnement normal. En premier lieu, un système d'alimentation est décrit comme un exemple sur lequel on va travailler. Puis, divers algorithmes d'apprentissage machine sont évalués sur les ensembles de données donnés, et ce à l'aide de deux boîtes à outils d'apprentissage machine - scikit-learn et Weka. Ensuite, différents outils d'analyse des caractéristiques sont présentés et un algorithme permettant de trouver les caractéristiques qui ont le plus contribué aux fausses prédictions est décrit. Enfin, trois solutions au problème initial sont présentées et évaluées - une solution qui utilise les caractéristiques trouvées dans l'étape précédente et qui modifie leurs valeurs, la deuxième qui réduit les échantillons de l'ensemble de données pour n'avoir que les caractéristiques mentionnées précédemment et qui évalue la distance entre ces échantillons et la troisième solution qui utilise le modèle de Markov caché. Les tests ont montré que la solution la plus performante était la seconde, même si le gain de précision n'est pas très significatif.  
-\end{abstract}
+% \newpage
+% \renewcommand{\abstractname}{Résumé}
+% \begin{abstract}
+% De nos jours, les systèmes cyber-physiques sont largement utilisés dans différents domaines d'application. Parallèlement, les algorithmes d'apprentissage automatique sont largement utilisés pour détecter les anomalies dans le comportement de ces systèmes. Toutefois, cette détection se limite à deux états : un comportement normal et un fonctionnement défectueux. Ce travail vise à étendre cette détection afin de différencier les attaques des défauts liés au fonctionnement normal. En premier lieu, un système d'alimentation est décrit comme un exemple sur lequel on va travailler. Puis, divers algorithmes d'apprentissage machine sont évalués sur les ensembles de données donnés, et ce à l'aide de deux boîtes à outils d'apprentissage machine - scikit-learn et Weka. Ensuite, différents outils d'analyse des caractéristiques sont présentés et un algorithme permettant de trouver les caractéristiques qui ont le plus contribué aux fausses prédictions est décrit. Enfin, trois solutions au problème initial sont présentées et évaluées - une solution qui utilise les caractéristiques trouvées dans l'étape précédente et qui modifie leurs valeurs, la deuxième qui réduit les échantillons de l'ensemble de données pour n'avoir que les caractéristiques mentionnées précédemment et qui évalue la distance entre ces échantillons et la troisième solution qui utilise le modèle de Markov caché. Les tests ont montré que la solution la plus performante était la seconde, même si le gain de précision n'est pas très significatif.  
+% \end{abstract}
 
 
 % Additional copy: start a new page, and reset the page number.  This way,

@@ -65,7 +65,7 @@ Each phase is a \textbf{sinusoidal} function. Its equation form is $y = A \cdot 
 
 \begin{figure}[H]
     \centering
-    \begin{tikzpicture}
+    \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
         \draw[->] (-7,0) -- (10,0) node[right] {$x$};
       \draw[->] (0,-3) -- (0,4.2) node[above] {$y$};
       \draw[scale=1,domain=0:9.42,smooth,variable=\x,blue] plot ({\x},{3*sin(\x r)});

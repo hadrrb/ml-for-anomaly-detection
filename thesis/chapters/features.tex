@@ -115,9 +115,9 @@ It can be concluded that ELI5 is the most versatile package compared to others, 
 %Lime
 For the rest of the chapter LIME was chosen to determine the features' importance because of it working with all black-box models available in scikit-learn. The capabilities of LIME were sufficient and that is why ELI5 was not used in his place.
 
-In what follows the Decision Tree classifier will be used because its ease of interpretation. The explication of the algorithm was provided in \ref{sec:rf} as the part of Random Forest classifier algorithm, since the Random Forest is composed of a certain number of Decision Trees.
+In what follows the Decision Tree classifier will be used because its ease of interpretation. The explication of the algorithm was provided in \ref{sec:rf} as the part of Random Forest classifier algorithm, since the Random Forest is composed of a certain number of Decision Trees. Moreover the results for Random Forest and Multilayer Perceptron will be presented. The parameters passed to the classifiers are the same as listed in previous chapter.
 
-Because in this case the explanations of single samples are not really interesting, an attempt to generalize the results was made: Lime explainer was run on 100 false predictions of a chosen class made using Decision Tree classifier. The results are concatenated together. For all the duplicates of features, the mean importance is calculated and only one entry is kept along with this calculated mean value. In other words:
+Because in this case the explanations of single samples are not really interesting, an attempt to generalize the results was made: Lime explainer was run on 100 false predictions of a chosen class. The results are concatenated together. For all the duplicates of features, the mean importance is calculated and only one entry is kept along with this calculated mean value. The python code for the described operations is listed below.
 
 \begin{python}
 import pandas as pd
@@ -134,7 +134,7 @@ X_test = Xall[faulty] # all false predicition samples
 y_test = yall[faulty] # all false predicition true classes
 lst = [] # initialization of a list
 for idx in range(0, 100): # create explanation for 100 first samples
-    exp = explainer.explain_instance(X_test[idx], clf.predict_proba, num_features=128, labels=[0, 1, 2])
+    exp = explainer.explain_instance(X_test.iloc[idx], clf.predict_proba, num_features=128, labels=[0, 1, 2])
     lst.append(exp.as_list(label=0))
 # transform to dataframe
 lst = np.array(lst)
@@ -146,64 +146,144 @@ dtfr = dtfr.groupby(['feature']).mean()
 res = dtfr.sort_values(by="importance")
 \end{python}
 
-The results, reduced to 5 most important features for NoEvents, Attack, Natural and all samples, are shown respectively in tables \ref{tab:5best:noev}, \ref{tab:5best:attack} and \ref{tab:5best:natural}.
+The results, reduced to 5 most important features for NoEvents, Attack, Natural and all samples, are shown for Decision Tree, Random Forest and MLP classifiers respectively in tables \ref{tab:5best_dt}, \ref{tab:5best_rf} and \ref{tab:5best_mlp}.
+
 
 \begin{table}[H]
+    \footnotesize
     \centering
-    \caption{5 most important features for NoEvents samples} \label{tab:5best:noev}
-    \begin{tabular}{lr}\toprule
-        feature  &importance\\\midrule            
-        R4-PA5:IH > 115.38                  & 0.008534\\
-        R3-PM2:V <= 128425.29               & 0.007998\\
-        128762.21 < R2-PM1:V <= 129859.49   & 0.007776\\
-        0.00 < R1-PA12:IH <= 32.04          & 0.007514\\
-        R3-PM5:I <= 330.70                  & 0.005762\\
-        ...                                 & ... \\\bottomrule
-    \end{tabular}
+    \caption{5 most important features by class for Decision Tree classifier} \label{tab:5best_dt}
+    \begin{subtable}[t]{0.5\linewidth}
+        \centering
+        \caption{NoEvents samples} 
+        \begin{tabular}{lr}\toprule
+            feature  &importance\\\midrule            
+            R4-PA5:IH > 115.38                  & 0.008534\\
+            R3-PM2:V <= 128425.29               & 0.007998\\
+            128762.21 < R2-PM1:V <= 129859.49   & 0.007776\\
+            0.00 < R1-PA12:IH <= 32.04          & 0.007514\\
+            R3-PM5:I <= 330.70                  & 0.005762\\
+            ...                                 & ... \\\bottomrule
+        \end{tabular}
+    \end{subtable}% 
+    \begin{subtable}[t]{0.5\linewidth}
+        \centering
+        \caption{Attack samples} 
+        \begin{tabular}{lr}\toprule
+            feature                   & importance \\\midrule
+            R3:S > 0.00                    & 0.010717  \\
+            R2-PA7:VH <= -101.20           & 0.014018   \\
+            R2-PM1:V > 130872.03           & 0.009242 \\
+            R3-PA7:VH <= -101.22           & 0.008676 \\
+            R3-PA2:VH <= -93.75            & 0.008307 \\
+            ...                            & ... \\\bottomrule
+        \end{tabular}
+    \end{subtable}
+    \begin{subtable}[b]{0.5\linewidth}
+        \centering\vspace*{.5cm}
+        \caption{Natural samples} 
+        \begin{tabular}{lr}\toprule
+            feature                & importance   \\\midrule    
+            R2:F > 60.00           &  0.005168 \\
+            R3:F > 60.00           &  0.004873 \\
+            R2-PA5:IH > 63.30      &  0.004103 \\
+            R2-PM7:V > 130857.40   &  0.003693 \\
+            R1-PA1:VH > 71.28     &   0.003518 \\
+            ...                    &       ...    \\\bottomrule
+        \end{tabular}
+    \end{subtable}
 \end{table}
 
 \begin{table}[H]
+    \footnotesize
     \centering
-    \caption{5 most important features for Attack samples} \label{tab:5best:attack}
-    \begin{tabular}{lr}\toprule
-        feature                   & importance \\\midrule
-        R3:S > 0.00                    & 0.010717  \\
-        R2-PA7:VH <= -101.20           & 0.014018   \\
-        R2-PM1:V > 130872.03           & 0.009242 \\
-        R3-PA7:VH <= -101.22           & 0.008676 \\
-        R3-PA2:VH <= -93.75            & 0.008307 \\
-        ...                            & ... \\\bottomrule
-    \end{tabular}
+    \caption{5 most important features by class for Random Forest classifier} \label{tab:5best_rf}
+    \begin{subtable}[t]{0.5\linewidth}
+        \centering
+        \caption{NoEvents samples} 
+        \begin{tabular}{lr}\toprule
+            feature  &importance\\\midrule            
+            R4-PA2:VH > 117.68    &   0.010149 \\ 
+            R3-PM2:V <= 128425.29  &  0.007994 \\
+            R1-PA:Z > 12.43       &   0.006171 \\
+            R2-PM4:I <= 320.95     &  0.006062 \\
+            R4-PA4:IH <= -97.95   &   0.005985 \\
+            ...                                 & ... \\\bottomrule
+        \end{tabular}
+    \end{subtable}% 
+    \begin{subtable}[t]{0.5\linewidth}
+        \centering
+        \caption{Attack samples} 
+        \begin{tabular}{lr}\toprule
+            feature                   & importance \\\midrule
+            -97.43 < R1-PA7:VH <= -35.85  &  0.014091 \\
+            R4-PA2:VH > 117.68            &  0.010962 \\
+            -97.40 < R1-PA1:VH <= -35.86  &  0.010908 \\
+            R2-PA6:IH <= -114.38          &  0.010825 \\
+            R2-PA2:VH > 114.00            &  0.009784 \\
+            ...                           & ... \\\bottomrule
+        \end{tabular}
+    \end{subtable}
+    \begin{subtable}[b]{0.5\linewidth}
+        \centering\vspace*{.5cm}
+        \caption{Natural samples} 
+        \begin{tabular}{lr}\toprule
+            feature                & importance   \\\midrule    
+            R3-PM2:V <= 128425.29         &  0.007478 \\
+            R1-PA:Z > 12.43               &  0.006621 \\
+            R2-PM4:I <= 320.95            &  0.006481 \\
+            R3-PA7:VH > 65.92             &  0.005920 \\
+            -62.63 < R3-PA10:IH <= 34.66  &  0.005893 \\
+            ...                    &       ...    \\\bottomrule
+        \end{tabular}
+    \end{subtable}
 \end{table}
 
 \begin{table}[H]
+    \footnotesize
     \centering
-    \caption{5 most important features for Natural samples} \label{tab:5best:natural}
-    \begin{tabular}{lr}\toprule
-        feature                & importance   \\\midrule    
-        R2:F > 60.00           &  0.005168 \\
-        R3:F > 60.00           &  0.004873 \\
-        R2-PA5:IH > 63.30      &  0.004103 \\
-        R2-PM7:V > 130857.40   &  0.003693 \\
-        R1-PA1:VH > 71.28     &   0.003518 \\
-        ...                    &       ...    \\\bottomrule
-    \end{tabular}
+    \caption{5 most important features by class for MLP classifier} \label{tab:5best_mlp}
+    \begin{subtable}[t]{0.5\linewidth}
+        \centering
+        \caption{NoEvents samples} 
+        \begin{tabular}{lr}\toprule
+            feature  &importance\\\midrule            
+            R4-PM8:V > 0.00        &  0.111197 \\
+            R3-PM3:V <= 128676.02  &  0.082892 \\
+            R3-PM9:V > 0.00        &  0.066984 \\
+            R1:S > 0.00            &  0.053059 \\
+            R1-PM7:V > 132060.91   &  0.042774 \\
+            ...                          & ... \\\bottomrule
+        \end{tabular}
+    \end{subtable}% 
+    \begin{subtable}[t]{0.5\linewidth}
+        \centering
+        \caption{Attack samples} 
+        \begin{tabular}{lr}\toprule
+            feature                   & importance \\\midrule
+            R3-PM3:V <= 128676.02              &  0.084712  \\
+            R3-PM1:V > 130631.74               &  0.061883 \\
+            129704.03 < R3-PM1:V <= 130631.74  &  0.052262 \\
+            128600.80 < R3-PM1:V <= 129704.03  &  0.041568 \\
+            R3-PM7:V <= 128600.80              &  0.041327 \\
+            ...                           & ... \\\bottomrule
+        \end{tabular}
+    \end{subtable}
+    \begin{subtable}[b]{0.5\linewidth}
+        \centering\vspace*{.5cm}
+        \caption{Natural samples} 
+        \begin{tabular}{lr}\toprule
+            feature                & importance   \\\midrule    
+            R3-PM3:V <= 128676.02              &  0.081114 \\
+            R3-PM1:V > 130631.74               &  0.058216 \\
+            129704.03 < R3-PM1:V <= 130631.74  &  0.047072 \\
+            9.59 < R2-PA:Z <= 12.11            &  0.039845 \\
+            128600.80 < R3-PM1:V <= 129704.03  &  0.039490 \\
+            ...                    &       ...    \\\bottomrule
+        \end{tabular}
+    \end{subtable}
 \end{table}
 
-% \begin{table}[H]
-%     \centering
-%     \caption{5 most important features for all samples} \label{tab:5best:all}
-%     \begin{tabular}{lr}\toprule
-%         feature                   &    importance   \\ \midrule                            
-%         R2-PM1:V > 130872.03     &      0.009070   \\
-%         R3-PM2:V > 130431.15      &     0.008501 \\
-%         R4-PA1:VH > 71.50         &     0.007481 \\
-%         R3-PA4:IH > 102.49        &     0.005723 \\
-%         R2-PA3:VH <= -75.28      &      0.005588 \\
-%         ...                       &          ... \\\bottomrule
-%     \end{tabular}
-% \end{table}
-
-It can be observed that the five most important features among false predictions for each class are different. This implies creating a correction model for every important feature among all classes. The exact procedure is described in the next chapter.
+It can be observed that the five most important features among false predictions for each class are different for all the classifiers. The only exception is MLP where some features are duplicated, however with different value conditions. This implies creating a correction model for every important feature among all classes. The exact procedure is described in the next chapter.
 
 In this chapter different result interpreters were presented in details. Among them, Lime have been chosen to create an algorithm for features importance determination. The most important features will be used in next chapter to correct the obtained predictions. 

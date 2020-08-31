@@ -36,14 +36,15 @@ The first proposed solution considers changing the values of most important feat
     \caption{Prediction illustration} \label{fig:predict}
 \end{figure}
 
-First of all the correction function was defined as the modification function of the feature values for the predicted samples. This modification consists in shifting the feature value so the feature value would not meet the condition to make a false prediction from tables \ref{tab:5best:noev}-\ref{tab:5best:natural}. This function code in Python is as follows:  
+First of all the correction function was defined as the modification function of the feature values for the predicted samples. This modification consists in shifting the feature value so the feature value would not meet the condition to make a false prediction from tables \ref{tab:5best_dt}-\ref{tab:5best_mlp}. This function code in Python is as follows:  
 \begin{python}
 def modify(feat, val):
     X[feat] = X[feat].apply(lambda x: x + val)
 \end{python}
 where \textit{X} is a pandas DataFrame object containing all the samples to predict.
 
-Second, the five most important features are taken from tables \ref{tab:5best:noev}-\ref{tab:5best:natural} and the values of features from the samples to predict are altered using the previous function. The following code shows this operation:
+Second, the five most important features are taken from tables \ref{tab:5best_dt}-\ref{tab:5best_mlp} and the values of features from the samples to predict are altered using the previous function. If a feature is duplicated only the value of the first occurrence is taken into account. The following code shows this operation for Decision Tree classifier:
+
 \begin{python}
 modify("R4-PA5:IH", -115.38)
 modify("R3-PM2:V", 128525.29)
@@ -61,44 +62,112 @@ modify("R2-PA5:IH",- 63.30)
 modify("R2-PM7:V", -130857.40) 
 \end{python}
 
-The samples modified this way are then used for the predictions. In order to check the success of this method, the classification\_report method from scikit-learn was used. The results before and after modifying the samples are displayed in tables \ref{tab:clreport:before} and \ref{tab:clreport:after}.
+The samples modified this way are then used for the predictions. In order to check the success of this method, the classification\_report method from scikit-learn was used. The results before and after modifying the samples are displayed for Decision Tree, Random Forest and MLP classifiers respectively in tables \ref{tab:fm_dt}, \ref{tab:fm_rf} and \ref{tab:fm_mlp}.
 
 \begin{table}[H]
     \centering
-    \caption{Classification report before features modification} \label{tab:clreport:before}
-    \begin{tabular}{rcccc}\toprule
-        & precision    &recall & f1-score  & support \\\midrule
-            NoEvents  &   $  0.72 $  &  $ 0.76 $  &  $ 0.74 $  & $ 51797 $\\
-              Attack   &  $  0.27 $   & $ 0.26 $  &  $ 0.26 $  & $ 17382 $\\
-             Natural   &  $  0.19 $   & $ 0.08 $  &  $ 0.12 $  & $  4232 $\\
-            accuracy   &            &          &  $0.60$  &   $73411$ \\
-           macro avg   &  $  0.39 $   & $ 0.37 $  &  $ 0.37 $  & $ 73411 $\\
-        weighted avg   &  $  0.58 $  &  $ 0.60 $  &  $ 0.59 $ &  $ 73411 $\\\bottomrule
-    \end{tabular}
-\end{table}
-
-\begin{table}[H]
-    \centering
-    \caption{Classification report after features modification} \label{tab:clreport:after}   
-    \begin{tabular}{rcccc}\toprule
-        &precision   & recall & f1-score &  support  \\\midrule
-
-        NoEvents   &    0.71   &   0.83  &    0.77   &  51797 \\
-          Attack    &   0.26   &   0.17  &    0.21   &  17382 \\
-         Natural   &    0.10   &   0.03   &   0.05  &    4232 \\
+    \footnotesize
+    \caption{Features modification results for Decision Tree classifier} \label{tab:fm_dt}
+    \begin{subtable}[t]{.5\linewidth}
+        \centering
+        \caption{Before features modification} 
+        \begin{tabular}{rcccc}\toprule
+            & precision    &recall & f1-score  & support \\\midrule
+                NoEvents  &   $  0.72 $  &  $ 0.76 $  &  $ 0.74 $  & $ 51797 $\\
+                  Attack   &  $  0.27 $   & $ 0.26 $  &  $ 0.26 $  & $ 17382 $\\
+                 Natural   &  $  0.19 $   & $ 0.08 $  &  $ 0.12 $  & $  4232 $\\
+                accuracy   &            &          &  $0.60$  &   $73411$ \\
+               macro avg   &  $  0.39 $   & $ 0.37 $  &  $ 0.37 $  & $ 73411 $\\
+            weighted avg   &  $  0.58 $  &  $ 0.60 $  &  $ 0.59 $ &  $ 73411 $\\\bottomrule
+        \end{tabular}
+    \end{subtable}%
+    \begin{subtable}[t]{.5\linewidth}
+        \centering
+        \caption{After features modification}
+        \begin{tabular}{rcccc}\toprule
+            &precision   & recall & f1-score &  support  \\\midrule
     
-        accuracy    &          &          &   0.63   &  73411 \\
-       macro avg    &   0.36   &   0.34   &   0.34   &  73411 \\
-    weighted avg     &  0.57   &   0.63   &   0.59   &  73411    \\     \bottomrule   
-    \end{tabular}
+            NoEvents   &    0.71   &   0.83  &    0.77   &  51797 \\
+              Attack    &   0.26   &   0.17  &    0.21   &  17382 \\
+             Natural   &    0.10   &   0.03   &   0.05  &    4232 \\
+        
+            accuracy    &          &          &   0.63   &  73411 \\
+           macro avg    &   0.36   &   0.34   &   0.34   &  73411 \\
+        weighted avg     &  0.57   &   0.63   &   0.59   &  73411    \\     \bottomrule   
+        \end{tabular}
+    \end{subtable}
 \end{table}
 
-The tables \ref{tab:clreport:before} and \ref{tab:clreport:after} show a general increase of the accuracy of the model after changing the features. The more detailed results, show a remarkably better recall and f-measure for NoEvents class, with a small decrease of precision, but for all other classes a decrease can be observed for all the metrics. 
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \caption{Features modification results for Random Forest classifier} \label{tab:fm_rf}
+    \begin{subtable}[t]{.5\linewidth}
+        \centering
+        \caption{Before features modification} 
+        \begin{tabular}{rcccc}\toprule
+            & precision    &recall & f1-score  & support \\\midrule
+            NoEvents   &    0.72  &    0.87 &     0.78 &  51797 \\
+            Attack     &  0.29    &  0.16   &   0.21   &  17382 \\
+           Natural     &  0.25    &  0.05   &   0.08   &   4232 \\
+          accuracy     &          &         &   0.65   &  73411 \\
+         macro avg     &  0.42    &  0.36   &   0.36   &  73411 \\
+      weighted avg     &  0.59    &  0.65   &   0.61   &  73411 \\ \bottomrule
+        \end{tabular}
+    \end{subtable}%
+    \begin{subtable}[t]{.5\linewidth}
+        \centering
+        \caption{After features modification}
+        \begin{tabular}{rcccc}\toprule
+            &precision   & recall & f1-score &  support  \\\midrule
+            NoEvents  &     0.71 &     0.89 &     0.79 &  51797\\
+            Attack    &   0.28   &   0.13   &   0.18   &  17382\\
+           Natural    &   0.26   &   0.05   &   0.08   &   4232\\
+          accuracy    &          &          &   0.66   &  73411\\
+         macro avg    &   0.42   &   0.36   &   0.35   &  73411\\
+      weighted avg    &   0.58   &   0.66   &   0.61   &  73411\\     \bottomrule   
+        \end{tabular}
+    \end{subtable}
+\end{table}
 
-For this particular set of samples, there is a slight increase of weighted recall, weighted f-measure and accuracy. That it is why, it may be concluded that this method succeeded with this particular dataset, especially given the unequal distribution of the samples between classes and model's tendency to predict NoEvents class. However, with any other dataset, where the NoEvents class samples are less common compared to other classes, this method causes worse predictions.
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \caption{Features modification results for MLP classifier} \label{tab:fm_mlp}
+    \begin{subtable}[t]{.5\linewidth}
+        \centering
+        \caption{Before features modification} 
+        \begin{tabular}{rcccc}\toprule
+            & precision    &recall & f1-score  & support \\\midrule
+            NoEvents   &    0.71 &     0.99 &     0.83&    51797\\
+            Attack     &  0.57   &   0.05   &   0.09  &   17382\\
+           Natural     &  0.00   &   0.00   &   0.00  &    4232\\    
+          accuracy     &         &          &   0.71  &   73411\\
+         macro avg     &  0.43   &   0.35   &   0.30  &   73411\\
+      weighted avg     &  0.64   &   0.71   &   0.60  &   73411\\ \bottomrule
+        \end{tabular}
+    \end{subtable}%
+    \begin{subtable}[t]{.5\linewidth}
+        \centering
+        \caption{After features modification}
+        \begin{tabular}{rcccc}\toprule
+            &precision   & recall & f1-score &  support  \\\midrule
+            NoEvents   &    0.74  &    0.07 &     0.12 &  51797\\
+            Attack     &  0.24    &  0.93   &   0.38   &  17382\\
+           Natural     &  0.00    &  0.00   &   0.00   &   4232\\   
+          accuracy     &          &         &   0.27   &  73411\\
+         macro avg     &  0.33    &  0.33   &   0.17   &  73411\\
+      weighted avg     &  0.58    &  0.27   &   0.17   &  73411\\    \bottomrule   
+        \end{tabular}
+    \end{subtable}
+\end{table}
+
+The accuracy of the model has slightly increased for both Decision Tree and Random Forest classifiers, and significally decreased for MLP classifier. Moreover, for Decision Tree classifier, a significant decrease of other metrics for Natural class is observed, for Random Forest some slight increases and decreases of metrics are observed, depending on the class. The most important difference is observed for MLP classifier, where the recall value for NoEvents class passed from $0.99$ to $0.07$, and in parallel, for Attack class from $0.05$ to $0.93$.
+
+It may be concluded that this method succeeded to enhance the results for Decision Tree and Random Forest classifiers, but failed with MLP. It is clear that the model, after modifying the features, tends to predict NoEvents class for the first two classifiers, but Attack class for MLP.  
 
 \section{Distance between features}
-The second proposed solution considers using a transformation routine, which, reduces the number of features to the 15 most important from tables \ref{tab:5best:noev}-\ref{tab:5best:natural} and adds another feature that represents the closest class to the treated sample. The prediction steps were illustrated on figure \ref{fig:distill}.
+The second proposed solution considers using a transformation routine, which, reduces the number of features to the 15 most important from tables \ref{tab:5best_dt}-\ref{tab:5best_mlp} and adds another feature that represents the closest class to the treated sample. The prediction steps were illustrated on figure \ref{fig:distill}.
 
 \begin{figure}[H]
     \centering
@@ -124,29 +193,110 @@ The transformation routine on other hand takes the form of a python class and is
     \item \textbf{transform(X)}: determines the class with the smallest distance to the sample, based on reference samples determined by fit(X,y) method. The obtained values are then added as a new feature to the samples X and returned afterwards by the method.
 \end{enumerate}
 
-This routine has been coupled with DecisionTree classifier using \textbf{pipeline} class in scikit-learn, which construct acts like a classifier (it has fit and predict methods). 
+This routine has been coupled with the 3 chosen classifiers using \textbf{pipeline} class in scikit-learn, which construct acts like a classifier (it has fit and predict methods). 
 
-The success rate of this method was verified, once more, using classification\_report method from scikit-learn. The result before the test are the same as in table \ref{tab:clreport:before}, while the results after using the described method are shown in table \ref{tab:distrep}.
+The success rate of this method was verified, once more, using classification\_report method from scikit-learn. The result and after using the described method are shown for Decision Tree, Random Forest and MLP classifiers respectively in tables \ref{tab:dist_dt}, \ref{tab:dist_rf} and \ref{tab:dist_mlp}.
 
 \begin{table}[H]
-    \centering
-    \caption{Classification report after using the distance routine} \label{tab:distrep}
-    \begin{tabular}{rcccc}\toprule
-     &   precision    &recall & f1-score &  support  \\\midrule
-
-        NoEvents    &   0.72   &   0.79   &   0.75  &   51797 \\
-          Attack    &   0.28   &   0.23   &   0.25  &   17382 \\
-         Natural   &    0.19   &   0.08   &   0.11  &    4232 \\
+    \centering \footnotesize
+    \caption{Distance routine results for Decision Tree classifier}  \label{tab:dist_dt}
+    \begin{subtable}[t]{.5\linewidth}
+        \centering
+        \caption{Before using the distance routine} 
+        \begin{tabular}{rcccc}\toprule
+            & precision    &recall & f1-score  & support \\\midrule
+                NoEvents  &   $  0.72 $  &  $ 0.76 $  &  $ 0.74 $  & $ 51797 $\\
+                  Attack   &  $  0.27 $   & $ 0.26 $  &  $ 0.26 $  & $ 17382 $\\
+                 Natural   &  $  0.19 $   & $ 0.08 $  &  $ 0.12 $  & $  4232 $\\
+                accuracy   &            &          &  $0.60$  &   $73411$ \\
+               macro avg   &  $  0.39 $   & $ 0.37 $  &  $ 0.37 $  & $ 73411 $\\
+            weighted avg   &  $  0.58 $  &  $ 0.60 $  &  $ 0.59 $ &  $ 73411 $\\\bottomrule
+        \end{tabular}
+    \end{subtable}%
+    \begin{subtable}[t]{.5\linewidth}
+        \centering
+        \caption{After using the distance routine} 
+        \begin{tabular}{rcccc}\toprule
+         &   precision    &recall & f1-score &  support  \\\midrule
     
-        accuracy    &           &         &   0.62   &  73411 \\
-       macro avg    &   0.40    &  0.37   &   0.37  &   73411 \\
-    weighted avg   &   0.58   &   0.62   &   0.60   &  73411   \\  \bottomrule
-    \end{tabular}
+            NoEvents    &   0.72   &   0.79   &   0.75  &   51797 \\
+              Attack    &   0.28   &   0.23   &   0.25  &   17382 \\
+             Natural   &    0.19   &   0.08   &   0.11  &    4232 \\
+        
+            accuracy    &           &         &   0.62   &  73411 \\
+           macro avg    &   0.40    &  0.37   &   0.37  &   73411 \\
+        weighted avg   &   0.58   &   0.62   &   0.60   &  73411   \\  \bottomrule
+        \end{tabular}
+    \end{subtable}
 \end{table}
 
-Tables \ref{tab:clreport:before} and \ref{tab:distrep} show an increase of model's accuracy by $0.02$. Precision value for Attack class increased by 0.01, with no changes for other classes. Recall value increased for NoEvents by 0.03 and decreased for Attack by 0.03. Finally, f-measure increased for NoEvents class and decreased by 0.01 for other classes. The f-measure value difference for Natural class, despite the same precision and recall, is due to rounding numbers to two decimal places. 
+\begin{table}[H]
+    \centering \footnotesize
+    \caption{Distance routine results for Random Forest classifier}  \label{tab:dist_rf}
+    \begin{subtable}[t]{.5\linewidth}
+        \centering
+        \caption{Before using the distance routine} 
+        \begin{tabular}{rcccc}\toprule
+            & precision    &recall & f1-score  & support \\\midrule
+            NoEvents   &    0.72  &    0.87 &     0.78 &  51797 \\
+            Attack     &  0.29    &  0.16   &   0.21   &  17382 \\
+           Natural     &  0.25    &  0.05   &   0.08   &   4232 \\
+          accuracy     &          &         &   0.65   &  73411 \\
+         macro avg     &  0.42    &  0.36   &   0.36   &  73411 \\
+      weighted avg     &  0.59    &  0.65   &   0.61   &  73411 \\ \bottomrule
+        \end{tabular}
+    \end{subtable}%
+    \begin{subtable}[t]{.5\linewidth}
+        \centering
+        \caption{After using the distance routine} 
+        \begin{tabular}{rcccc}\toprule
+         &   precision    &recall & f1-score &  support  \\\midrule
+    
+        NoEvents   &    0.71 &     0.83 &     0.77 &   51797\\
+         Attack    &   0.27  &    0.19  &    0.22  &   17382\\
+        Natural    &   0.18  &    0.05  &    0.07  &    4232\\
+       accuracy    &         &          &    0.63  &   73411\\
+      macro avg    &   0.39  &    0.36  &    0.36  &   73411\\
+   weighted avg    &   0.58  &    0.63  &    0.60  &   73411\\  \bottomrule
+        \end{tabular}
+    \end{subtable}
+\end{table}
 
-It may be concluded that this method does not really enhance the results, despite the better accuracy. For the other metrics, ones increased, but other decreased, what makes the obtained result less satisfying. In addition to that, the same problem with unequal class distribution mentioned in previous method discussion arises. 
+\begin{table}[H]
+    \centering \footnotesize
+    \caption{Distance routine results for MLP classifier}  \label{tab:dist_mlp}
+    \begin{subtable}[t]{.5\linewidth}
+        \centering
+        \caption{Before using the distance routine} 
+        \begin{tabular}{rcccc}\toprule
+            & precision    &recall & f1-score  & support \\\midrule
+            NoEvents   &    0.71 &     0.99 &     0.83&    51797\\
+            Attack     &  0.57   &   0.05   &   0.09  &   17382\\
+           Natural     &  0.00   &   0.00   &   0.00  &    4232\\    
+          accuracy     &         &          &   0.71  &   73411\\
+         macro avg     &  0.43   &   0.35   &   0.30  &   73411\\
+      weighted avg     &  0.64   &   0.71   &   0.60  &   73411\\ \bottomrule
+        \end{tabular}
+    \end{subtable}%
+    \begin{subtable}[t]{.5\linewidth}
+        \centering
+        \caption{After using the distance routine} 
+        \begin{tabular}{rcccc}\toprule
+         &   precision    &recall & f1-score &  support  \\\midrule
+    
+         NoEvents  &     0.70 &     0.98 &     0.82 &  51797\\
+         Attack    &   0.18   &   0.01   &   0.02   &  17382\\
+        Natural    &   0.00   &   0.00   &   0.00   &   4232\\
+       accuracy    &          &          &   0.69   &  73411\\
+      macro avg    &   0.29   &   0.33   &   0.28   &  73411\\
+   weighted avg    &   0.54   &   0.69   &   0.58   &  73411\\  \bottomrule
+        \end{tabular}
+    \end{subtable}
+\end{table}
+
+The tables \ref{tab:dist_dt}-\ref{tab:dist_mlp} show an increase of accuracy by 0.02 in the Decision Tree classifier case, but a decrease by also 0.02 in the Random Forest and MLP classifiers case. For Decision Tree classifier, the other metrics shows a slight increase, except recall and f-measure for Attack class, however this decrease was not significant. On other hand for the two remaining classifiers a decrease in values of almost all the metrics is observed.
+
+It can be concluded that this method does work only using Decision Tree classifier and gives results better than the features' modification method. For Random Forest and MLP classifiers this method fails to enhance the predictions.
 
 \section{Hidden Markov Model}
 The last proposed solution consists in determining the probabilities of occurrence of different classes using so called Hidden Markov Model. The obtained probabilities are then used to modify the split condition in the decision tree classifier. 
@@ -172,26 +322,76 @@ The stationary distribution obtained this way was then used to set the class\_we
 ctest = DecisionTreeClassifier(class_weight = {0: coefs[0], 1:coefs[1], 2:coefs[2]})  
 \end{python}
 
-The results are presented in table \ref{tab:hmm}.
+For Random Forest classifier the same parameter exists and was used to produce results. However, for MLP classifier a similar parameter does not exist and using the determined coefficients would require deeper modifications of the neural network.
+
+The results for Decision Tree and Random Forest classifiers are presented in tables \ref{tab:hmm_dt} and \ref{tab:hmm_rf}.
 
 \begin{table}[H]
-    \centering
-    \caption{Classification report after using Hidden Markov Model} \label{tab:hmm}
-    \begin{tabular}{rcccc}\toprule
-       & precision &   recall & f1-score  & support \\\midrule
+    \centering \footnotesize
+    \caption{Hidden Markov Model manipulation results for Decision Tree classifier}  \label{tab:hmm_dt}
+    \begin{subtable}[t]{.5\linewidth}
+        \centering
+        \caption{Before using HMM} 
+        \begin{tabular}{rcccc}\toprule
+            & precision    &recall & f1-score  & support \\\midrule
+                NoEvents  &   $  0.72 $  &  $ 0.76 $  &  $ 0.74 $  & $ 51797 $\\
+                  Attack   &  $  0.27 $   & $ 0.26 $  &  $ 0.26 $  & $ 17382 $\\
+                 Natural   &  $  0.19 $   & $ 0.08 $  &  $ 0.12 $  & $  4232 $\\
+                accuracy   &            &          &  $0.60$  &   $73411$ \\
+               macro avg   &  $  0.39 $   & $ 0.37 $  &  $ 0.37 $  & $ 73411 $\\
+            weighted avg   &  $  0.58 $  &  $ 0.60 $  &  $ 0.59 $ &  $ 73411 $\\\bottomrule
+        \end{tabular}
+    \end{subtable}%
+    \begin{subtable}[t]{.5\linewidth}
+        \centering
+        \caption{After using HMM}
+        \begin{tabular}{rcccc}\toprule
+        & precision &   recall & f1-score  & support \\\midrule
 
-        NoEvents    &   0.71    &  0.75  &    0.73     &51797\\
-          Attack     &  0.27    &  0.26  &    0.26 &   17382\\
-         Natural    &   0.16  &    0.06    &  0.09  &    4232\\
-    
-        accuracy     &          &         &   0.60   &  73411\\
-       macro avg     &  0.38    &  0.36   &   0.36  &   73411\\
-    weighted avg    &   0.58    &  0.60   &   0.59  &   73411   \\ \bottomrule   
-    \end{tabular}
+            NoEvents    &   0.71    &  0.75  &    0.73     &51797\\
+            Attack     &  0.27    &  0.26  &    0.26 &   17382\\
+            Natural    &   0.16  &    0.06    &  0.09  &    4232\\
+        
+            accuracy     &          &         &   0.60   &  73411\\
+        macro avg     &  0.38    &  0.36   &   0.36  &   73411\\
+        weighted avg    &   0.58    &  0.60   &   0.59  &   73411   \\ \bottomrule   
+        \end{tabular}
+    \end{subtable}
 \end{table}
 
-The tables \ref{tab:clreport:before} and \ref{tab:hmm} show that the accuracy did not change after using the probabilities obtained from Hidden Markov Model. Looking more in details, it can be observed a general small decrease of precision and a small increase of recall and f-measure. 
+\begin{table}[H]
+    \centering \footnotesize
+    \caption{Hidden Markov Model manipulation results for Random Forest classifier}  \label{tab:hmm_rf}
+    \begin{subtable}[t]{.5\linewidth}
+        \centering
+        \caption{Before using HMM} 
+        \begin{tabular}{rcccc}\toprule
+            & precision    &recall & f1-score  & support \\\midrule
+            NoEvents   &    0.72  &    0.87 &     0.78 &  51797 \\
+            Attack     &  0.29    &  0.16   &   0.21   &  17382 \\
+           Natural     &  0.25    &  0.05   &   0.08   &   4232 \\
+          accuracy     &          &         &   0.65   &  73411 \\
+         macro avg     &  0.42    &  0.36   &   0.36   &  73411 \\
+      weighted avg     &  0.59    &  0.65   &   0.61   &  73411 \\ \bottomrule
+        \end{tabular}
+    \end{subtable}%
+    \begin{subtable}[t]{.5\linewidth}
+        \centering
+        \caption{After using HMM}
+        \begin{tabular}{rcccc}\toprule
+        & precision &   recall & f1-score  & support \\\midrule
+        NoEvents   &    0.72 &     0.85  &    0.78 &  51797\\
+        Attack     &  0.30   &   0.19    &  0.24   &  17382\\
+       Natural     &  0.25   &   0.05    &  0.09   &   4232\\
+      accuracy     &         &           &  0.65   &  73411\\
+     macro avg     &  0.42   &   0.37    &  0.37   &  73411\\
+  weighted avg     &  0.59   &   0.65    &  0.61   &  73411\\ \bottomrule   
+        \end{tabular}
+    \end{subtable}
+\end{table}
 
-It may be concluded that this method does not really work with the given dataset. The possible cause of this may be the fact that the samples in the dataset does not include any information about their order in time. If the dataset contained information about the time of the event, the results, probably, would be more significant. \\
+The tables \ref{tab:hmm_dt} and \ref{tab:hmm_rf} show that the accuracy did not change after using the probabilities obtained from Hidden Markov Model. Looking more in details, it can be observed a general small decrease of the majority of the other metrics in the Decision Tree classifier case, but, in Random Forest classifier case, a slight increase in metrics value in relation to the Attack class and a small decrease of recall for NoEvents.
 
-In this chapter, three methods for results' enhancement were presented. The best result was obtained using the distance between features approach because the values of certain metrics increased without decreasing significally the values of other metrics like in the case of the approach with values modification. The worst results were obtained using the Hidden Markov Model and this probably because the provided dataset is time independent. 
+It may be concluded that this method does not work with the given dataset, however the results obtained by the Random Forest classifier are better than those provided by Decision Tree classifier. The possible cause of the failure of this method may be the fact that the samples in the dataset does not include any information about their order in time. If the dataset contained information about the time of the event, the results, probably, would be more significant. \\
+
+In this chapter, three methods for results' enhancement were presented. The results vary depending on the used machine learning technique. For Decision Tree classifier, the best method for enhancing the results was the second, using the distance between features. For Random Forest classifier, the best method was the first, modifying the values of features. Finally, for MLP classifier, both two tested methods failed, but the second did not decrease the metrics that drastically as the first method.
