@@ -1,8 +1,11 @@
 \chapter{Features' importance}
 
-After having determined the most performant algorithm, which is Random Forest, it is time to go further and analyse which features impact the results of classification the most. The focus will be especially on false predictions. In order to do that, six tools will be compared: LIME \cite{lime}, ELI5 \cite{mikhail_korobov_eli5_nodate}, YellowBrick \cite{bengfort_yellowbrick_2018}, Treeinterpreter \cite{ando_saabas_treeinterpreter_nodate}, dtreeviz \cite{terence_parr_dtreeviz_nodate} and export\_graphviz tool from scikit-learn, where the last three ones are designed for Decision Tree and Random Forest classifiers.
+After having determined the most performant algorithm, which is Random Forest, it is time to go further and analyse which features impact the results of classification the most. The focus will be especially on false predictions. In order to do that, six different tools for feature analysis will be discussed and compared.
 
 \section{Result's interpreters' comparison}
+
+The six mentioned tools are: LIME \cite{lime}, ELI5 \cite{mikhail_korobov_eli5_nodate}, YellowBrick \cite{bengfort_yellowbrick_2018}, Treeinterpreter \cite{ando_saabas_treeinterpreter_nodate}, dtreeviz \cite{terence_parr_dtreeviz_nodate} and export\_graphviz tool from scikit-learn, where the last three ones are designed for Decision Tree and Random Forest classifiers.
+
 \subsection{LIME} 
 LIME (Local Interpretable Model-agnostic Explanations) is a tool that is used to explain the behaviour of machine learning classifiers. It supports, as for this day, only the explanation of individual predictions for any scikit-learn classifier or regressor. This explanation consist in a list of features (and more precisely decision nodes composed of feature name and a numeric condition) ordered by their relative importance for a particular prediction. This list can be shown is a raw mode (as a python list) or in a visual form (pyplot figure, jupyter notebook or html file).
 
@@ -14,7 +17,7 @@ In order to class the features according to their importance, LIME approximates 
 
 \noindent where $g$ is the explanation model from the set of interpretable models $G$, $f$ is the probability that the sample $x$ corresponds to a certain class, $\pi_x$ is the distance between an instance $z$ and the sample~$x$. $\mathcal{L}(f, g, \pi_x)$ describes to which extent $g$ is unfaithful in the approximation of $f$ in the neighbourhood defined by $\pi_x$, while $\Omega(g)$ describes the complexity of the explanation (for example the depth of the tree if $f$ is a decision tree). The goal of the explanation is to find the most faithful approximation of $f$ taking into consideration the neighbourhood $\pi_x$.
 
-To better illustrate the algorithm, let the pigeon image on figure \ref{fig:limepigeon} be considered as a sample used in a classification problem based on a classifier noted \textit{f}. The image can be divided into several regions, like it is shown on figure \ref{fig:limediv}, each region corresponds to a feature.
+To better illustrate the algorithm, let the pigeon image in figure \ref{fig:limepigeon} be considered as a sample used in a classification problem based on a classifier noted \textit{f}. The image can be divided into several regions, like it is shown in figure \ref{fig:limediv}, each region corresponds to a feature.
 
 \begin{minipage}{.45\textwidth}
     \begin{figure}[H]
@@ -34,7 +37,7 @@ To better illustrate the algorithm, let the pigeon image on figure \ref{fig:lime
 \end{minipage}
 \vspace{0.5cm}
 
-In the next step, a new dataset is created by modifying the features. In the case of the pigeon image some regions can be simply greyed out like it is shown on figure \ref{fig:limegrey}. For each of these regions the probability if it represents a pigeon or not is calculated using the classifier \textit{f}.
+In the next step, a new dataset is created by modifying the features. In the case of the pigeon image some regions can be simply greyed out like it is shown in figure \ref{fig:limegrey}. For each of these regions the probability if it represents a pigeon or not is calculated using the classifier \textit{f}.
 
 \begin{figure}[H]
     \centering
@@ -115,11 +118,11 @@ It can be concluded that ELI5 is the most versatile package compared to others, 
 %Lime
 For the rest of the chapter LIME was chosen to determine the features' importance because of it working with all black-box models available in scikit-learn. The capabilities of LIME were sufficient and that is why ELI5 was not used in his place.
 
-In what follows the Decision Tree classifier will be used because its ease of interpretation. The explication of the algorithm was provided in \ref{sec:rf} as the part of Random Forest classifier algorithm, since the Random Forest is composed of a certain number of Decision Trees. Moreover the results for Random Forest and Multilayer Perceptron will be presented. The parameters passed to the classifiers are the same as listed in previous chapter.
+In what follows the Decision Tree classifier will be used because its ease of interpretation. The explication of the algorithm was provided in section \ref{sec:rf} as the part of Random Forest classifier algorithm, since the Random Forest is composed of a certain number of Decision Trees. Moreover the results for Random Forest and Multilayer Perceptron will be presented. The parameters passed to the classifiers are the same as listed in previous chapter.
 
-Because in this case the explanations of single samples are not really interesting, an attempt to generalize the results was made: Lime explainer was run on 100 false predictions of a chosen class. The results are concatenated together. For all the duplicates of features, the mean importance is calculated and only one entry is kept along with this calculated mean value. The python code for the described operations is listed below.
+Because in this case the explanations of single samples are not really interesting, an attempt to generalize the results was made: Lime explainer was run on 100 false predictions of a chosen class. The results are concatenated together. For all the duplicates of features, the mean importance is calculated and only one entry is kept along with this calculated mean value. The python code for the described operations is listed in the listing \ref{list:lime}.
 
-\begin{python}
+\begin{python}[caption = {Algorithm for determining the most important features using Lime that led to false predictions for 100 samples corresponding to NoEvents class}, label = list:lime]
 import pandas as pd
 import numpy as np
 from lime.lime_tabular import LimeTabularExplainer
@@ -147,6 +150,8 @@ res = dtfr.sort_values(by="importance")
 \end{python}
 
 The results, reduced to 5 most important features for NoEvents, Attack, Natural and all samples, are shown for Decision Tree, Random Forest and MLP classifiers respectively in tables \ref{tab:5best_dt}, \ref{tab:5best_rf} and \ref{tab:5best_mlp}.
+
+The table \ref{tab:5best_dt} shows the 5 most important features that affected the predictions of the decision tree classifier. The table presents three sub-tables, each of them shows the most important features sorted from the most important to the less important that made the decision tree classifier predict an unexpected class. Each sub-table concerns one of the three classes (NoEvents, Attack and Natural). The table \ref{tab:5best_rf} represents exactly the same thing, but this time for Random Forest classifier. Finally comes the table \ref{tab:5best_mlp}, which concerns the MLP classifier.  
 
 
 \begin{table}[H]

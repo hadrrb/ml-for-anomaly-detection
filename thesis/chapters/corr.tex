@@ -36,16 +36,16 @@ The first proposed solution considers changing the values of most important feat
     \caption{Prediction illustration} \label{fig:predict}
 \end{figure}
 
-First of all the correction function was defined as the modification function of the feature values for the predicted samples. This modification consists in shifting the feature value so the feature value would not meet the condition to make a false prediction from tables \ref{tab:5best_dt}-\ref{tab:5best_mlp}. This function code in Python is as follows:  
-\begin{python}
+First of all the correction function was defined as the modification function of the feature values for the predicted samples. This modification consists in shifting the feature value so the feature value would not meet the condition to make a false prediction from tables \ref{tab:5best_dt}-\ref{tab:5best_mlp}. This function code in Python is shown in listing \ref{list:modif}.
+\begin{python}[caption = {Function used to bulk shift the values of a chosen feature by a given value}, label = list:modif]
 def modify(feat, val):
     X[feat] = X[feat].apply(lambda x: x + val)
 \end{python}
 where \textit{X} is a pandas DataFrame object containing all the samples to predict.
 
-Second, the five most important features are taken from tables \ref{tab:5best_dt}-\ref{tab:5best_mlp} and the values of features from the samples to predict are altered using the previous function. If a feature is duplicated only the value of the first occurrence is taken into account. The following code shows this operation for Decision Tree classifier:
+Second, the five most important features are taken from tables \ref{tab:5best_dt}-\ref{tab:5best_mlp} and the values of features from the samples to predict are altered using the previous function. If a feature is duplicated only the value of the first occurrence is taken into account. The code listed in listing \ref{list:corr} shows this operation for Decision Tree classifier.
 
-\begin{python}
+\begin{python}[caption = {Shifting the values of all the most important features using the condition values found using Lime}, label = list:corr]
 modify("R4-PA5:IH", -115.38)
 modify("R3-PM2:V", 128525.29)
 modify("R2-PM1:V", 2000)
@@ -167,7 +167,7 @@ The accuracy of the model has slightly increased for both Decision Tree and Rand
 It may be concluded that this method succeeded to enhance the results for Decision Tree and Random Forest classifiers, but failed with MLP. It is clear that the model, after modifying the features, tends to predict NoEvents class for the first two classifiers, but Attack class for MLP.  
 
 \section{Distance between features}
-The second proposed solution considers using a transformation routine, which, reduces the number of features to the 15 most important from tables \ref{tab:5best_dt}-\ref{tab:5best_mlp} and adds another feature that represents the closest class to the treated sample. The prediction steps were illustrated on figure \ref{fig:distill}.
+The second proposed solution considers using a transformation routine, which, reduces the number of features to the 15 most important from tables \ref{tab:5best_dt}-\ref{tab:5best_mlp} and adds another feature that represents the closest class to the treated sample. The prediction steps were illustrated in figure \ref{fig:distill}.
 
 \begin{figure}[H]
     \centering
@@ -307,8 +307,8 @@ In the studied example, the observable data are the features values available in
 
 It exists a Python package that implements the Hidden Markov Models and it is compatible with scikit-learn, it's name is \textbf{hmmlearn} \cite{noauthor_hmmlearn_2020}. It can be used just like any other scikit-learn classifiers, especially that it offers methods like fit(), predict(), predict\_proba(), etc...
 
-Using \textbf{hmmlearn} the stationary distribution was determined in 4 lines of code:
-\begin{python}
+Using \textbf{hmmlearn} the stationary distribution was determined in 4 lines of code as shown in listing \ref{list:hmm}.
+\begin{python}[caption = {Determination of the stationary distribution of the classes using hmmlearn}, label = list:hmm]
 from hmmlearn.hmm import GaussianHMM 
 clf2 = GaussianHMM(n_components = 3) # 3 states
 clf2.fit(X)
@@ -316,9 +316,9 @@ coefs = clf2.get_stationary_distribution()
 \end{python}
 The Gaussian HMM was used because the observations (features) are continuous. It was initialized by a number of components equal to 3 because of 3 states - NoEvents, Attack and Natural.
 
-The stationary distribution obtained this way was then used to set the class\_weight parameter in DecisionTreeClassifier in scikit-learn, as shown in the listing below.
+The stationary distribution obtained this way was then used to set the class\_weight parameter in DecisionTreeClassifier in scikit-learn, as shown in the listing \ref{list:dt}.
 
-\begin{python}
+\begin{python}[caption = {Definition of the Decision Tree Classifier taking into consideration the stationary distribution}, label = list:dt]
 ctest = DecisionTreeClassifier(class_weight = {0: coefs[0], 1:coefs[1], 2:coefs[2]})  
 \end{python}
 

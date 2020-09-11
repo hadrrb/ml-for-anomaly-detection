@@ -52,20 +52,14 @@
 \usetikzlibrary{positioning}
 
 \def\abstract{
-\vspace{5cm}
 \begin{center}%
 {\bfseries \abstractname\vspace{-.5em}}%
 \end{center}
-\quotation
 }
-\def\endabstract{\par
-\endquotation
+\def\endabstract{
 }
 
-% Default fixed font does not support bold face
-\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
-\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
-
+\usepackage[section]{placeins}
 % Custom colors
 \usepackage{color}
 \definecolor{deepblue}{rgb}{0,0,0.5}
@@ -75,25 +69,27 @@
 % Python style for highlighting
 \newcommand\pythonstyle{\lstset{
 language=Python,
-basicstyle=\ttm,
+basicstyle=\scriptsize,
+commentstyle=\scriptsize\color{gray},
 otherkeywords={self},             % Add keywords here
-keywordstyle=\ttb\color{deepblue},
+keywordstyle=\scriptsize\bfseries\color{deepblue},
 emph={MyClass,__init__, modify, predict, explain_instance, append, concatenate, DataFrame, groupby, sort_values, as_list, , to_numeric, predict_proba, array, LimeTabularExplainer, fit, GaussianHMM, get_stationary_distribution, DecisionTreeClassifier},          % Custom highlighting
-emphstyle=\ttb\color{deepred},    % Custom highlighting style
+emphstyle=\scriptsize\bfseries\color{deepred},    % Custom highlighting style
 stringstyle=\color{deepgreen},
 frame=tb,                         % Any extra options here
 numbers = left,
+numberstyle=\scriptsize,
 breaklines,
 xleftmargin = 15pt,
-showstringspaces=false            % 
+showstringspaces=false,     % 
 }}
 
 
 % Python environment
 \lstnewenvironment{python}[1][]
 {
-\pythonstyle
-\lstset{#1}
+    \pythonstyle
+    \lstset{#1, captionpos=b}
 }
 {}
 
@@ -105,9 +101,6 @@ showstringspaces=false            %
 
 \tableofcontents
 \newpage
-\listoffigures
-\newpage
-\listoftables
 
 \include{chapters/intro}
 \include{chapters/casestudy}
@@ -117,6 +110,21 @@ showstringspaces=false            %
 \include{chapters/concl}
 
 %\appendix
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{List of Figures}
+\listoffigures
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{List of Tables}
+\listoftables
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{List of Listings}
+\renewcommand{\lstlistlistingname}{\bfseries\Huge{List of Listings}}
+\lstlistoflistings
 
 \cleardoublepage
 \phantomsection

@@ -1,5 +1,5 @@
 \chapter{Power system as a CPS example}
-In order to focus on the implementation of the hybrid machine learning algorithm, a CPS, with ready to use datasets, was chosen from a list provided in \cite{morris_industrial_nodate}: the \textbf{power system} \cite{adhikari_power_2014}, which network diagram was represented on figure \ref{fig:cps_rep}. The system is composed of two power generators who are alimenting the whole system. Intelligent Electronic Devices (IEDs) R1 to R4 and the breakers BR1 to BR4 can be found connected directly to those generators. Each IED switches its corresponding breaker when a fault is detected, valid or fake. The communication between the IEDs and the Substation Switch is done wirelessly. On the other hand the Substation Switch is connected with the Primary Domain Controller (PDC) and the Control Room.
+In order to focus on the implementation of the hybrid machine learning algorithm, a CPS, with ready to use datasets, was chosen from a list provided in \cite{morris_industrial_nodate}: the \textbf{power system} \cite{adhikari_power_2014}, which network diagram was represented in figure \ref{fig:cps_rep}. The system is composed of two power generators who are alimenting the whole system. Intelligent Electronic Devices (IEDs) R1 to R4 and the breakers BR1 to BR4 can be found connected directly to those generators. Each IED switches its corresponding breaker when a fault is detected, valid or fake. The communication between the IEDs and the Substation Switch is done wirelessly. On the other hand the Substation Switch is connected with the Primary Domain Controller (PDC) and the Control Room.
 
 \begin{figure}[H]
     \centering
@@ -25,7 +25,7 @@ Each of those scenarios can be divided into several sub-scenarios concerning dif
 \end{itemize}
 The reason for dropping the numbers between 31 and 34 in the naming process of scenarios is not known.
 
-The datasets provided in \cite{morris_industrial_nodate} represent \textbf{78377 events}, in which one of those scenarios was reproduced in the system. They have been grouped by scenario into 3 datasets: binary (attack or normal operation), three-class (attack, normal fault and no events) and multiclass (differentiating all 37 scenarios). Each of these 3 datasets is composed of 15 .arff or .csv files comporting in average 141 events for each of 37 scenarios. The exact number of events per file for each scheme is illustrated on figure \ref{fig:scen_distro_37}. For the 3 class dataset \textbf{55663 attack}, \textbf{18309 natural fault} and \textbf{4405 normal operation} events were found. The distribution of these schemes throughout the files is shown on figure~\ref{fig:scen_distro_file}. 
+The datasets provided in \cite{morris_industrial_nodate} represent \textbf{78377 events}, in which one of those scenarios was reproduced in the system. They have been grouped by scenario into 3 datasets: binary (attack or normal operation), three-class (attack, normal fault and no events) and multiclass (differentiating all 37 scenarios). Each of these 3 datasets is composed of 15 .arff or .csv files comporting in average 141 events for each of 37 scenarios. The exact number of events per file for each scheme is illustrated in figure \ref{fig:scen_distro_37}. For the 3 class dataset \textbf{55663 attack}, \textbf{18309 natural fault} and \textbf{4405 normal operation} events were found. The distribution of these schemes throughout the files is shown in figure~\ref{fig:scen_distro_file}. 
 
 \begin{figure}[H]
     \centering
@@ -61,7 +61,7 @@ In order to simplify the analysis of three-phase power systems, symmetrical comp
 \end{equation}
 where $\mathbf{V_0}$, $\mathbf{V_1}$, $\mathbf{V_2}$ are called respectively \textbf{zero sequence}, \textbf{positive sequence} and \textbf{negative sequence}, $a = e^{i \frac{2\pi}{3}}$ and $V_A$, $V_B$, $V_C$ the A-C voltage phases \cite{jl_kirtley_jr_introduction_nodate}. As each sequence is a weighted sum of sinusoidal functions (A-C phases), it can be on its own written as one sinusoidal function after mathematical transformations.
 
-Each phase is a \textbf{sinusoidal} function. Its equation form is $y = A \cdot \sin(\omega t + \theta)$, where $A$ is the amplitude, $\omega$ the angular frequency and $\theta$ the initial phase. Two terms will be used in what follows: the \textbf{magnitude} which is the absolute value of the amplitude and the \textbf{angle} which refers to initial phase. These two variables were illustrated on figure \ref{fig:sin}.
+Each phase is a \textbf{sinusoidal} function. Its equation form is $y = A \cdot \sin(\omega t + \theta)$, where $A$ is the amplitude, $\omega$ the angular frequency and $\theta$ the initial phase. Two terms will be used in what follows: the \textbf{magnitude} which is the absolute value of the amplitude and the \textbf{angle} which refers to initial phase. These two variables were illustrated in figure \ref{fig:sin}.
 
 \begin{figure}[H]
     \centering
@@ -93,7 +93,7 @@ Every previously mentioned event is described by \textbf{128 features}: 116 prov
 
 \begin{table}[H]
     \centering
-    \caption[IED measurements]{IED measurements \cite{adhikari_power_2014}} \label{tab:pmu_mes}
+    \caption[IED measurements]{IED measurements description \cite{adhikari_power_2014}} \label{tab:pmu_mes}
     \begin{tabular}{lr}
         \toprule
         Feature&Description \\
@@ -115,8 +115,10 @@ Every previously mentioned event is described by \textbf{128 features}: 116 prov
     \end{tabular}
 \end{table} 
 
-Those datasets have been used in several works related to CPS cyber-attack classification, one of which is \cite{borges_hink_machine_2014-1}, where the author tries to find the most accurate algorithm to predict the status of the power system. The following chapter shows an attempt to partially reproduce the results obtained by them.
+Those datasets have been used in several works related to CPS cyber-attack classification, one of which is \cite{borges_hink_machine_2014-1}, where the author tries to find the most accurate algorithm to predict the status of the power system. 
 
-% TODO: Add a transition paragraph to next chapter
+\newpage
+
+In this chapter the power system was presented as an example of a cyber-physical system. The datasets including the sample data of this system were presented and described in details, including the distribution of the classes along samples and the exact physical explanation of all the features that compose those samples. This system is used in the rest of this master thesis as the studied case. The next chapter will concern the evaluation of different machine learning techniques regarding their capability to correctly predict the statuses of this CPS.
 
 

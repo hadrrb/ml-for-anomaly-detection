@@ -14,7 +14,7 @@
 \normalsize
 
 \vspace{6cm}
-\textbf{Wydział Fizyki Technicznej, Informatyki i Matematyki Stosowanej \\
+\noindent\textbf{Wydział Fizyki Technicznej, Informatyki i Matematyki Stosowanej \\
 Promotor:} dr hab. inż. Aneta Poniszewska-Marańda\\
 \textbf{Dyplomant:} inż. Ramzi Hadrich\\
 \textbf{Nr albumu:} 227488\\
@@ -40,7 +40,11 @@ Promotor:} dr hab. inż. Aneta Poniszewska-Marańda\\
 % Uncomment the next line if you do NOT want a page number on your
 % abstract and acknowledgments pages.
 \begin{abstract}
-Nowadays cyber-physical systems are widely used in different application domains. In parallel, machine learning algorithms are used widely to detect the anomalies in the behaviour of these systems. However, this detection is limited to two states: normal behaviour and faulty functioning. This work aims to extend this detection to differentiate between attacks and normal faults. In first place, a power system is described as an example to work on. Then, various machine learning algorithms are evaluated on the given datasets, and this using two machine learning toolkits - scikit-learn and Weka. Later, various tools for feature analysis are presented and an algorithm to find the features that contributed the most into the false predictions is described. Finally, three solutions to the initial problem are presented and evaluated - one solution uses the features found in the previous step and modifies their values, the second shrinks the samples from the dataset to have only the previously mentioned features and evaluates the distance between those samples and the third solution uses the Hidden Markov Model. The tests of those methods have been made on three different machine learning classifiers - Decision Tree, Random Forest and Multilayer Perceptron. The results show that the first method works the best with Random Forest classifier, the second with Decision Tree classifier and the third fails to enhance the results. For Multilayer Perceptron classifier all the presented methods failed.
+
+Nowadays cyber-physical systems are widely used in different application domains. In parallel, machine learning algorithms are used widely to detect the anomalies in the behaviour of these systems. However, this detection is limited to two states: normal behaviour and faulty functioning. This master thesis aims to extend this detection to differentiate between attacks and normal faults. In first place, a power system is described as an example to work on. Then, various machine learning algorithms are evaluated on the given datasets, and this using two machine learning toolkits - scikit-learn and Weka. Later, various tools for feature analysis are presented and an algorithm to find the features that contributed the most into the false predictions is described. Finally, three solutions to the initial problem are presented and evaluated.
+
+\vspace{0.5cm}
+\noindent\textbf{Keywords:} machine learning, cyber-physical systems, anomaly detection, random forest, power system
 \end{abstract}
 
 % \newpage
@@ -48,6 +52,16 @@ Nowadays cyber-physical systems are widely used in different application domains
 % \begin{abstract}
 % De nos jours, les systèmes cyber-physiques sont largement utilisés dans différents domaines d'application. Parallèlement, les algorithmes d'apprentissage automatique sont largement utilisés pour détecter les anomalies dans le comportement de ces systèmes. Toutefois, cette détection se limite à deux états : un comportement normal et un fonctionnement défectueux. Ce travail vise à étendre cette détection afin de différencier les attaques des défauts liés au fonctionnement normal. En premier lieu, un système d'alimentation est décrit comme un exemple sur lequel on va travailler. Puis, divers algorithmes d'apprentissage machine sont évalués sur les ensembles de données donnés, et ce à l'aide de deux boîtes à outils d'apprentissage machine - scikit-learn et Weka. Ensuite, différents outils d'analyse des caractéristiques sont présentés et un algorithme permettant de trouver les caractéristiques qui ont le plus contribué aux fausses prédictions est décrit. Enfin, trois solutions au problème initial sont présentées et évaluées - une solution qui utilise les caractéristiques trouvées dans l'étape précédente et qui modifie leurs valeurs, la deuxième qui réduit les échantillons de l'ensemble de données pour n'avoir que les caractéristiques mentionnées précédemment et qui évalue la distance entre ces échantillons et la troisième solution qui utilise le modèle de Markov caché. Les tests ont montré que la solution la plus performante était la seconde, même si le gain de précision n'est pas très significatif.  
 % \end{abstract}
+
+\vspace{1cm}
+\renewcommand{\abstractname}{Streszczenie}
+\begin{abstract}
+
+Obecnie systemy cyber-fizyczne są szeroko wykorzystywane w wielu różnych domenach. Jednocześnie, algorytmy uczenia maszynowego są szeroko stosowane do wykrywania anomalii w działaniu tych systemów. Ale ta detekcja jest ograniczona do dwóch stanów: normalne działanie i naturalne błędy. Ta praca magisterska ma na celu rozszerzenie rozróżniania tych stanów, aby wziąć pod uwagę również ataki na system. W pierwszej kolejności, system energetyczny został opisany jako przykład systemu cyber-fizycznego do dalszych rozważań. Następnie, dokonano oceny różnych algorytmów uczenia maszynowego na bazie zbioru danych z przedstawionego systemu. Do tego celu wykorzystano dwa narzędzia do uczenia maszynowego - scikit-learn i Weka. Później, omówione zostały różne narzędzia do analizy cech systemu. Oprócz tego, zaprezentowano algorytm umożliwiający ustalenie cech najbardziej wpływających na złą klasyfikację danych. Na koniec, trzy rozwiązania pierwotnego problemu zostały przedstawione i sprawdzone. 
+
+\vspace{0.5cm}
+\noindent\textbf{Słowa kluczowe:} uczenie maszynowe, system cyber-fizyczny, detekcja anomalii, lasy losowe, system energetyczny
+\end{abstract}
 
 
 % Additional copy: start a new page, and reset the page number.  This way,
