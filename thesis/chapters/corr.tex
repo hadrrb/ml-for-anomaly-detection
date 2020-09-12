@@ -1,7 +1,7 @@
 \chapter{Model enhancement}
 After having chosen the appropriate machine learning algorithms and found a way to determine the most important features in the classification problem, this chapter is an attempt to create a model able to enhance the results obtained by the basic classification. Three different approaches are presented. First of all, the most important features values were altered and the effect of this modification is examined. Second, a formula for calculating the distance between different samples is established then a way to use that information. Finally, the Hidden Markov Model were used in order to determine the likehood of prediction of a particular class and this data was used to modify the machine learning algorithm. 
 
-\section{Features values modification}
+\section{Features values modification} \label{sec:feat}
 The first proposed solution considers changing the values of most important features in the dataset after the training process. In other words the training process occurs normally, then the importances are determined and a correction function is created (figure \ref{fig:train}). This correction function will act then on the samples introduced to the model in order to change the features values and obtain better predictions (figure \ref{fig:predict}). 
 
 \begin{figure}[H]
@@ -62,7 +62,7 @@ modify("R2-PA5:IH",- 63.30)
 modify("R2-PM7:V", -130857.40) 
 \end{python}
 
-The samples modified this way are then used for the predictions. In order to check the success of this method, the classification\_report method from scikit-learn was used. The results before and after modifying the samples are displayed for Decision Tree, Random Forest and MLP classifiers respectively in tables \ref{tab:fm_dt}, \ref{tab:fm_rf} and \ref{tab:fm_mlp}.
+The samples modified this way are then used for the predictions. In order to check the success of this method, the classification\_report method from scikit-learn was used. The results before and after modifying the samples are displayed for Decision Tree, Random Forest and MLP classifiers respectively in tables \ref{tab:fm_dt}, \ref{tab:fm_rf} and \ref{tab:fm_mlp}. Those tables are composed of 4 columns: precision, recall, f-measure and support. The first three correspond to the metrics discussed in section \ref{sec:metrics}, while support indicates the number of samples. The tables contain also 6 lines: NoEvents, Attack, Natural, accuracy, macro avg, weighted avg. The first three indicate the classes, accuracy is just the accuracy metric and the last two lines indicate the average values for each column, in particular the macro average and the weighted average.
 
 \begin{table}[H]
     \centering
@@ -72,7 +72,7 @@ The samples modified this way are then used for the predictions. In order to che
         \centering
         \caption{Before features modification} 
         \begin{tabular}{rcccc}\toprule
-            & precision    &recall & f1-score  & support \\\midrule
+            & precision    &recall & f-measure  & support \\\midrule
                 NoEvents  &   $  0.72 $  &  $ 0.76 $  &  $ 0.74 $  & $ 51797 $\\
                   Attack   &  $  0.27 $   & $ 0.26 $  &  $ 0.26 $  & $ 17382 $\\
                  Natural   &  $  0.19 $   & $ 0.08 $  &  $ 0.12 $  & $  4232 $\\
@@ -85,7 +85,7 @@ The samples modified this way are then used for the predictions. In order to che
         \centering
         \caption{After features modification}
         \begin{tabular}{rcccc}\toprule
-            &precision   & recall & f1-score &  support  \\\midrule
+            &precision   & recall & f-measure &  support  \\\midrule
     
             NoEvents   &    0.71   &   0.83  &    0.77   &  51797 \\
               Attack    &   0.26   &   0.17  &    0.21   &  17382 \\
@@ -106,7 +106,7 @@ The samples modified this way are then used for the predictions. In order to che
         \centering
         \caption{Before features modification} 
         \begin{tabular}{rcccc}\toprule
-            & precision    &recall & f1-score  & support \\\midrule
+            & precision    &recall & f-measure  & support \\\midrule
             NoEvents   &    0.72  &    0.87 &     0.78 &  51797 \\
             Attack     &  0.29    &  0.16   &   0.21   &  17382 \\
            Natural     &  0.25    &  0.05   &   0.08   &   4232 \\
@@ -119,7 +119,7 @@ The samples modified this way are then used for the predictions. In order to che
         \centering
         \caption{After features modification}
         \begin{tabular}{rcccc}\toprule
-            &precision   & recall & f1-score &  support  \\\midrule
+            &precision   & recall & f-measure &  support  \\\midrule
             NoEvents  &     0.71 &     0.89 &     0.79 &  51797\\
             Attack    &   0.28   &   0.13   &   0.18   &  17382\\
            Natural    &   0.26   &   0.05   &   0.08   &   4232\\
@@ -138,7 +138,7 @@ The samples modified this way are then used for the predictions. In order to che
         \centering
         \caption{Before features modification} 
         \begin{tabular}{rcccc}\toprule
-            & precision    &recall & f1-score  & support \\\midrule
+            & precision    &recall & f-measure  & support \\\midrule
             NoEvents   &    0.71 &     0.99 &     0.83&    51797\\
             Attack     &  0.57   &   0.05   &   0.09  &   17382\\
            Natural     &  0.00   &   0.00   &   0.00  &    4232\\    
@@ -151,7 +151,7 @@ The samples modified this way are then used for the predictions. In order to che
         \centering
         \caption{After features modification}
         \begin{tabular}{rcccc}\toprule
-            &precision   & recall & f1-score &  support  \\\midrule
+            &precision   & recall & f-measure &  support  \\\midrule
             NoEvents   &    0.74  &    0.07 &     0.12 &  51797\\
             Attack     &  0.24    &  0.93   &   0.38   &  17382\\
            Natural     &  0.00    &  0.00   &   0.00   &   4232\\   
@@ -195,7 +195,7 @@ The transformation routine on other hand takes the form of a python class and is
 
 This routine has been coupled with the 3 chosen classifiers using \textbf{pipeline} class in scikit-learn, which construct acts like a classifier (it has fit and predict methods). 
 
-The success rate of this method was verified, once more, using classification\_report method from scikit-learn. The result and after using the described method are shown for Decision Tree, Random Forest and MLP classifiers respectively in tables \ref{tab:dist_dt}, \ref{tab:dist_rf} and \ref{tab:dist_mlp}.
+The success rate of this method was verified, once more, using classification\_report method from scikit-learn. The result and after using the described method are shown for Decision Tree, Random Forest and MLP classifiers respectively in tables \ref{tab:dist_dt}, \ref{tab:dist_rf} and \ref{tab:dist_mlp}. They have the same composition as the tables from section \label{sec:metrics}.
 
 \begin{table}[H]
     \centering \footnotesize
@@ -204,7 +204,7 @@ The success rate of this method was verified, once more, using classification\_r
         \centering
         \caption{Before using the distance routine} 
         \begin{tabular}{rcccc}\toprule
-            & precision    &recall & f1-score  & support \\\midrule
+            & precision    &recall & f-measure  & support \\\midrule
                 NoEvents  &   $  0.72 $  &  $ 0.76 $  &  $ 0.74 $  & $ 51797 $\\
                   Attack   &  $  0.27 $   & $ 0.26 $  &  $ 0.26 $  & $ 17382 $\\
                  Natural   &  $  0.19 $   & $ 0.08 $  &  $ 0.12 $  & $  4232 $\\
@@ -217,7 +217,7 @@ The success rate of this method was verified, once more, using classification\_r
         \centering
         \caption{After using the distance routine} 
         \begin{tabular}{rcccc}\toprule
-         &   precision    &recall & f1-score &  support  \\\midrule
+         &   precision    &recall & f-measure &  support  \\\midrule
     
             NoEvents    &   0.72   &   0.79   &   0.75  &   51797 \\
               Attack    &   0.28   &   0.23   &   0.25  &   17382 \\
@@ -237,7 +237,7 @@ The success rate of this method was verified, once more, using classification\_r
         \centering
         \caption{Before using the distance routine} 
         \begin{tabular}{rcccc}\toprule
-            & precision    &recall & f1-score  & support \\\midrule
+            & precision    &recall & f-measure  & support \\\midrule
             NoEvents   &    0.72  &    0.87 &     0.78 &  51797 \\
             Attack     &  0.29    &  0.16   &   0.21   &  17382 \\
            Natural     &  0.25    &  0.05   &   0.08   &   4232 \\
@@ -250,7 +250,7 @@ The success rate of this method was verified, once more, using classification\_r
         \centering
         \caption{After using the distance routine} 
         \begin{tabular}{rcccc}\toprule
-         &   precision    &recall & f1-score &  support  \\\midrule
+         &   precision    &recall & f-measure &  support  \\\midrule
     
         NoEvents   &    0.71 &     0.83 &     0.77 &   51797\\
          Attack    &   0.27  &    0.19  &    0.22  &   17382\\
@@ -269,7 +269,7 @@ The success rate of this method was verified, once more, using classification\_r
         \centering
         \caption{Before using the distance routine} 
         \begin{tabular}{rcccc}\toprule
-            & precision    &recall & f1-score  & support \\\midrule
+            & precision    &recall & f-measure  & support \\\midrule
             NoEvents   &    0.71 &     0.99 &     0.83&    51797\\
             Attack     &  0.57   &   0.05   &   0.09  &   17382\\
            Natural     &  0.00   &   0.00   &   0.00  &    4232\\    
@@ -282,7 +282,7 @@ The success rate of this method was verified, once more, using classification\_r
         \centering
         \caption{After using the distance routine} 
         \begin{tabular}{rcccc}\toprule
-         &   precision    &recall & f1-score &  support  \\\midrule
+         &   precision    &recall & f-measure &  support  \\\midrule
     
          NoEvents  &     0.70 &     0.98 &     0.82 &  51797\\
          Attack    &   0.18   &   0.01   &   0.02   &  17382\\
@@ -324,7 +324,7 @@ ctest = DecisionTreeClassifier(class_weight = {0: coefs[0], 1:coefs[1], 2:coefs[
 
 For Random Forest classifier the same parameter exists and was used to produce results. However, for MLP classifier a similar parameter does not exist and using the determined coefficients would require deeper modifications of the neural network.
 
-The results for Decision Tree and Random Forest classifiers are presented in tables \ref{tab:hmm_dt} and \ref{tab:hmm_rf}.
+The results for Decision Tree and Random Forest classifiers are presented in tables \ref{tab:hmm_dt} and \ref{tab:hmm_rf}. They have the same composition as the tables from section \label{sec:metrics}.
 
 \begin{table}[H]
     \centering \footnotesize
@@ -333,7 +333,7 @@ The results for Decision Tree and Random Forest classifiers are presented in tab
         \centering
         \caption{Before using HMM} 
         \begin{tabular}{rcccc}\toprule
-            & precision    &recall & f1-score  & support \\\midrule
+            & precision    &recall & f-measure  & support \\\midrule
                 NoEvents  &   $  0.72 $  &  $ 0.76 $  &  $ 0.74 $  & $ 51797 $\\
                   Attack   &  $  0.27 $   & $ 0.26 $  &  $ 0.26 $  & $ 17382 $\\
                  Natural   &  $  0.19 $   & $ 0.08 $  &  $ 0.12 $  & $  4232 $\\
@@ -346,7 +346,7 @@ The results for Decision Tree and Random Forest classifiers are presented in tab
         \centering
         \caption{After using HMM}
         \begin{tabular}{rcccc}\toprule
-        & precision &   recall & f1-score  & support \\\midrule
+        & precision &   recall & f-measure  & support \\\midrule
 
             NoEvents    &   0.71    &  0.75  &    0.73     &51797\\
             Attack     &  0.27    &  0.26  &    0.26 &   17382\\
@@ -366,7 +366,7 @@ The results for Decision Tree and Random Forest classifiers are presented in tab
         \centering
         \caption{Before using HMM} 
         \begin{tabular}{rcccc}\toprule
-            & precision    &recall & f1-score  & support \\\midrule
+            & precision    &recall & f-measure  & support \\\midrule
             NoEvents   &    0.72  &    0.87 &     0.78 &  51797 \\
             Attack     &  0.29    &  0.16   &   0.21   &  17382 \\
            Natural     &  0.25    &  0.05   &   0.08   &   4232 \\
@@ -379,7 +379,7 @@ The results for Decision Tree and Random Forest classifiers are presented in tab
         \centering
         \caption{After using HMM}
         \begin{tabular}{rcccc}\toprule
-        & precision &   recall & f1-score  & support \\\midrule
+        & precision &   recall & f-measure  & support \\\midrule
         NoEvents   &    0.72 &     0.85  &    0.78 &  51797\\
         Attack     &  0.30   &   0.19    &  0.24   &  17382\\
        Natural     &  0.25   &   0.05    &  0.09   &   4232\\

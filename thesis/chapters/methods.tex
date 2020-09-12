@@ -257,7 +257,7 @@ The mentioned frameworks will not be used in this work because this flexibility 
     \end{tabular}
 \end{table}
 
-\section{Metrics for classifiers comparison}
+\section{Metrics for classifiers comparison} \label{sec:metrics}
 All those classifiers give predictions that can be divided into 4 main groups. Assuming for a moment, for illustration purposes, that normal fault class is positive and attack class is negative, it could be differentiated between:
 \begin{itemize}
     \item true positive predictions (\textbf{tp}): correct prediction of the normal fault class,
@@ -481,7 +481,7 @@ The figure \ref{fig:scikit_RF_CM} shows the confusion matrix for Random Forest c
         \caption{ROC Curve}
         \label{fig:scikit_RF_ROC}
     \end{subfigure}
-    \caption{ROC curves plot for Random Forest classifier taught with the power system dataset}
+    \caption{ROC curves plot for Random Forest classifier in scikit-learn taught with the power system dataset using cross validation technique and a test dataset}
     \label{fig:ROCCM_RF}
 \end{figure}
 
@@ -500,7 +500,7 @@ The figure \ref{fig:scikit_RF_CM} shows the confusion matrix for Random Forest c
         \caption{ROC Curve}
         \label{fig:scikit_RF_ROC}
     \end{subfigure}
-    \caption{ROC curves plot for SVM classifier taught with the power system dataset}
+    \caption{ROC curves plot for SVM classifier in scikit-learn taught with the power system dataset using cross validation technique and a test dataset}
     \label{fig:ROCCM_SVM}
 \end{figure}
 
@@ -519,7 +519,7 @@ The figure \ref{fig:scikit_RF_CM} shows the confusion matrix for Random Forest c
         \caption{ROC Curve}
         \label{fig:scikit_RF_ROC}
     \end{subfigure}
-    \caption{ROC curves plot for Naïve Bayes classifier taught with the power system dataset}
+    \caption{ROC curves plot for Naïve Bayes classifier in scikit-learn taught with the power system dataset using cross validation technique and a test dataset}
     \label{fig:ROCCM_NB}
 \end{figure}
 
@@ -538,35 +538,35 @@ The figure \ref{fig:scikit_RF_CM} shows the confusion matrix for Random Forest c
         \caption{ROC Curve}
         \label{fig:scikit_RF_ROC}
     \end{subfigure}
-    \caption{ROC curves plot for MLP classifier taught with the power system dataset}
+    \caption{ROC curves plot for MLP classifier in scikit-learn taught with the power system dataset using cross validation technique and a test dataset}
     \label{fig:ROCCM_MLP}
 \end{figure}
 
 \begin{figure}[t]
     \centering
     \includegraphics[page=2, width=180mm, trim= 0 50 0 100, clip]{images/results_scikit/RandomForest}
-    \caption{Confusion Matrix for Random Forest classifier taught with the power system dataset}
+    \caption{Confusion Matrix for Random Forest classifier in scikit-learn taught with the power system dataset}
     \label{fig:scikit_RF_CM}
 \end{figure}
 
 \begin{figure}[t]
     \centering
     \includegraphics[page=2, width=180mm, trim= 0 50 0 100, clip]{images/results_scikit/SVM}
-    \caption{Confusion Matrix for SVM classifier taught with the power system dataset}
+    \caption{Confusion Matrix for SVM classifier in scikit-learn taught with the power system dataset}
     \label{fig:scikit_SVM_CM}
 \end{figure}
 
 \begin{figure}[t]
     \centering
     \includegraphics[page=2, width=180mm, trim= 0 50 0 100, clip]{images/results_scikit/NaiveBayes}
-    \caption{Confusion Matrix for Naïve Bayes classifier taught with the power system dataset}
+    \caption{Confusion Matrix for Naïve Bayes classifier in scikit-learn taught with the power system dataset}
     \label{fig:scikit_NB_CM}
 \end{figure}
 
 \begin{figure}[t]
     \centering
     \includegraphics[page=2, width=180mm, trim= 0 50 0 100, clip]{images/results_scikit/MLP}
-    \caption{Confusion Matrix for MLP classifier taught with the power system dataset}
+    \caption{Confusion Matrix for MLP classifier in scikit-learn taught with the power system dataset}
     \label{fig:scikit_MLP_CM}
 \end{figure}
 

@@ -151,8 +151,16 @@ res = dtfr.sort_values(by="importance")
 
 The results, reduced to 5 most important features for NoEvents, Attack, Natural and all samples, are shown for Decision Tree, Random Forest and MLP classifiers respectively in tables \ref{tab:5best_dt}, \ref{tab:5best_rf} and \ref{tab:5best_mlp}.
 
-The table \ref{tab:5best_dt} shows the 5 most important features that affected the predictions of the decision tree classifier. The table presents three sub-tables, each of them shows the most important features sorted from the most important to the less important that made the decision tree classifier predict an unexpected class. Each sub-table concerns one of the three classes (NoEvents, Attack and Natural). The table \ref{tab:5best_rf} represents exactly the same thing, but this time for Random Forest classifier. Finally comes the table \ref{tab:5best_mlp}, which concerns the MLP classifier.  
+The table \ref{tab:5best_dt} shows the 5 most important features that affected the predictions of the decision tree classifier. The table presents three sub-tables, each of them shows the most important features sorted from the most important to the less important that made the decision tree classifier predict an unexpected class. Each sub-table concerns one of the three classes (NoEvents, Attack and Natural). The sub-table for NoEvents samples shows that the most important features are respectively R4-PA5:IH, R3-PM2:V, R2-PM1:V, R1-PA12:IH and R3-PM5:I. For the attack class they are R3:S, R2-PA7:VH, R2-PM1:V, R3-PA7:VH and R3-PA2:VH. For the natural class samples the most important features are R2:F, R3:F, R2-PA5:IH, R2-PM7:V and R1-PA1:VH.
 
+The table \ref{tab:5best_rf} represents exactly the same thing, but this time for Random Forest classifier. The most important features for the NoEvents class are R4-PA2:VH, R3-PM2:V, R1-PA:Z, R2-PM4:I and R4-PA4:IH. For attack samples they are R1-PA7:VH, R4-PA2:VH, R1-PA1:VH, R2-PA6:IH and R2-PA2:VH. On other hand, for the natural class the most important features are respectively R3-PM2:V, R1-PA:Z, R2-PM4:I, R3-PA7:VH and R3-PA10:IH.
+
+Finally comes the table \ref{tab:5best_mlp}, which concerns the MLP classifier. For NoEvents class the most important features are respectively R4-PM8:V, R3-PM3:V, R3-PM9:V, R1:S and R1-PM7:V. For the attack class they are R3-PM3:V, R3-PM1:V and R3-PM7:V. Meanwhile, for the natural class, the most important features are R3-PM3:V, R3-PM1:V and R2-PA:Z.
+
+
+It can be observed that the five most important features among false predictions for each class are different for all the classifiers. The only exception is MLP where some features are duplicated, however with different value conditions. This implies creating a correction model for every important feature among all classes. The exact procedure is described in the next chapter.
+
+In this chapter different result interpreters were presented in details. Among them, Lime have been chosen to create an algorithm for features importance determination. The most important features will be used in next chapter to correct the obtained predictions. 
 
 \begin{table}[H]
     \footnotesize
@@ -288,7 +296,3 @@ The table \ref{tab:5best_dt} shows the 5 most important features that affected t
         \end{tabular}
     \end{subtable}
 \end{table}
-
-It can be observed that the five most important features among false predictions for each class are different for all the classifiers. The only exception is MLP where some features are duplicated, however with different value conditions. This implies creating a correction model for every important feature among all classes. The exact procedure is described in the next chapter.
-
-In this chapter different result interpreters were presented in details. Among them, Lime have been chosen to create an algorithm for features importance determination. The most important features will be used in next chapter to correct the obtained predictions. 
