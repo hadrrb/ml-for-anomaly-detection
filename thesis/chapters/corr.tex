@@ -195,7 +195,7 @@ The transformation routine on other hand takes the form of a python class and is
 
 This routine has been coupled with the 3 chosen classifiers using \textbf{pipeline} class in scikit-learn, which construct acts like a classifier (it has fit and predict methods). 
 
-The success rate of this method was verified, once more, using classification\_report method from scikit-learn. The result and after using the described method are shown for Decision Tree, Random Forest and MLP classifiers respectively in tables \ref{tab:dist_dt}, \ref{tab:dist_rf} and \ref{tab:dist_mlp}. They have the same composition as the tables from section \label{sec:metrics}.
+The success rate of this method was verified, once more, using classification\_report method from scikit-learn. The result and after using the described method are shown for Decision Tree, Random Forest and MLP classifiers respectively in tables \ref{tab:dist_dt}, \ref{tab:dist_rf} and \ref{tab:dist_mlp}. They have the same composition as the tables from section \ref{sec:feat}.
 
 \begin{table}[H]
     \centering \footnotesize
@@ -324,7 +324,7 @@ ctest = DecisionTreeClassifier(class_weight = {0: coefs[0], 1:coefs[1], 2:coefs[
 
 For Random Forest classifier the same parameter exists and was used to produce results. However, for MLP classifier a similar parameter does not exist and using the determined coefficients would require deeper modifications of the neural network.
 
-The results for Decision Tree and Random Forest classifiers are presented in tables \ref{tab:hmm_dt} and \ref{tab:hmm_rf}. They have the same composition as the tables from section \label{sec:metrics}.
+The results for Decision Tree and Random Forest classifiers are presented in tables \ref{tab:hmm_dt} and \ref{tab:hmm_rf}. They have the same composition as the tables from section \ref{sec:feat}.
 
 \begin{table}[H]
     \centering \footnotesize
